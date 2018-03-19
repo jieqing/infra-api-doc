@@ -1,0 +1,82 @@
+
+@media screen and (min-width:600px) and (max-width:768px) {
+.tabBar_pos{
+	height:8.5rem;
+}
+.tab_nav li{
+	width:23%;
+	padding:1%;
+	font-size:1.7rem;
+}
+.tab_nav li div{
+	width:35%;
+	margin:auto;
+	margin-bottom:2%;
+}
+.VehicleManages p{
+	font-size:1.8rem;
+	line-height:2.2rem;
+}
+.VehicleManages li{
+	font-size:1.8rem;
+	height:5rem;
+	line-height:5rem;
+}
+.list-title{
+	height:6rem;
+	line-height:6rem;
+	font-size:1.8rem;	
+}
+.list-title div{
+	margin-top:1.75rem;
+}
+.time p,.year p{
+	line-height:3.5rem;
+}
+}
+@media screen and (max-width:435px) {
+.tabBar_pos{
+	height:8.5rem;
+}
+
+}
+@media screen and (max-width:384px) {
+.VehicleManages div span{
+	font-size:1.4rem;
+}
+
+}
+@media screen and (max-width:376px) {
+
+}
+@media screen and (max-width:375px) {
+
+.VehicleManages li{
+	font-size:1.4rem;
+}
+.VehicleManages li{
+	height:3.5rem;
+	line-height:3.5rem;
+}
+
+}
+
+@media screen and (max-width:325px) {
+
+.VehicleManages div span,.VehicleManages li{
+	font-size:1.2rem;
+}
+.VehicleManages span{
+	font-size:1.5rem;
+}
+.list-title-c .list-title button{
+	font-size:1.2rem;
+}
+.statistics-wrap .j_c {
+	font-size: 1.3rem;
+}
+.statistics-wrap .j_c th {
+	font-size: 1.4rem;
+}
+
+}

@@ -4,7 +4,7 @@
     <title>公众号企业信息查询</title>
 <#include "../common/head.ftl">
     <style>
-        .direBtn{
+        .direBtn {
             width: 20%;
             height: 3rem;
             border-radius: .7rem;
@@ -43,36 +43,34 @@
 <li><span class="list-left">保养里程</span><span class="list-right">{{:maintMileage}} km</span></li>
 <li><span class="list-left">最近保养里程</span><span class="list-right">{{:recentMaintMileage}} km</span></li>
 </ul>
+
+
+
     </script>
     <script id="tableEmptyTmp" type="text/x-jsrender">
 	<div class="noData">
 		<h1>暂无数据</h1>
 	</div>
+
+
+
     </script>
 </head>
 
 <body>
-<div class="input-group">
-    <input type="text" class="form-control" placeholder="Recipient's username" aria-describedby="basic-addon2">
-</div>
 
-<div class="list-title-c light-blue1">
-    <div class="list-title">
-
-    </div>
-    <button id="direBtn" class="direBtn">车辆监控</button>
+<div>
+    <input type="text" class="form-control search col-xs-10" placeholder="Recipient's username">
 </div>
 <#--<div class="banner"><img src="${ctx}/resources/images/pic1.jpg"></div>-->
 <div id="datatable">
 </div>
 <div class="tabBar_pos"></div>
 
-<#include "../common/footer.ftl">
+<#--<#include "../common/footer.ftl">-->
 
 <script>
-    $("#direBtn").click(function () {
-        location.href=ctx + "/carMonitor/carGps";
-    });
+
 </script>
 </body>
 </html>

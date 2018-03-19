@@ -1,0 +1,416 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+div{
+    white-space:nowrap;
+}
+
+.row .col.align-center {
+    text-align: center;
+}
+
+/*recover css*/
+html {
+    font-size: 6px;
+    max-width: 750px;
+    margin: 0 auto;
+    background: #fff;
+}
+
+body {
+    font-size: 1rem;
+    font-family: '\5FAE\8F6F\96C5\9ED1', 'Microsoft YaHei', '微软雅黑';
+    color: #6f6f6f;
+}
+
+li {
+    list-style: none;
+}
+
+/*bar*/
+.bar-nav {
+    height: 8.7rem;
+    background-color: #303030;
+}
+
+.bar-nav .title {
+    font-size: 1.75rem;
+    line-height: 3.6rem;
+    font-weight: 500;
+    color: #fff;
+    text-align: center;
+}
+
+.bar-nav ~ .content {
+    top: 3.6rem;
+}
+
+.bar-tab {
+    padding: 5px 0;
+    padding-left: 7.5rem;
+    height: 5rem;
+    background: #00b4ff;
+    position: static;
+}
+
+/*.front .bar-tab{ padding-left: 0;}*/
+.bar-tab .tab-item {
+    height: auto;
+    color: #fff;
+}
+
+.bar-tab .tab-item .badge {
+    background: #ff9e05;
+    height: 1rem;
+    min-width: 1rem;
+    font-size: 1rem;
+    line-height: 1rem;
+}
+
+.bar-tab .tab-item.active,
+.bar-tab .tab-item:active {
+    color: #ff9e05;
+}
+
+.bar-tab .tab-item .icon {
+    top: 0.45rem;
+    font-size: 1.75rem;
+    height: auto;
+}
+
+.bar-tab .tab-item .icon ~ .tab-label {
+    font-size: 1.166rem;
+    top: 0.875rem;
+}
+
+.content {
+    padding: 0 0 5rem 0;
+}
+
+/*banner*/
+.banner-container {
+    padding-bottom: .6rem;
+    background: #5ac5ff;
+}
+
+.banner-container img {
+    width: auto;
+    max-width: 100%;
+}
+
+/**/
+.current-rent-amount {
+    overflow: hidden;
+    padding: 0 4%;
+}
+
+.current-rent-amount h3.title {
+    padding-top: 1rem;
+    font-size: 4.5rem;
+    color: #f8be34;
+    font-weight: 600;
+    text-align: center;
+}
+
+.current-rent-amount h3.title strong {
+    font-size: 5rem;
+    color: #ff5d20;
+}
+
+.car-list {
+    overflow: hidden;
+    padding-top: 2rem;
+    padding-bottom: 2.5rem;
+    border-bottom: 2px solid #d4e4ff;
+    margin-bottom: 2rem;
+}
+
+.car-list li {
+    float: left;
+    width: 16%;
+    margin: 0 2% 0 2%;
+}
+
+.car-list li .car-img {
+    position: relative;
+}
+
+.car-list li .car-img img {
+    width: auto;
+    max-width: 100%;
+    margin: 0 auto;
+    display: block;
+}
+
+.car-list li .car-img .car-name {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    text-align: center;
+    color: #fff;
+    font-size: 2.5rem;
+}
+
+.car-list li .car-amount {
+    font-size: 3rem;
+    line-height: 2.2rem;
+    padding: 0.8rem 0;
+    text-align: center;
+}
+
+.car-list li.car-01 .car-amount {
+    color: #f3a507;
+}
+
+.car-list li.car-02 .car-amount {
+    color: #2276fe;
+}
+
+.car-list li.car-03 .car-amount {
+    color: #fe5514;
+}
+
+.car-list li.car-04 .car-amount {
+    color: #606060;
+}
+
+.car-list li.car-05 .car-amount {
+    color: #e42b35;
+}
+
+.current-client {
+    /* overflow: hidden;*/
+}
+
+.client-item {
+    float: left;
+    position: relative;
+    font-size: 4rem;
+    color: #8bdeff;
+    margin-bottom: 3.8rem;
+    width: 100%;
+}
+
+.client-item label {
+    color: #606060;
+    line-height: 3rem;
+    display: block;
+}
+
+.client-item strong {
+    font-size: 4rem;
+    color: #ff5d20;
+    padding-left: 30%;
+}
+
+.client-item.company {
+    /*float: right;*/
+}
+
+.client-item .client-item-amount {
+    border: 3px solid #69b3f1;
+    border-radius: 12px;
+    margin: 0 15%;
+    padding-left: 10%;
+    padding-top: 10px;
+    padding-bottom: 10px;
+
+}
+
+.client-item .client-img {
+    position: absolute;
+    left: 5%;
+    top: -1rem;
+}
+
+.client-item.company .client-img {
+    left: auto;
+    right: -20%;
+    top: -30px;
+    height: 168px;
+    width: auto;
+}
+
+/**/
+.car-operative .car-operative-img {
+    padding-bottom: 20px;
+}
+
+.car-operative h3.title {
+    font-size: 4rem;
+    color: #f8be34;
+    font-weight: 600;
+    text-align: left;
+    padding: 0 2rem;
+}
+
+.car-operative h3.title strong {
+    font-size: 5rem;
+    color: #ff5d20;
+}
+
+.f-r {
+    float: right;
+}
+
+.car-operative-chart {
+    overflow: hidden;
+    clear: both;
+    padding-top: 32px;
+}
+
+.car-operative-chart .chart-title {
+    text-align: center;
+    font-size: 2.8rem;
+    font-weight: 300;
+    color: #ff5d20;
+    margin-bottom: 32px;
+}
+
+.car-operative-chart img {
+    display: block;
+    margin: 0 auto;
+    width: auto;
+    max-width: 100%;
+}
+
+/**/
+.weizhang {
+    overflow: hidden;
+    padding: 2rem 2rem;
+    border-top: 2px solid #d4e4ff;
+}
+
+.weizhang .weizhang-img, .weizhang .weizhang-content {
+    display: inline-block;
+}
+
+.weizhang-content{
+    margin: 1.5rem 0;
+}
+
+.weizhang.weizhang-01 .weizhang-img, .weizhang.weizhang-03 .weizhang-img {
+    position: absolute;
+    float: right;
+}
+
+.weizhang.weizhang-02 .weizhang-img{
+    position: absolute;
+    float: left;
+    margin-top: 2rem;
+}
+.weizhang.weizhang-02 .weizhang-img img{
+     width: 50%;
+ }
+
+.weizhang.weizhang-03 .weizhang-img img{
+    margin: 1.5rem 0;
+    width: 100%;
+}
+
+
+.weizhang.weizhang-02 .weizhang-content {
+    float: right;
+    vertical-align: middle;
+}
+
+.weizhang.weizhang-03 .weizhang-content {
+    width: 60%;
+}
+
+tr{
+    margin: 0.5rem 0;
+}
+
+.weizhang .weizhang-content p {
+    color: #57baff;
+    font-size: 3rem;
+}
+
+.weizhang .weizhang-content p strong {
+    color: #ff5d20;
+    font-size: 4rem;
+}
+
+.weizhang.weizhang-02 .weizhang-content p {
+    color: #ffa2d0;
+}
+
+.weizhang .weizhang-content table {
+    width: 100%;
+}
+
+.weizhang .weizhang-content table th {
+    color: #ff8c8f;
+    font-size: 3rem;
+    font-weight: 300;
+    text-align: center;
+}
+
+.weizhang .weizhang-content table td {
+    color: #ff5d20;
+    font-size: 3rem;
+    text-align: center;
+
+}
+
+.weizhang .weizhang-content table td.label {
+    color: #606060;
+    font-weight: 600;
+}
+
+/**/
+.new-week {
+    padding-top: 2rem;
+    border-top: 2px solid #d4e4ff;
+}
+
+.new-week img{
+    width: 50%;
+    margin-left: 5%;
+}
+
+.new-week-chart img {
+    display: block;
+    /*margin: 0 auto;*/
+    /*margin-bottom: 30px;*/
+    width: 100%;
+}
+
+/**/
+.honor {
+    padding-top: 33px;
+    border-top: 2px solid #d4e4ff;
+}
+
+.honor .honor-img img {
+    display: block;
+    margin: 0 20%;
+    width: 60%;
+}
+
+.honor .honor-list {
+    margin: 1rem 5%;
+    overflow: hidden;
+}
+
+.honor .honor-list li {
+    font-size: 3rem;
+    padding: 2rem 0;
+    color: #fcaf1d;
+}
+
+.honor .honor-list li .honor-l {
+    width: 50%;
+    float: left;
+}
+
+.honor .honor-list li .honor-r {
+    width: 50%;
+    float: right;
+    text-align: right;
+}

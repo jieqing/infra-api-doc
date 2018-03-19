@@ -1,0 +1,23 @@
+body {
+    background: #f7f7f7 !important;
+}
+
+div img {
+    margin-top: .4rem;
+    width: 80%
+}
+
+table {
+    table-layout: fixed;
+}
+
+tr:first-child {
+    height: 5.1rem;
+}
+
+td {
+    background: white;
+}
+tr{
+    cursor:pointer;
+}

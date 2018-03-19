@@ -24,7 +24,7 @@
 <#--<link href="${ctx!''}/resources/js/jBox/Source/jBox.css?v=${VERSION}" type="text/css" rel="stylesheet">-->
 
 <#--<script src="${ctx}/resources/js/LCalendar.js?v=${VERSION}"></script>-->
-<#--<script src="${ctx}/resources/js/jquery.min.js?v=${VERSION}"></script>-->
+<script src="${ctx}/resources/js/jquery.min.js?v=${VERSION}"></script>
 <#--<script src="${ctx!''}/resources/js/datePick.js?v=${VERSION}"></script>-->
 <#--<script src="${ctx}/resources/js/swallow.js?v=${VERSION}"></script>-->
 <#--<script src="${ctx}/resources/js/jsviews.min.js?v=${VERSION}"></script>-->

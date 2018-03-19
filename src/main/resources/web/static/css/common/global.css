@@ -1,0 +1,307 @@
+html,.body{
+	height:100%;
+	max-width: 768px;
+    margin:0 auto; 
+    min-width: 320px;
+    filter:"progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod='scale')";
+}
+body{
+	overflow-x:hidden;
+}
+tr{
+	cursor:pointer;
+}
+body,div,h1,h2,h3,h4,p,ol,ul,li{
+    margin:0;
+    padding:0;
+    border:0;
+    text-shadow:0 0 0 #fff;
+    -webkit-tap-highlight-color:rgba(0,0,0,0);
+	font-family:"微软雅黑";
+}
+input {-webkit-appearance:none; /*去除iphone input默认大圆角样式*/}
+@-webkit-viewport{
+    width:device-width;
+}
+@-moz-viewport{
+    width:device-width;
+}
+@-ms-viewport{
+    width:device-width;
+}
+@-o-viewport{
+    width:device-width;
+}
+@viewport{
+    width:device-width;
+}
+html{
+    min-height:100%;
+    font-size:62.5%;
+}
+body{
+    -webkit-font-smoothing:antialiased;
+    -webkit-text-size-adjust:100%;
+    -ms-text-size-adjust:100%;
+    text-size-adjust:100%;
+    color:#606060;
+}
+ul{
+    list-style-type:none;
+}
+a{
+	color:#606060;
+}
+a:link,a:visited,a:hover,a:active{
+    text-decoration:none;
+}
+img{
+	width:100%;
+	display:block;
+	border:none;
+}
+select,input,button{
+	margin:0;
+	padding:0;
+}
+
+/*header*/
+header{
+	width:98%;
+	height:5rem;
+	-webkit-box-shadow:0 0 10px rgba(0, 0, 0, .8);  
+    -moz-box-shadow:0 0 10px rgba(0, 0, 0, .8);  
+    box-shadow:0 0 10px rgba(0, 0, 0, .8); 
+	background:#fff;
+	padding:0 2%;
+	position:fixed;
+	top:0;
+	z-index:11;
+}
+.nav select,.nav div{
+	border:#3eb3f2 solid 1px;
+	border-radius:.7rem;
+	height:3rem;
+	text-indent:.4rem;
+	font-size:1.6rem;
+	color:#a6a6a6;
+	width:20%;
+	outline: none;
+	float:left;
+	
+}
+.nav div{
+	width:50%;
+	margin:0 4%;
+	overflow:hidden;
+}
+.nav select,.statistics-nav select{
+	background:#fff;
+}
+
+.nav button,.statistics-nav button{
+	width:20%;
+	height:3rem;
+	border-radius:.7rem;
+	border:none;
+	color:#fff;
+	font-size:1.5rem;
+	outline: none;
+	float:right;
+	border:#3eb3f2 solid 1px;
+}
+header form{
+	padding-top:1rem;
+}
+.statistics-nav select,.statistics-nav div{
+	border:#3eb3f2 solid 1px;
+	border-radius:.7rem;
+	height:3rem;
+	text-indent:.4rem;
+	font-size:1.6rem;
+	color:#a6a6a6;
+	width:35%;
+	outline: none;
+	float:left;
+}
+.statistics-nav div,.statistics-nav select:nth-child(2n){
+	overflow:hidden;
+	margin:0 4%;
+}
+.nav input,.statistics-nav input{
+	width:100%;
+	border:none;
+	height:3rem;
+	line-height:3rem;
+	font-size:1.6rem;
+	outline: none;
+	text-indent:.5rem;
+	border-radius:.7rem;
+}
+/*hesder结束*/
+
+/*颜色*/
+.inverse{
+	background:#fff;
+}
+.red{
+	color:#ff3c3c;
+}
+
+.rose-red{
+	background:#ff5e5e;
+	color:#fff;
+}
+.orange{
+	background:#ff801a;
+	color:#fff;
+}
+.light-orange{
+	background:#f99a46;
+	color:#fff;
+}
+.light-yellow{
+	background:#ffd43d;
+	color:#fff;
+}
+.green{
+	background:#2fd88f;
+	color:#fff;
+}
+.light-green{
+	background:#00c38a;
+	color:#fff;
+}
+.blue{
+	background:#00a1c9;
+	background:#002c8e;
+	background: -moz-linear-gradient(#24aaf1, #0285cb);
+	background: -webkit-linear-gradient(#24aaf1, #0285cb);
+	background: -o-linear-gradient(#24aaf1, #0285cb);
+	background: linear-gradient(#24aaf1, #0285cb);
+	color:#fff;
+}
+.light-blue{
+	background:#95c7ff;
+	color:#fff;
+}
+.light-blue1{
+	background:#2faad8;
+	color:#fff;
+}
+.light-blue2{
+	background:#3eb3f2;
+	color:#fff;
+}
+.light-blue3{
+	background:#68caff;
+	color:#fff;
+}
+/*颜色结束*/
+
+/*通用父子盒子嵌套浮动问题解决，开始*/
+.clear {
+	width: 100%;
+	font-size: 1px;
+	clear: both;
+	background: none;
+	overflow: hidden;
+}
+.clearfix:after {
+	content: ".";
+	display: block;
+	height: 0;
+	clear: both;
+	visibility: hidden;
+}
+.clearfix {
+	display: inline-block;
+}
+* html .clearfix {
+	height: 1%;
+}
+.clearfix {
+	display: block;
+}
+/*通用父子盒子嵌套浮动问题解决，结束*/
+
+/*间隙层开始*/
+.space_hx { /*横向间隙*/
+	clear: both;
+	width: 100%;
+	height: .5rem;
+	font-size: 1px;
+	overflow: hidden;
+}
+.space_hx1 { /*横向间隙*/
+	clear: both;
+	width: 100%;
+	height: .2rem;
+	font-size: 1px;
+	overflow: hidden;
+}
+.space_zx { /*纵向间隙*/
+	float: left;
+	width: 1rem;
+	font-size: 1px;
+	overflow: hidden;
+}
+/*间隙层结束*/
+
+/*宽度*/
+.wrap-0{
+	width:6%;
+}
+.wrap-1{
+	width:5%;
+}
+.wrap-2{
+	width:26%;
+}
+.wrap-3{
+	width:30%;
+}
+.wrap-4{
+	width:45%;
+}
+.wrap-5{
+	width:50%;
+}
+.wrap-6{
+	width:55%;
+}
+.wrap-7{
+	width:70%;
+}
+.wrap-8{
+	width:74%;
+}
+.wrap-9{
+	width:95%;
+}
+.wrap-10{
+	width:94%;
+}
+/*宽度结束*/
+header .rim{
+	border:#004ffd solid 2px;
+	-webkit-box-shadow:10px rgba(0, 79, 253, .8);  
+    -moz-box-shadow:10px rgba(0, 79, 253, .8);  
+    box-shadow:10px rgba(0, 79, 253, .8); 
+}
+.VehicleManages .rim{
+	border:#004ffd solid 2px;
+	-webkit-box-shadow:10px rgba(0, 79, 253, .8);  
+    -moz-box-shadow:10px rgba(0, 79, 253, .8);  
+    box-shadow:10px rgba(0, 79, 253, .8); 
+}
+
+.noData {
+	color: #a6a6a6;
+	text-align: center;
+	padding: 1.5rem;
+}
+
+tr td{
+	word-break: break-all;
+}
