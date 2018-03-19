@@ -2,11 +2,9 @@ package org.jasonq.service.crawler.service;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.math.BigInteger;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
-import java.security.MessageDigest;
 import java.util.List;
 
 import org.jasonq.common.util.StreamUtil;
@@ -41,7 +39,7 @@ public class CrawlerXinBangService {
     private static final Logger logger = LoggerFactory.getLogger(DictionaryRepository.class);
 
     String XB_SEARCH_URL =
-            "https://www.newrank.cn/xdnphb/data/weixinuser/searchWeixinDataByCondition?hasDeal=false&keyName=%s&filter=&order=NRI"
+            "https://www.newrank.cn/xdnphb/data/weixinuser/searchWeixinDataByCondition?hasDeal=false&keyName=%s&filter=nickname&order=NRI"
                     + "&nonce=%s&xyz=%s";
     String QCC_SEARCH_URL = "http://www.qichacha.com/search?key=%s";
     String QCC_GZ_COOKIE =
@@ -61,38 +59,12 @@ public class CrawlerXinBangService {
         return xinBangGzhDtos;
     }
 
-    private String creatXyz(String key) {
-        String format = String
-            .format("/xdnphb/index/getAutocompleteAccount?AppKey=joker&keyword=%s&nonce=8f44b75a9", key);
-        return getMD5(format);
-    }
-
-    /**
-     * 对字符串md5加密(小写+字母)
-     *
-     * @param str 传入要加密的字符串
-     * @return MD5加密后的字符串
-     */
-    public String getMD5(String str) {
-        try {
-            // 生成一个MD5加密计算摘要
-            MessageDigest md = MessageDigest.getInstance("MD5");
-            // 计算md5函数
-            md.update(str.getBytes());
-            // digest()最后确定返回md5 hash值，返回值为8为字符串。因为md5 hash值是16位的hex值，实际上就是8位的字符
-            // BigInteger函数则将8位的字符串转换成16位hex值，用字符串来表示；得到字符串形式的hash值
-            return new BigInteger(1, md.digest()).toString(16);
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
-
     private void buildQiChaChaInfo(List<XinBangGzhDto> xinBangGzhDtos) throws IOException {
         for (XinBangGzhDto xinBangGzhDto : xinBangGzhDtos) {
+            if (StringUtil.isEmpty(xinBangGzhDto.getCertifiedCompany())) {
+                return;
+            }
             try {
-
                 Connection con = HttpConnection.connect(String.format(QCC_SEARCH_URL,
                     URLEncoder.encode(xinBangGzhDto.getCertifiedCompany(), "UTF-8")));
                 con.header("Accept",
@@ -106,13 +78,18 @@ public class CrawlerXinBangService {
                 con.header("Cookie", QCC_GZ_COOKIE);
                 con.timeout(5000);
                 Document document = con.get();
-                // 便利
                 Elements companyElem = document.select(".m_srchList tbody tr");
+                if (companyElem.isEmpty()) {
+                    continue;
+                }
                 Elements firstCompany = companyElem.get(0).select("td");
-                // 固定1
+                // 第一个
                 String logoUrl = firstCompany.get(0).select("img").attr("src");
                 Element baseInfoElem = firstCompany.get(1);
                 String companyName = baseInfoElem.select("a").get(0).text();
+                if(!companyName.equals(xinBangGzhDto.getCertifiedCompany())){
+                    continue;
+                }
                 Elements companyInfo = baseInfoElem.select("p");
                 String userNameInfo = companyInfo.get(0).text();
                 String phoneInfo = companyInfo.get(1).text();
@@ -162,13 +139,20 @@ public class CrawlerXinBangService {
             for (Object data : datas) {
                 JSONObject jsonObject = (JSONObject) data;
                 XinBangGzhDto xinBangGzhDto = new XinBangGzhDto();
-                xinBangGzhDto
-                    .setGzhName(jsonObject.getString("name").replace("#font", "").replace("@font", ""));
+                String name = jsonObject.getString("name");
+                if (StringUtil.isNotEmpty(name)) {
+                    xinBangGzhDto.setGzhName(name.replace("#font", "").replace("@font", ""));
+                }
                 xinBangGzhDto.setWxNo(jsonObject.getString("account"));
-                xinBangGzhDto.setIntroduce(
-                    jsonObject.getString("description").replace("#font", "").replace("@font", ""));
+                String description = jsonObject.getString("description");
+                if (StringUtil.isNotEmpty(description)) {
+                    xinBangGzhDto.setIntroduce(description.replace("#font", "").replace("@font", ""));
+                }
                 xinBangGzhDto.setType(jsonObject.getString("type"));
-                xinBangGzhDto.setTags(jsonObject.getString("tags").replace("#font", "").replace("@font", ""));
+                String tags = jsonObject.getString("tags");
+                if (StringUtil.isNotEmpty(tags)) {
+                    xinBangGzhDto.setTags(tags.replace("#font", "").replace("@font", ""));
+                }
                 xinBangGzhDto.setCity(jsonObject.getString("city"));
                 xinBangGzhDto.setImgUrl(jsonObject.getString("indexUrl"));
                 xinBangGzhDto.setHotNum(jsonObject.getDouble("weekLog1pmark"));

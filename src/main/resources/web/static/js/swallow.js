@@ -78,7 +78,7 @@ function regPagerEvent(pager) {
 	$(pager).find("#pageFirst").first().click(function() {
 		var pageS = parseInt($(pager).find("input#pageSize").first().val());
 
-		queryUserList(JSON.stringify({
+		queryList(JSON.stringify({
 			data : getFormJson("#seachForm"),
 			pager : {
 				currentPage : 1,
@@ -102,7 +102,7 @@ function regPagerEvent(pager) {
 		});
 		console.log(data);
 
-		queryUserList(data);
+		queryList(data);
 	});
 
 	// 跳转到后一页
@@ -127,7 +127,7 @@ function regPagerEvent(pager) {
 				});
 				console.log(data);
 
-				queryUserList(data);
+				queryList(data);
 			});
 	// 跳转到最后页
 	$(pager).find("#pageLast").first().click(function() {
@@ -145,7 +145,7 @@ function regPagerEvent(pager) {
 		});
 		console.log(data);
 
-		queryUserList(data);
+		queryList(data);
 	});
 
 	//更改页面大小选择事件
@@ -170,7 +170,7 @@ function regPagerEvent(pager) {
 							});
 							console.log(data);
 
-							queryUserList(data);
+							queryList(data);
 						})
 			})
 }

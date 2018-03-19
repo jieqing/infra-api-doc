@@ -4,71 +4,94 @@
     <title>公众号企业信息查询</title>
 <#include "../common/head.ftl">
     <style>
-        .direBtn {
-            width: 20%;
-            height: 3rem;
-            border-radius: .7rem;
-            color: #2faad8;
-            font-size: 1.5rem;
-            outline: none;
-            border: #69ddff solid 1px;
-            background-color: #fff;
-            top: 1rem;
-            position: relative;
-            left: 27%;
+        .nameSearch {
+            width: 40%;
+            margin-left: 30%;
+            text-align: center;
+        }
+        td{
+            padding: 1px;
         }
     </style>
     <script>
-        var queryUrl = "query";
-        var menuIndex = 0;
+        var queryUrl = "gzh/xb/search";
     </script>
     <script id="tableTmp" type="text/x-jsrender">
-<ul class="VehicleManages" style="display:block;">
-<li><span class="list-left">车辆状态</span><span class="list-right">{{:carStatus}}</span></li>
-    <li><span class="list-left">车牌号</span><span class="list-right">{{:carPlate}}</span></li>
-    <li><span class="list-left">车辆类型</span><span class="list-right">{{:carType}}</span></li>
-	 <li><span class="list-left">品牌</span><span class="list-right">{{:carBrand}}</span></li>
-<li><span class="list-left">车型代码</span><span class="list-right">{{:carModelNo}}</span></li>
-<li><span class="list-left">库存地点</span><span class="list-right">{{:location}}</span></li>
-<li><span class="list-left">型号</span><span class="list-right">{{:carModel}}</span></li>
-<li><span class="list-left">发动机号</span><span class="list-right">{{:engineNo}}</span></li>
-<li><span class="list-left">车架号</span><span class="list-right">{{:chassisNo}}</span></li>
-<li><span class="list-left">供应商</span><span class="list-right">{{:vendor}}</span></li>
-<li><span class="list-left">出厂日期</span><span class="list-right">{{if mfgDate}}{{:mfgDate.substring(0, 10)}}{{/if}}</span></li>
-<li><span class="list-left">购买日期</span><span class="list-right">{{if purchaseDate}}{{:purchaseDate.substring(0, 10)}}{{/if}}</span></li>
-<li><span class="list-left">行驶里程数</span><span class="list-right">{{:travelMileage}} Km</span></li>
-<li><span class="list-left">里程数更新时间</span><span class="list-right">{{if mileageUpdateTime}}{{:mileageUpdateTime.substring(0, 19)}}{{/if}}</span></li>
-<li><span class="list-left">保养周期</span><span class="list-right">{{:maintCycle}}</span></li>
-<li><span class="list-left">最近保养日期</span><span class="list-right">{{if recentMaintDate}}{{:recentMaintDate.substring(0, 10)}}{{/if}}</span></li>
-<li><span class="list-left">保养里程</span><span class="list-right">{{:maintMileage}} km</span></li>
-<li><span class="list-left">最近保养里程</span><span class="list-right">{{:recentMaintMileage}} km</span></li>
-</ul>
-
-
-
+        <tr>
+            <th scope="row">{{:#index+1}}</th>
+            <td><img style="width: 50px;" src={{:imgUrl}}></td>
+            <td>{{:gzhName}}</td>
+            <#--<td>{{:wxNo}}</td>-->
+            <#--<td>{{:introduce}}</td>-->
+        <#--<td>{{:type}}</td>-->
+        <#--<td>{{:tags}}</td>-->
+            <td>{{if hotNum}}{{:hotNum.toFixed(2)}}{{else}}&nbsp;{{/if}}</td>
+            <td>{{if avgReadAll}}{{:avgReadAll.toFixed(2)}}{{else}}&nbsp;{{/if}}</td>
+        <#--<td>{{:city}}</td>-->
+            <td>{{:certifiedCompany}}</td>
+            <td>{{:qiChaChaDto.companyName}}</td>
+            <#--<td><img style="width: 60px;" src={{:qiChaChaDto.logoUrl}}></td>-->
+            <td>{{:qiChaChaDto.legalPerson}}</td>
+            <td>{{:qiChaChaDto.registerMoney}}</td>
+            <td>{{:qiChaChaDto.createDay}}</td>
+            <td>{{:qiChaChaDto.phone}}</td>
+            <td>{{:qiChaChaDto.email}}</td>
+            <#--<td>{{:qiChaChaDto.address}}</td>-->
+        </tr>
     </script>
     <script id="tableEmptyTmp" type="text/x-jsrender">
-	<div class="noData">
-		<h1>暂无数据</h1>
-	</div>
-
-
-
+        <div class="noData">
+            <h1>暂无数据</h1>
+        </div>
     </script>
+
 </head>
 
 <body>
-
-<div>
-    <input type="text" class="form-control search col-xs-10" placeholder="Recipient's username">
+<div style="margin-top: 60px;">
+    <div class="nameSearch">
+        <div class="input-group">
+            <input id="gzhName" type="text" class="form-control" placeholder="请输入公众号名称">
+            <span class="input-group-btn">
+        <button id="query" class="btn btn-default" type="button">查找</button>
+      </span>
+        </div>
+    </div>
 </div>
-<#--<div class="banner"><img src="${ctx}/resources/images/pic1.jpg"></div>-->
-<div id="datatable">
+
+<div style=" margin-top: 25px;">
+    <table class="table table-hover" style="table-layout:fixed">
+        <thead>
+        <tr>
+            <th style="width: 50px;">序号</th>
+            <th>logo</th>
+            <th>公众号名</th>
+            <#--<th>公众号</th>-->
+            <#--<th>介绍</th>-->
+        <#--<th>类别</th>-->
+        <#--<th>标签</th>-->
+            <th>热度</th>
+            <th>平均阅读量</th>
+        <#--<th>城市</th>-->
+            <th>微信认证</th>
+            <th>公司名称</th>
+            <#--<th>公司logo</th>-->
+            <th>法人</th>
+            <th>注册资金</th>
+            <th>成立时间</th>
+            <th>电话</th>
+            <th>邮箱</th>
+            <#--<th>地址</th>-->
+        </tr>
+        </thead>
+        <tbody id="datatable">
+
+        </tbody>
+    </table>
 </div>
-<div class="tabBar_pos"></div>
 
-<#--<#include "../common/footer.ftl">-->
-
+<#include "../common/footer.ftl">
+<script src="/js/gzh/xinbang.js?v=${VERSION}"></script>
 <script>
 
 </script>

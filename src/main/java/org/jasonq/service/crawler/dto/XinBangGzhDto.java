@@ -19,7 +19,7 @@ public class XinBangGzhDto extends Entity {
     private String city;
     private String certifiedCompany;
 
-    private QiChaChaDto qiChaChaDto;
+    private QiChaChaDto qiChaChaDto = new QiChaChaDto();
 
     public String getCertifiedCompany() {
         return certifiedCompany;

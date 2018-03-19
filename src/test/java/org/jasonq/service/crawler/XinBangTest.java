@@ -67,37 +67,7 @@ public class XinBangTest {
             return null;
         }
     }
-//
-//    function b(a) {
-//        return d(c(e(a)))
-//    }
-//
-//    function c(a) {
-//        return g(h(f(a), 8 * a.length))
-//    }
-//
-//    function d(a) {
-//        for (var b, c = p ? "0123456789ABCDEF" : "0123456789abcdef", d = "", e = 0; e < a.length; e++)
-//            b = a.charCodeAt(e),
-//                    d += c.charAt(b >>> 4 & 15) + c.charAt(15 & b);
-//        return d
-//    }
-//
-//    String e(String a) {
-//        int b;
-//        int c;
-//        String d = "";
-//        for ( int e = -1; ++e < a.length(); ) {
-//            b = a.charAt(e);
-//            c = e + 1 < a.length() ? a.charAt(e + 1) : 0;
-//            if(55296 <= b && b <= 56319 && 56320 <= c && c <= 57343){
-//                b = 65536 + ((1023 & b) << 10) + (1023 & c);
-//                e++;
-//            }
-//            b <= 127 ? d += String.fromCharCode(b) : b <= 2047 ? d += String.fromCharCode(192 | b >>> 6 & 31, 128 | 63 & b) : b <= 65535 ? d += String.fromCharCode(224 | b >>> 12 & 15, 128 | b >>> 6 & 63, 128 | 63 & b) : b <= 2097151 && (d += String.fromCharCode(240 | b >>> 18 & 7, 128 | b >>> 12 & 63, 128 | b >>> 6 & 63, 128 | 63 & b));
-//        }
-//        return d;
-//    }
+
 
     @Test
     public void test() throws Exception {
@@ -106,8 +76,7 @@ public class XinBangTest {
         String nonce = createNonce();
         String urlStr =
                 // "https://www.newrank.cn/xdnphb/data/weixinuser/searchWeixinDataByCondition?hasDeal=false&keyName=%E5%AE%9C%E6%98%A5&filter=&order=NRI&nonce=8f44b75a9&xyz=aa2e01f7325d0fed7715245c897a0a1f";
-                "https://www.newrank.cn/xdnphb/data/weixinuser/searchWeixinDataByCondition?hasDeal=false&keyName=汽车"
-                        + "&filter=&order=NRI&nonce=8f44b75a9&xyz=aa2e01f7325d0fed7715245c897a0a1f";
+                "https://www.newrank.cn/xdnphb/data/weixinuser/searchWeixinDataByCondition?hasDeal=false&keyName=汽车&filter=&order=NRI&nonce=8f44b75a9&xyz=aa2e01f7325d0fed7715245c897a0a1f";
         String url =
                 "http://www.qichacha.com/search?key=%E5%B9%BF%E4%B8%9C%E5%B9%BF%E6%92%AD%E7%94%B5%E8%A7%86%E5%8F%B0";
 
