@@ -15,11 +15,20 @@ public class XinBangGzhDto extends Entity {
     private String tags;
     private Double hotNum;
     private String imgUrl;
+    private String codeImageUrl;
     private Double avgReadAll;
     private String city;
     private String certifiedCompany;
 
     private QiChaChaDto qiChaChaDto = new QiChaChaDto();
+
+    public String getCodeImageUrl() {
+        return codeImageUrl;
+    }
+
+    public void setCodeImageUrl(String codeImageUrl) {
+        this.codeImageUrl = codeImageUrl;
+    }
 
     public String getCertifiedCompany() {
         return certifiedCompany;

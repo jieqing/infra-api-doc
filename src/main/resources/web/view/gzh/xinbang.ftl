@@ -9,8 +9,8 @@
             margin-left: 30%;
             text-align: center;
         }
-        td{
-            padding: 1px;
+        .table>tbody>tr>td, .table>tbody>tr>th, .table>tfoot>tr>td, .table>tfoot>tr>th, .table>thead>tr>td, .table>thead>tr>th{
+            padding: 3px;
         }
     </style>
     <script>
@@ -20,6 +20,9 @@
         <tr>
             <th scope="row">{{:#index+1}}</th>
             <td><img style="width: 50px;" src={{:imgUrl}}></td>
+             <td><img style="width: 50px;" src={{:codeImageUrl}} onMouseOut='hoverHiddendiv(this)' onMouseOver='hoverShowDiv(this)'>
+             <img style='height:250px; position:absolute; display:none' src={{:codeImageUrl}}>
+             </td>
             <td>{{:gzhName}}</td>
             <#--<td>{{:wxNo}}</td>-->
             <#--<td>{{:introduce}}</td>-->
@@ -29,7 +32,7 @@
             <td>{{if avgReadAll}}{{:avgReadAll.toFixed(2)}}{{else}}&nbsp;{{/if}}</td>
         <#--<td>{{:city}}</td>-->
             <td>{{:certifiedCompany}}</td>
-            <td>{{:qiChaChaDto.companyName}}</td>
+            <td>{{if qiChaChaDto.companyName}}{{:qiChaChaDto.companyName}}{{else certifiedCompany}}<a target="_blank" href='https://www.qichacha.com/search?key={{:certifiedCompany}}'>查看公司联系方式</a>{{/if}}</td>
             <#--<td><img style="width: 60px;" src={{:qiChaChaDto.logoUrl}}></td>-->
             <td>{{:qiChaChaDto.legalPerson}}</td>
             <td>{{:qiChaChaDto.registerMoney}}</td>
@@ -48,6 +51,12 @@
 </head>
 
 <body>
+<div>
+    <ul>
+        <li>本版本为beta版，后续会持续优化，有问题请联系揭勍</li>
+        <li>只爬出前10个公众号的公司电话，爬不出的请手动点击</li>
+    </ul>
+</div>
 <div style="margin-top: 60px;">
     <div class="nameSearch">
         <div class="input-group">
@@ -59,12 +68,13 @@
     </div>
 </div>
 
-<div style=" margin-top: 25px;">
+<div style=" margin-top: 25px;margin-left: 20px">
     <table class="table table-hover" style="table-layout:fixed">
         <thead>
         <tr>
             <th style="width: 50px;">序号</th>
-            <th>logo</th>
+            <th style="width: 60px;">logo</th>
+            <th>二维码</th>
             <th>公众号名</th>
             <#--<th>公众号</th>-->
             <#--<th>介绍</th>-->

@@ -48,14 +48,12 @@ public class CrawlerXinBangService {
             "UM_distinctid=1622216eda3322-0706a11c524765-5e183017-13c680-1622216eda43fd; hasShow=1; acw_tc=AQAAAFu/TwFaugwATRxWywNqApe2DgeK; _uab_collina=152099036045208248024076; PHPSESSID=m582r5cnp7jvb1vsn2ntrio4m3; _umdata=65F7F3A2F63DF020D114541B4DCEBCBE5E475EC44EDB2AE89A14B210CEC350946AF820144B755070CD43AD3E795C914C2C2C6876544D5A807978A1C0AA56CA49; CNZZDATA1254842228=1814222760-1520986400-https%253A%252F%252Fwww.baidu.com%252F%7C1521008005; zg_did=%7B%22did%22%3A%20%221622216ef3e4e9-0d49ebd2cd7264-5e183017-13c680-1622216ef3f5d2%22%7D; Hm_lvt_3456bee468c83cc63fb5147f119f1075=1520990352,1520997754; Hm_lpvt_3456bee468c83cc63fb5147f119f1075=1521011043; zg_de1d1a35bfa24ce29bbf2c7eb17e6c4f=%7B%22sid%22%3A%201521010775625%2C%22updated%22%3A%201521011052085%2C%22info%22%3A%201520990351181%2C%22superProperty%22%3A%20%22%7B%7D%22%2C%22platform%22%3A%20%22%7B%7D%22%2C%22utm%22%3A%20%22%7B%7D%22%2C%22referrerDomain%22%3A%20%22www.qichacha.com%22%2C%22cuid%22%3A%20%223db1095e98c1f2ce19bf6321243e740e%22%7D";
 
     public List<XinBangGzhDto> search(String key, String nonce, String xyz) throws Exception {
-        // key = URLEncoder.encode(key, "UTF-8");
         List<XinBangGzhDto> xinBangGzhDtos = searchByXinBang(String.format(XB_SEARCH_URL, key, nonce, xyz));
         if (CollectionUtil.isEmpty(xinBangGzhDtos)) {
             return xinBangGzhDtos;
         }
         // 只取前10条
-        xinBangGzhDtos = xinBangGzhDtos.subList(0, Math.min(10, xinBangGzhDtos.size()));
-        buildQiChaChaInfo(xinBangGzhDtos);
+        buildQiChaChaInfo(xinBangGzhDtos.subList(0, Math.min(10, xinBangGzhDtos.size())));
         return xinBangGzhDtos;
     }
 
@@ -155,6 +153,7 @@ public class CrawlerXinBangService {
                 }
                 xinBangGzhDto.setCity(jsonObject.getString("city"));
                 xinBangGzhDto.setImgUrl(jsonObject.getString("indexUrl"));
+                xinBangGzhDto.setCodeImageUrl(jsonObject.getString("codeImageUrl"));
                 xinBangGzhDto.setHotNum(jsonObject.getDouble("weekLog1pmark"));
                 xinBangGzhDto.setAvgReadAll(jsonObject.getDouble("avg_read_all"));
                 String certifiedText = jsonObject.getString("certifiedText");

@@ -51,6 +51,12 @@ function queryList(gzhName) {
     });
 }
 
+function hoverShowDiv(img) {
+    $(img).next().css({"display": "block"});
+}
+function hoverHiddendiv(img) {
+    $(img).next().css({"display": "none"});
+}
 
 function createNonce() {
     for (var a = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "a", "b", "c", "d", "e", "f"], b = 0; b < 500; b++) for (var c = "",
