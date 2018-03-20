@@ -44,7 +44,7 @@
     </script>
     <script id="tableEmptyTmp" type="text/x-jsrender">
         <div class="noData">
-            <h1>暂无数据</h1>
+            <h1>暂无数据，请稍后再试</h1>
         </div>
     </script>
 
@@ -55,6 +55,7 @@
     <ul>
         <li>本版本为beta版，后续会持续优化，有问题请联系揭勍</li>
         <li>只爬出前10个公众号的公司电话，爬不出的请手动点击</li>
+        <li>输入名称，按回车键</li>
     </ul>
 </div>
 <div style="margin-top: 60px;">

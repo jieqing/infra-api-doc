@@ -6,25 +6,29 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.List;
+import java.util.Map;
 
+import javax.annotation.Resource;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.jasonq.common.util.StreamUtil;
 import org.jasonq.common.util.StringUtil;
 import org.jasonq.common.util.collection.CollectionUtil;
 import org.jasonq.common.util.collection.Lists;
+import org.jasonq.common.util.collection.MapUtil;
 import org.jasonq.service.crawler.dto.QiChaChaDto;
 import org.jasonq.service.crawler.dto.XinBangGzhDto;
-import org.jasonq.service.crawler.repository.DictionaryRepository;
 import org.jsoup.Connection;
 import org.jsoup.helper.HttpConnection;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.google.common.collect.Maps;
 
 
 /**
@@ -36,7 +40,10 @@ import com.alibaba.fastjson.JSONObject;
 @Service
 public class CrawlerXinBangService {
 
-    private static final Logger logger = LoggerFactory.getLogger(DictionaryRepository.class);
+    private Logger logger = LogManager.getLogger(CrawlerXinBangService.class);
+
+    @Resource
+    private CompanyService companyService;
 
     String XB_SEARCH_URL =
             "https://www.newrank.cn/xdnphb/data/weixinuser/searchWeixinDataByCondition?hasDeal=false&keyName=%s&filter=nickname&order=NRI"
@@ -55,70 +62,6 @@ public class CrawlerXinBangService {
         // 只取前10条
         buildQiChaChaInfo(xinBangGzhDtos.subList(0, Math.min(10, xinBangGzhDtos.size())));
         return xinBangGzhDtos;
-    }
-
-    private void buildQiChaChaInfo(List<XinBangGzhDto> xinBangGzhDtos) throws IOException {
-        for (XinBangGzhDto xinBangGzhDto : xinBangGzhDtos) {
-            if (StringUtil.isEmpty(xinBangGzhDto.getCertifiedCompany())) {
-                return;
-            }
-            try {
-                Connection con = HttpConnection.connect(String.format(QCC_SEARCH_URL,
-                    URLEncoder.encode(xinBangGzhDto.getCertifiedCompany(), "UTF-8")));
-                con.header("Accept",
-                    " text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8");
-                con.header("Accept-Language", " zh-CN,zh;q=0.9,en;q=0.8");
-                con.header("User-Agent",
-                    "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/62.0.3202.94 Safari/537.36");
-                con.header("Accept-Encoding", " gzip, deflate");
-                con.header("Connection", "Keep-Alive");
-                con.header("Host", "www.qichacha.com");
-                con.header("Cookie", QCC_GZ_COOKIE);
-                con.timeout(5000);
-                Document document = con.get();
-                Elements companyElem = document.select(".m_srchList tbody tr");
-                if (companyElem.isEmpty()) {
-                    continue;
-                }
-                Elements firstCompany = companyElem.get(0).select("td");
-                // 第一个
-                String logoUrl = firstCompany.get(0).select("img").attr("src");
-                Element baseInfoElem = firstCompany.get(1);
-                String companyName = baseInfoElem.select("a").get(0).text();
-                if(!companyName.equals(xinBangGzhDto.getCertifiedCompany())){
-                    continue;
-                }
-                Elements companyInfo = baseInfoElem.select("p");
-                String userNameInfo = companyInfo.get(0).text();
-                String phoneInfo = companyInfo.get(1).text();
-                String addressInfo = companyInfo.get(2).text();
-
-                String[] split = userNameInfo.split("成立时间：");
-                String createDay = split[1];
-                String[] split1 = split[0].split("注册资本：");
-                String registerMoney = split1[1];
-                String legalPerson = split1[0].replace("法定代表人：", "");
-
-                String[] split2 = phoneInfo.split("邮箱：");
-                String email = split2[1];
-                String phone = split2[0].replace("电话：", "");
-                String address = addressInfo.replace("地址：", "");
-
-                QiChaChaDto qiChaChaDto = new QiChaChaDto();
-                qiChaChaDto.setLogoUrl(logoUrl);
-                qiChaChaDto.setCompanyName(companyName);
-                qiChaChaDto.setCreateDay(createDay);
-                qiChaChaDto.setRegisterMoney(registerMoney);
-                qiChaChaDto.setLegalPerson(legalPerson);
-                qiChaChaDto.setEmail(email);
-                qiChaChaDto.setPhone(phone);
-                qiChaChaDto.setAddress(address);
-                xinBangGzhDto.setQiChaChaDto(qiChaChaDto);
-            }
-            catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
     }
 
     private List<XinBangGzhDto> searchByXinBang(String url) throws Exception {
@@ -158,12 +101,96 @@ public class CrawlerXinBangService {
                 xinBangGzhDto.setAvgReadAll(jsonObject.getDouble("avg_read_all"));
                 String certifiedText = jsonObject.getString("certifiedText");
                 if (StringUtil.isNotEmpty(certifiedText)) {
-                    xinBangGzhDto.setCertifiedCompany(certifiedText.replace("微信认证：", ""));
+                    xinBangGzhDto.setCertifiedCompany(certifiedText.replace("微信认证：", "").trim());
                 }
                 resultList.add(xinBangGzhDto);
             }
         }
         return resultList;
+    }
+
+    private void buildQiChaChaInfo(List<XinBangGzhDto> xinBangGzhDtos) throws IOException {
+        // 数据库中的企业信息数据
+        Map<String, QiChaChaDto> dbCompanyNameMap = Maps.newHashMap();
+        try {
+            List<String> certifiedCompanyList =
+                    CollectionUtil.getColumnValues(xinBangGzhDtos, "certifiedCompany");
+            List<QiChaChaDto> dbQiChaChaDtos = companyService.listByNames(certifiedCompanyList);
+            dbCompanyNameMap = MapUtil.toMap(dbQiChaChaDtos, "companyName");
+        }
+        catch (Exception e) {
+            logger.error("查询数据库中企业信息出错", e);
+        }
+
+        for (XinBangGzhDto xinBangGzhDto : xinBangGzhDtos) {
+            String certifiedCompany = xinBangGzhDto.getCertifiedCompany();
+            if (StringUtil.isEmpty(certifiedCompany)) {
+                continue;
+            }
+            QiChaChaDto dbQiChaChaDto = dbCompanyNameMap.get(certifiedCompany);
+            if (dbQiChaChaDto != null) {
+                xinBangGzhDto.setQiChaChaDto(dbQiChaChaDto);
+                continue;
+            }
+
+            try {
+                Connection con = HttpConnection
+                    .connect(String.format(QCC_SEARCH_URL, URLEncoder.encode(certifiedCompany, "UTF-8")));
+                con.header("Accept",
+                    " text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8");
+                con.header("Accept-Language", " zh-CN,zh;q=0.9,en;q=0.8");
+                con.header("User-Agent",
+                    "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/62.0.3202.94 Safari/537.36");
+                con.header("Accept-Encoding", " gzip, deflate");
+                con.header("Connection", "Keep-Alive");
+                con.header("Host", "www.qichacha.com");
+                con.header("Cookie", QCC_GZ_COOKIE);
+                con.timeout(5000);
+                Document document = con.get();
+                Elements companyElem = document.select(".m_srchList tbody tr");
+                if (companyElem.isEmpty()) {
+                    continue;
+                }
+                Elements firstCompany = companyElem.get(0).select("td");
+                // 第一个
+                String logoUrl = firstCompany.get(0).select("img").attr("src");
+                Element baseInfoElem = firstCompany.get(1);
+                String companyName = baseInfoElem.select("a").get(0).text();
+                if (!companyName.equals(certifiedCompany)) {
+                    continue;
+                }
+                Elements companyInfo = baseInfoElem.select("p");
+                String userNameInfo = companyInfo.get(0).text();
+                String phoneInfo = companyInfo.get(1).text();
+                String addressInfo = companyInfo.get(2).text();
+
+                String[] split = userNameInfo.split("成立时间：");
+                String createDay = split[1];
+                String[] split1 = split[0].split("注册资本：");
+                String registerMoney = split1[1];
+                String legalPerson = split1[0].replace("法定代表人：", "");
+
+                String[] split2 = phoneInfo.split("邮箱：");
+                String email = split2[1];
+                String phone = split2[0].replace("电话：", "");
+                String address = addressInfo.replace("地址：", "");
+
+                QiChaChaDto qiChaChaDto = new QiChaChaDto();
+                qiChaChaDto.setLogoUrl(logoUrl);
+                qiChaChaDto.setCompanyName(companyName);
+                qiChaChaDto.setCreateDay(createDay);
+                qiChaChaDto.setRegisterMoney(registerMoney);
+                qiChaChaDto.setLegalPerson(legalPerson);
+                qiChaChaDto.setEmail(email);
+                qiChaChaDto.setPhone(phone);
+                qiChaChaDto.setAddress(address);
+                companyService.add(qiChaChaDto);
+                xinBangGzhDto.setQiChaChaDto(qiChaChaDto);
+            }
+            catch (Exception e) {
+                logger.error("爬企业信息出错", e);
+            }
+        }
     }
 
 }

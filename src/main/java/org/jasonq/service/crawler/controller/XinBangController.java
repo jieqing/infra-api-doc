@@ -4,6 +4,8 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.jasonq.service.crawler.dto.XinBangGzhDto;
 import org.jasonq.service.crawler.service.CrawlerXinBangService;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,6 +26,8 @@ public class XinBangController {
 
     @Resource
     private CrawlerXinBangService crawlerXinBangService;
+
+    private Logger logger = LogManager.getLogger(XinBangController.class);
 
     @RequestMapping(value = "/xb/search", method = RequestMethod.GET)
     public List<XinBangGzhDto> listWithChild(@RequestParam String gzhName, @RequestParam String nonce,

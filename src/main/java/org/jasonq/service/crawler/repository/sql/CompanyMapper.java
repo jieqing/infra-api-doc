@@ -1,7 +1,7 @@
 package org.jasonq.service.crawler.repository.sql;
 
 import org.jasonq.common.repository.sql.mybatis.mapper.BaseMapper;
-import org.jasonq.service.crawler.po.DictionaryPo;
+import org.jasonq.service.crawler.po.CompanyPo;
 
 
 /**
@@ -10,6 +10,6 @@ import org.jasonq.service.crawler.po.DictionaryPo;
  * @author jq
  * @date 2018/3/6
  */
-public interface DictionaryMapper extends BaseMapper<DictionaryPo> {
+public interface CompanyMapper extends BaseMapper<CompanyPo> {
 
 }

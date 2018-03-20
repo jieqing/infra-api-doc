@@ -2,17 +2,17 @@
 <configuration>
     <!-- 日志文件目录、压缩文件目录、日志格式配置 -->
     <properties>
-        <Property companyName="fileName">domain-dictionary</Property>
-        <Property companyName="filePath">/data/logs</Property>
-        <Property companyName="fileGz">/data/logs/his</Property>
-        <Property companyName="PID">????</Property>
-        <Property companyName="LOG_PATTERN">%d{yyyy-MM-dd HH:mm:ss.SSS} %5p ${sys:PID} [%15.15t] %c{1}.%M : %m%n
+        <Property name="fileName">service-crawler</Property>
+        <Property name="filePath">/data/logs</Property>
+        <Property name="fileGz">/data/logs/his</Property>
+        <Property name="PID">????</Property>
+        <Property name="LOG_PATTERN">%d{yyyy-MM-dd HH:mm:ss.SSS} %5p ${sys:PID} [%15.15t] %c{1}.%M : %m%n
         </Property>
     </properties>
 
     <Appenders>
         <!-- 输出控制台日志的配置 -->
-        <Console companyName="console" target="SYSTEM_OUT">
+        <Console name="console" target="SYSTEM_OUT">
             <!--控制台只输出level及以上级别的信息（onMatch），其他的直接拒绝（onMismatch）-->
             <ThresholdFilter level="debug" onMatch="ACCEPT" onMismatch="DENY"/>
             <!-- 输出日志的格式 -->
@@ -20,7 +20,7 @@
         </Console>
 
         <!-- 打印出所有的信息，每次大小超过size，则这size大小的日志会自动存入按年份-月份建立的文件夹下面并进行压缩，作为存档 -->
-        <RollingRandomAccessFile companyName="infoFile" fileName="${filePath}/${fileName}.log"
+        <RollingRandomAccessFile name="infoFile" fileName="${filePath}/${fileName}.log"
                                  filePattern="${fileGz}/$${date:yyyy-MM}/${fileName}.%d{yyyy-MM-dd}.%i.log">
             <PatternLayout pattern="${LOG_PATTERN}"/>
             <Policies>
@@ -36,7 +36,7 @@
         </RollingRandomAccessFile>
 
         <!-- 存储所有error信息 -->
-        <RollingRandomAccessFile companyName="errorFile" fileName="${filePath}/${fileName}.error.log"
+        <RollingRandomAccessFile name="errorFile" fileName="${filePath}/${fileName}.error.log"
                                  filePattern="${fileGz}/$${date:yyyy-MM}/${fileName}.error.%d{yyyy-MM-dd}.%i.log">
             <PatternLayout pattern="${LOG_PATTERN}"/>
             <Policies>
@@ -61,7 +61,7 @@
         </AsyncRoot>
 
         <!--打印sql-->
-        <logger companyName="org.jasonq.domain.dictionary.repository.sql" level="DEBUG" additivity="false">
+        <logger name="org.jasonq.domain.dictionary.repository.sql" level="DEBUG" additivity="false">
             <appender-ref ref="console"/>
         </logger>
     </Loggers>

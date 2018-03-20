@@ -9,7 +9,7 @@
     <context:component-scan base-package="com.baidu" />
 
     <bean id="disconfMgrBean" class="com.baidu.disconf.client.DisconfMgrBean">
-        <property companyName="scanPackage" value="com.youanmi.scrm.mmis.disconfig" />
+        <property name="scanPackage" value="com.youanmi.scrm.mmis.disconfig" />
     </bean>
     <bean id="disconfMgrBean2" class="com.baidu.disconf.client.DisconfMgrBeanSecond"
           init-method="init" destroy-method="destroy">
@@ -19,7 +19,7 @@
     <!-- 不加载到spring容器中 -->
     <bean id="configproperties_reloadable_disconf"
           class="com.baidu.disconf.client.addons.properties.ReloadablePropertiesFactoryBean">
-        <property companyName="locations">
+        <property name="locations">
             <list>
                 <!-- 这里不用加,在类上配置了注解 -->
                 <!-- <value>common.result.code.properties</value> -->
@@ -30,9 +30,9 @@
 
     <bean id="propertyConfigurer"
           class="com.baidu.disconf.client.addons.properties.ReloadingPropertyPlaceholderConfigurer">
-        <property companyName="ignoreResourceNotFound" value="true" />
-        <property companyName="ignoreUnresolvablePlaceholders" value="true" />
-        <property companyName="propertiesArray">
+        <property name="ignoreResourceNotFound" value="true" />
+        <property name="ignoreUnresolvablePlaceholders" value="true" />
+        <property name="propertiesArray">
             <list>
                 <ref bean="configproperties_reloadable_disconf" />
             </list>
@@ -43,7 +43,7 @@
     <!-- 加载到spring容器中,可以再spring的xml上用${}表达式取键值对 -->
     <bean id="configproperties_no_reloadable_disconf"
           class="com.baidu.disconf.client.addons.properties.ReloadablePropertiesFactoryBean">
-        <property companyName="locations">
+        <property name="locations">
             <list>
                 <value>common.redis.properties</value>
                 <value>common.zookeeper.properties</value>
@@ -64,10 +64,10 @@
 
     <bean id="propertyConfigurerForProject"
           class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
-        <property companyName="systemPropertiesModeName" value="SYSTEM_PROPERTIES_MODE_OVERRIDE"></property>
-        <property companyName="ignoreResourceNotFound" value="true" />
-        <property companyName="ignoreUnresolvablePlaceholders" value="true" />
-        <property companyName="propertiesArray">
+        <property name="systemPropertiesModeName" value="SYSTEM_PROPERTIES_MODE_OVERRIDE"></property>
+        <property name="ignoreResourceNotFound" value="true" />
+        <property name="ignoreUnresolvablePlaceholders" value="true" />
+        <property name="propertiesArray">
             <list>
                 <ref bean="configproperties_no_reloadable_disconf" />
             </list>

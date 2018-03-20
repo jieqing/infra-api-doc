@@ -2,7 +2,6 @@ package org.jasonq.service.crawler;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-
 import tk.mybatis.spring.annotation.MapperScan;
 
 
@@ -11,7 +10,7 @@ import tk.mybatis.spring.annotation.MapperScan;
  * @date 2018/3/6
  */
 @SpringBootApplication
-@MapperScan(basePackages = "org.jasonq.service.crawler.repository.sql")
+ @MapperScan(basePackages = "org.jasonq.service.crawler.repository.sql")
 // @ImportResource({"classpath:disconf.xml"})
 public class Application {
 
