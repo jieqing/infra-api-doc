@@ -1,4 +1,4 @@
-package org.jasonq.service.crawler.service;
+package org.jasonq.service.crawler.core.service;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -15,7 +15,6 @@ import org.apache.logging.log4j.Logger;
 import org.jasonq.common.util.StreamUtil;
 import org.jasonq.common.util.StringUtil;
 import org.jasonq.common.util.collection.CollectionUtil;
-import org.jasonq.common.util.collection.Lists;
 import org.jasonq.common.util.collection.MapUtil;
 import org.jasonq.service.crawler.dto.QiChaChaDto;
 import org.jasonq.service.crawler.dto.XinBangGzhDto;
@@ -28,6 +27,7 @@ import org.springframework.stereotype.Service;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
 
@@ -42,29 +42,16 @@ public class CrawlerXinBangService {
 
     private Logger logger = LogManager.getLogger(CrawlerXinBangService.class);
 
-    @Resource
-    private CompanyService companyService;
-
-    String XB_SEARCH_URL =
-            "https://www.newrank.cn/xdnphb/data/weixinuser/searchWeixinDataByCondition?hasDeal=false&keyName=%s&filter=nickname&order=NRI"
-                    + "&nonce=%s&xyz=%s";
     String QCC_SEARCH_URL = "http://www.qichacha.com/search?key=%s";
     String QCC_GZ_COOKIE =
             "UM_distinctid=1622216eda3322-0706a11c524765-5e183017-13c680-1622216eda43fd; hasShow=1; acw_tc=AQAAAFu/TwFaugwATRxWywNqApe2DgeK; _uab_collina=152099036045208248024076; acw_sc__=5aa8d3fb169ede7a02cec39eee2d8ba31ea6d2a4; _umdata=65F7F3A2F63DF020D114541B4DCEBCBE5E475EC44EDB2AE89A14B210CEC350946AF820144B755070CD43AD3E795C914C2C2C6876544D5A807978A1C0AA56CA49; PHPSESSID=m582r5cnp7jvb1vsn2ntrio4m3; zg_did=%7B%22did%22%3A%20%221622216ef3e4e9-0d49ebd2cd7264-5e183017-13c680-1622216ef3f5d2%22%7D; zg_de1d1a35bfa24ce29bbf2c7eb17e6c4f=%7B%22sid%22%3A%201521010775625%2C%22updated%22%3A%201521014035367%2C%22info%22%3A%201520990351181%2C%22superProperty%22%3A%20%22%7B%7D%22%2C%22platform%22%3A%20%22%7B%7D%22%2C%22utm%22%3A%20%22%7B%7D%22%2C%22referrerDomain%22%3A%20%22www.qichacha.com%22%2C%22cuid%22%3A%20%223db1095e98c1f2ce19bf6321243e740e%22%7D; CNZZDATA1254842228=1814222760-1520986400-https%253A%252F%252Fwww.baidu.com%252F%7C1521009760; Hm_lvt_3456bee468c83cc63fb5147f119f1075=1520990352,1520997754; Hm_lpvt_3456bee468c83cc63fb5147f119f1075=1521014036";
     String QCC_ZS_COOKIE =
             "UM_distinctid=1622216eda3322-0706a11c524765-5e183017-13c680-1622216eda43fd; hasShow=1; acw_tc=AQAAAFu/TwFaugwATRxWywNqApe2DgeK; _uab_collina=152099036045208248024076; PHPSESSID=m582r5cnp7jvb1vsn2ntrio4m3; _umdata=65F7F3A2F63DF020D114541B4DCEBCBE5E475EC44EDB2AE89A14B210CEC350946AF820144B755070CD43AD3E795C914C2C2C6876544D5A807978A1C0AA56CA49; CNZZDATA1254842228=1814222760-1520986400-https%253A%252F%252Fwww.baidu.com%252F%7C1521008005; zg_did=%7B%22did%22%3A%20%221622216ef3e4e9-0d49ebd2cd7264-5e183017-13c680-1622216ef3f5d2%22%7D; Hm_lvt_3456bee468c83cc63fb5147f119f1075=1520990352,1520997754; Hm_lpvt_3456bee468c83cc63fb5147f119f1075=1521011043; zg_de1d1a35bfa24ce29bbf2c7eb17e6c4f=%7B%22sid%22%3A%201521010775625%2C%22updated%22%3A%201521011052085%2C%22info%22%3A%201520990351181%2C%22superProperty%22%3A%20%22%7B%7D%22%2C%22platform%22%3A%20%22%7B%7D%22%2C%22utm%22%3A%20%22%7B%7D%22%2C%22referrerDomain%22%3A%20%22www.qichacha.com%22%2C%22cuid%22%3A%20%223db1095e98c1f2ce19bf6321243e740e%22%7D";
 
-    public List<XinBangGzhDto> search(String key, String nonce, String xyz) throws Exception {
-        List<XinBangGzhDto> xinBangGzhDtos = searchByXinBang(String.format(XB_SEARCH_URL, key, nonce, xyz));
-        if (CollectionUtil.isEmpty(xinBangGzhDtos)) {
-            return xinBangGzhDtos;
-        }
-        // 只取前10条
-        buildQiChaChaInfo(xinBangGzhDtos.subList(0, Math.min(10, xinBangGzhDtos.size())));
-        return xinBangGzhDtos;
-    }
+    @Resource
+    private CompanyService companyService;
 
-    private List<XinBangGzhDto> searchByXinBang(String url) throws Exception {
+    public List<XinBangGzhDto> searchByXinBang(String url) throws Exception {
         List<XinBangGzhDto> resultList = Lists.newArrayList();
         HttpURLConnection conn = (HttpURLConnection) new URL(url).openConnection();
         conn.setRequestMethod("GET");
@@ -109,7 +96,7 @@ public class CrawlerXinBangService {
         return resultList;
     }
 
-    private void buildQiChaChaInfo(List<XinBangGzhDto> xinBangGzhDtos) throws IOException {
+    public void buildQiChaChaInfo(List<XinBangGzhDto> xinBangGzhDtos) throws IOException {
         // 数据库中的企业信息数据
         Map<String, QiChaChaDto> dbCompanyNameMap = Maps.newHashMap();
         try {

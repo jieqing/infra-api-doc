@@ -1,7 +1,7 @@
-package org.jasonq.service.crawler.repository.sql;
+package org.jasonq.service.crawler.core.repository.sql;
 
 import org.jasonq.common.repository.sql.mybatis.mapper.BaseMapper;
-import org.jasonq.service.crawler.po.CompanyPo;
+import org.jasonq.service.crawler.core.po.CompanyPo;
 
 
 /**

@@ -10,7 +10,7 @@ import tk.mybatis.spring.annotation.MapperScan;
  * @date 2018/3/6
  */
 @SpringBootApplication
- @MapperScan(basePackages = "org.jasonq.service.crawler.repository.sql")
+ @MapperScan(basePackages = "org.jasonq.service.crawler.core.repository.sql")
 // @ImportResource({"classpath:disconf.xml"})
 public class Application {
 

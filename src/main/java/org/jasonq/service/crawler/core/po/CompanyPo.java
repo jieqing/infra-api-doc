@@ -1,8 +1,7 @@
-package org.jasonq.service.crawler.po;
+package org.jasonq.service.crawler.core.po;
 
 import org.jasonq.common.repository.po.Entity;
 
-import javax.persistence.Column;
 import javax.persistence.Table;
 
 
