@@ -38,7 +38,7 @@ function queryList(gzhName) {
     showLoading();
     var nonce = createNonce();
     var xyz = createXyz("/xdnphb/data/weixinuser/searchWeixinDataByCondition?AppKey=joker&filter=" + filter + "&hasDeal=false&keyName=" + gzhName + "&order=" + order + "&nonce=" + nonce);
-    var url = queryUrl + "?gzhName=" + gzhName + "&nonce=" + nonce + "&xyz=" + xyz + "&order=" + order + "&filter=" + filter;
+    var url = queryUrl + "?gzhName=" + encodeURI(gzhName) + "&nonce=" + nonce + "&xyz=" + xyz + "&order=" + order + "&filter=" + filter;
     $.ajax({
         type: "GET", //提交方式
         contentType: "application/json; charset=utf-8", //内容类型
