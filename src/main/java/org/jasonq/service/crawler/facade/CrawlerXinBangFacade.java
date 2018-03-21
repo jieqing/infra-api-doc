@@ -31,12 +31,12 @@ public class CrawlerXinBangFacade {
     private CrawlerXinBangService crawlerXinBangService;
 
     String XB_SEARCH_URL =
-            "https://www.newrank.cn/xdnphb/data/weixinuser/searchWeixinDataByCondition?hasDeal=false&keyName=%s&filter=nickname&order=NRI"
+            "https://www.newrank.cn/xdnphb/data/weixinuser/searchWeixinDataByCondition?hasDeal=false&keyName=%s&filter=%s&order=%s"
                     + "&nonce=%s&xyz=%s";
 
-    public List<XinBangGzhDto> search(String key, String nonce, String xyz) throws Exception {
+    synchronized public List<XinBangGzhDto> search(String key, String nonce, String xyz, String order, String filter) throws Exception {
         List<XinBangGzhDto> xinBangGzhDtos =
-                crawlerXinBangService.searchByXinBang(String.format(XB_SEARCH_URL, key, nonce, xyz));
+                crawlerXinBangService.searchByXinBang(String.format(XB_SEARCH_URL, key,filter,  order, nonce, xyz));
         if (CollectionUtil.isEmpty(xinBangGzhDtos)) {
             return xinBangGzhDtos;
         }

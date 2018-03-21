@@ -9,7 +9,8 @@
             margin-left: 30%;
             text-align: center;
         }
-        .table>tbody>tr>td, .table>tbody>tr>th, .table>tfoot>tr>td, .table>tfoot>tr>th, .table>thead>tr>td, .table>thead>tr>th{
+
+        .table > tbody > tr > td, .table > tbody > tr > th, .table > tfoot > tr > td, .table > tfoot > tr > th, .table > thead > tr > td, .table > thead > tr > th {
             padding: 3px;
         }
     </style>
@@ -35,10 +36,10 @@
             <td>{{if qiChaChaDto.companyName}}{{:qiChaChaDto.companyName}}{{else certifiedCompany}}<a target="_blank" href='https://www.qichacha.com/search?key={{:certifiedCompany}}'>查看公司联系方式</a>{{/if}}</td>
             <#--<td><img style="width: 60px;" src={{:qiChaChaDto.logoUrl}}></td>-->
             <td>{{:qiChaChaDto.legalPerson}}</td>
-            <td>{{:qiChaChaDto.registerMoney}}</td>
-            <td>{{:qiChaChaDto.createDay}}</td>
             <td>{{:qiChaChaDto.phone}}</td>
             <td>{{:qiChaChaDto.email}}</td>
+            <td>{{:qiChaChaDto.registerMoney}}</td>
+            <td>{{:qiChaChaDto.createDay}}</td>
             <#--<td>{{:qiChaChaDto.address}}</td>-->
         </tr>
     </script>
@@ -46,6 +47,7 @@
         <div class="noData">
             <h1>暂无数据，请稍后再试</h1>
         </div>
+
     </script>
 
 </head>
@@ -55,7 +57,7 @@
     <ul>
         <li>本版本为beta版，后续会持续优化，有问题请联系揭勍</li>
         <li>只爬出前10个公众号的公司电话，爬不出的请手动点击</li>
-        <li>输入名称，按回车键</li>
+    <#--<li>输入名称，按回车键</li>-->
     </ul>
 </div>
 <div style="margin-top: 60px;">
@@ -63,12 +65,30 @@
         <div class="input-group">
             <input id="gzhName" type="text" class="form-control" placeholder="请输入公众号名称">
             <span class="input-group-btn">
-        <button id="query" class="btn btn-default" type="button">查找</button>
-      </span>
+                <button id="query" class="btn btn-default" type="button">查找</button>
+            </span>
         </div>
     </div>
 </div>
+<div style="display: table; margin-top: 10px; margin-left: 30%; position: absolute;">
+    <p style="display: table-cell;padding-right: 10px;">过滤范围</p>
+    <label class="radio-inline">
+        <input type="radio" checked="" name="filter" value="nickname">名称
+    </label>
+    <label class="radio-inline">
+        <input type="radio" name="filter" value="">全部
+    </label>
+</div>
 
+<div style="display: table; margin-top: 10px; margin-left: 60%;">
+    <p style="display: table-cell;padding-right: 10px;">排序方式</p>
+    <label class="radio-inline">
+        <input type="radio" checked name="orderType" value="NRI">热度
+    </label>
+    <label class="radio-inline">
+        <input type="radio" name="orderType" value="relation">关联度
+    </label>
+</div>
 <div style=" margin-top: 25px;margin-left: 20px">
     <table class="table table-hover" style="table-layout:fixed">
         <thead>
@@ -77,8 +97,8 @@
             <th style="width: 60px;">logo</th>
             <th>二维码</th>
             <th>公众号名</th>
-            <#--<th>公众号</th>-->
-            <#--<th>介绍</th>-->
+        <#--<th>公众号</th>-->
+        <#--<th>介绍</th>-->
         <#--<th>类别</th>-->
         <#--<th>标签</th>-->
             <th>热度</th>
@@ -86,13 +106,13 @@
         <#--<th>城市</th>-->
             <th>微信认证</th>
             <th>公司名称</th>
-            <#--<th>公司logo</th>-->
+        <#--<th>公司logo</th>-->
             <th>法人</th>
-            <th>注册资金</th>
-            <th>成立时间</th>
             <th>电话</th>
             <th>邮箱</th>
-            <#--<th>地址</th>-->
+            <th>注册资金</th>
+            <th>成立时间</th>
+        <#--<th>地址</th>-->
         </tr>
         </thead>
         <tbody id="datatable">

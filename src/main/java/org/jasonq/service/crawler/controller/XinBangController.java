@@ -31,8 +31,9 @@ public class XinBangController {
 
     @RequestMapping(value = "/xb/search", method = RequestMethod.GET)
     public List<XinBangGzhDto> listWithChild(@RequestParam String gzhName, @RequestParam String nonce,
-            @RequestParam String xyz) throws Exception {
-        return crawlerXinBangFacade.search(gzhName, nonce, xyz);
+            @RequestParam String xyz, @RequestParam String order, @RequestParam String filter)
+            throws Exception {
+        return crawlerXinBangFacade.search(gzhName, nonce, xyz, order, filter);
     }
 
     // @RequestMapping(value = "/update", method = RequestMethod.POST)
