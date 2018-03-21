@@ -37,9 +37,9 @@
             <#--<td><img style="width: 60px;" src={{:qiChaChaDto.logoUrl}}></td>-->
             <td>{{:qiChaChaDto.legalPerson}}</td>
             <td>{{:qiChaChaDto.phone}}</td>
-            <td>{{:qiChaChaDto.email}}</td>
             <td>{{:qiChaChaDto.registerMoney}}</td>
             <td>{{:qiChaChaDto.createDay}}</td>
+            <td>{{:qiChaChaDto.email}}</td>
             <#--<td>{{:qiChaChaDto.address}}</td>-->
         </tr>
     </script>
@@ -95,23 +95,23 @@
         <tr>
             <th style="width: 50px;">序号</th>
             <th style="width: 60px;">logo</th>
-            <th>二维码</th>
+            <th style="width: 60px;">二维码</th>
             <th>公众号名</th>
         <#--<th>公众号</th>-->
         <#--<th>介绍</th>-->
         <#--<th>类别</th>-->
         <#--<th>标签</th>-->
-            <th>热度</th>
-            <th>平均阅读量</th>
+            <th style="width: 60px;">热度</th>
+            <th style="width: 90px;">平均阅读量</th>
         <#--<th>城市</th>-->
             <th>微信认证</th>
             <th>公司名称</th>
         <#--<th>公司logo</th>-->
-            <th>法人</th>
+            <th style="width: 70px;">法人</th>
             <th>电话</th>
-            <th>邮箱</th>
             <th>注册资金</th>
-            <th>成立时间</th>
+            <th style="width: 85px;">成立时间</th>
+            <th>邮箱</th>
         <#--<th>地址</th>-->
         </tr>
         </thead>
