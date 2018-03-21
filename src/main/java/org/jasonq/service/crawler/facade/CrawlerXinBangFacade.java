@@ -62,7 +62,7 @@ public class CrawlerXinBangFacade {
         // 每次搜索，只实时爬前10条企业信息
         for (int i = 0; i < xinBangGzhDtos.size() && i < 10; i++) {
             XinBangGzhDto xinBangGzhDto = xinBangGzhDtos.get(i);
-            if (xinBangGzhDto.getQiChaChaDto() == null) {
+            if (xinBangGzhDto.getQiChaChaDto().getId() == null) {
                 QiChaChaDto qiChaChaDto =
                         crawlerXinBangService.crawlerCompany(xinBangGzhDto.getCertifiedCompany());
                 if (qiChaChaDto != null) {

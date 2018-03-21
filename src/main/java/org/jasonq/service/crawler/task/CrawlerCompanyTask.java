@@ -32,10 +32,10 @@ public class CrawlerCompanyTask {
     @Resource
     private CrawlerXinBangService crawlerXinBangService;
 
-    @Scheduled(fixedDelay = 10 * 1000)
+    @Scheduled(fixedDelay = 120 * 1000)
     public void run() {
         try {
-            Thread.sleep(RandomUtils.nextInt(1, 8000));
+            Thread.sleep(RandomUtils.nextInt(1, 60000));
             searchOne();
         }
         catch (InterruptedException e) {
