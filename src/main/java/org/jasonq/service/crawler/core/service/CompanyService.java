@@ -8,9 +8,9 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jasonq.common.domain.util.BeanCopyUtil;
 import org.jasonq.common.util.collection.CollectionUtil;
+import org.jasonq.service.crawler.api.dto.QiChaChaDto;
 import org.jasonq.service.crawler.core.po.CompanyPo;
 import org.jasonq.service.crawler.core.repository.CompanyRepository;
-import org.jasonq.service.crawler.dto.QiChaChaDto;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 

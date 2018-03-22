@@ -6,7 +6,7 @@ import javax.annotation.Resource;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.jasonq.service.crawler.dto.XinBangGzhDto;
+import org.jasonq.service.crawler.api.dto.XinBangGzhDto;
 import org.jasonq.service.crawler.facade.CrawlerXinBangFacade;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -31,7 +31,7 @@ public class XinBangController {
 
     @RequestMapping(value = "/xb/search", method = RequestMethod.GET)
     public List<XinBangGzhDto> listWithChild(@RequestParam String gzhName, @RequestParam String nonce,
-            @RequestParam String xyz, @RequestParam String order, @RequestParam String filter)
+                                             @RequestParam String xyz, @RequestParam String order, @RequestParam String filter)
             throws Exception {
         return crawlerXinBangFacade.search(gzhName, nonce, xyz, order, filter);
     }

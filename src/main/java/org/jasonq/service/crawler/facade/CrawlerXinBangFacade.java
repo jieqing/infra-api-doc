@@ -9,10 +9,12 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jasonq.common.util.collection.CollectionUtil;
 import org.jasonq.common.util.collection.MapUtil;
+import org.jasonq.service.crawler.api.dto.QiChaChaDto;
+import org.jasonq.service.crawler.api.dto.XinBangGzhDto;
+import org.jasonq.service.crawler.api.facade.ICrawlerXinBangFacade;
 import org.jasonq.service.crawler.core.service.CompanyService;
 import org.jasonq.service.crawler.core.service.CrawlerXinBangService;
-import org.jasonq.service.crawler.dto.QiChaChaDto;
-import org.jasonq.service.crawler.dto.XinBangGzhDto;
+
 import org.jasonq.service.crawler.task.CrawlerCompanyTask;
 import org.springframework.stereotype.Service;
 
@@ -26,7 +28,7 @@ import com.google.common.collect.Lists;
  *
  */
 @Service
-public class CrawlerXinBangFacade {
+public class CrawlerXinBangFacade implements ICrawlerXinBangFacade {
 
     private Logger logger = LogManager.getLogger(CrawlerXinBangFacade.class);
 
@@ -42,8 +44,9 @@ public class CrawlerXinBangFacade {
             "https://www.newrank.cn/xdnphb/data/weixinuser/searchWeixinDataByCondition?hasDeal=false&keyName=%s&filter=%s&order=%s"
                     + "&nonce=%s&xyz=%s";
 
+    @Override
     synchronized public List<XinBangGzhDto> search(String key, String nonce, String xyz, String order,
-            String filter) throws Exception {
+                                                   String filter) throws Exception {
         List<XinBangGzhDto> xinBangGzhDtos = crawlerXinBangService
             .searchByXinBang(String.format(XB_SEARCH_URL, key, filter, order, nonce, xyz));
         if (CollectionUtil.isEmpty(xinBangGzhDtos)) {
