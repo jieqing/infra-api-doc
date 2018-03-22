@@ -38,8 +38,8 @@
             <td>{{:qiChaChaDto.legalPerson}}</td>
             <td>{{:qiChaChaDto.phone}}</td>
             <td>{{:qiChaChaDto.registerMoney}}</td>
-            <td>{{:qiChaChaDto.createDay}}</td>
-            <td>{{:qiChaChaDto.email}}</td>
+            <#--<td>{{:qiChaChaDto.createDay}}</td>-->
+            <#--<td>{{:qiChaChaDto.email}}</td>-->
             <#--<td>{{:qiChaChaDto.address}}</td>-->
         </tr>
     </script>
@@ -110,8 +110,8 @@
             <th style="width: 70px;">法人</th>
             <th>电话</th>
             <th>注册资金</th>
-            <th style="width: 85px;">成立时间</th>
-            <th>邮箱</th>
+            <#--<th style="width: 85px;">成立时间</th>-->
+            <#--<th>邮箱</th>-->
         <#--<th>地址</th>-->
         </tr>
         </thead>

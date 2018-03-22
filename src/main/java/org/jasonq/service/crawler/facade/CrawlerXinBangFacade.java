@@ -16,6 +16,8 @@ import org.jasonq.service.crawler.dto.XinBangGzhDto;
 import org.jasonq.service.crawler.task.CrawlerCompanyTask;
 import org.springframework.stereotype.Service;
 
+import com.google.common.collect.Lists;
+
 
 /**
  * 组装数据，通过调用多个service，facade来完成一个完整的业务功能 返回DTO
@@ -74,7 +76,15 @@ public class CrawlerXinBangFacade {
         for (int i = 10; i < xinBangGzhDtos.size(); i++) {
             crawlerCompanyTask.offer(xinBangGzhDtos.get(i).getCertifiedCompany());
         }
-        return xinBangGzhDtos;
+
+        // 有些公众号，查过，查不出企业就不查了
+        List<XinBangGzhDto> resultList = Lists.newArrayList();
+        for (XinBangGzhDto xinBangGzhDto : xinBangGzhDtos) {
+            if (xinBangGzhDto.getHotNum() != null && xinBangGzhDto.getHotNum() >= 400) {
+                resultList.add(xinBangGzhDto);
+            }
+        }
+        return resultList;
     }
 
 }
