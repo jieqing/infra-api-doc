@@ -12,8 +12,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jasonq.common.util.StreamUtil;
 import org.jasonq.common.util.StringUtil;
-import org.jasonq.service.crawler.api.dto.QiChaChaDto;
-import org.jasonq.service.crawler.api.dto.XinBangGzhDto;
+import org.jasonq.service.crawler.core.po.CompanyPo;
+import org.jasonq.service.crawler.core.po.WxPublicPo;
 import org.jsoup.Connection;
 import org.jsoup.helper.HttpConnection;
 import org.jsoup.nodes.Document;
@@ -56,9 +56,11 @@ public class CrawlerXinBangService {
 
     @Resource
     private CompanyService companyService;
+    @Resource
+    private WxPublicService wxPublicService;
 
-    public List<XinBangGzhDto> searchByXinBang(String url) throws Exception {
-        List<XinBangGzhDto> resultList = Lists.newArrayList();
+    public List<WxPublicPo> searchByXinBang(String url) throws Exception {
+        List<WxPublicPo> resultList = Lists.newArrayList();
         HttpURLConnection conn = (HttpURLConnection) new URL(url).openConnection();
         conn.setRequestMethod("GET");
         conn.setRequestProperty("content-type", "application/json;charset=UTF-8");
@@ -72,40 +74,56 @@ public class CrawlerXinBangService {
             JSONArray datas = parse.getJSONObject("value").getJSONArray("result");
             for (Object data : datas) {
                 JSONObject jsonObject = (JSONObject) data;
-                XinBangGzhDto xinBangGzhDto = new XinBangGzhDto();
+                WxPublicPo wxPublicPo = new WxPublicPo();
                 String name = jsonObject.getString("name");
                 if (StringUtil.isNotEmpty(name)) {
-                    xinBangGzhDto.setGzhName(name.replace("#font", "").replace("@font", ""));
+                    wxPublicPo.setPublicName(name.replace("#font", "").replace("@font", ""));
                 }
-                xinBangGzhDto.setWxNo(jsonObject.getString("account"));
+                wxPublicPo.setWxNo(jsonObject.getString("account"));
                 String description = jsonObject.getString("description");
                 if (StringUtil.isNotEmpty(description)) {
-                    xinBangGzhDto.setIntroduce(description.replace("#font", "").replace("@font", ""));
+                    wxPublicPo.setIntroduce(description.replace("#font", "").replace("@font", ""));
                 }
-                xinBangGzhDto.setType(jsonObject.getString("type"));
+                wxPublicPo.setType(jsonObject.getString("type"));
                 String tags = jsonObject.getString("tags");
                 if (StringUtil.isNotEmpty(tags)) {
-                    xinBangGzhDto.setTags(tags.replace("#font", "").replace("@font", ""));
+                    wxPublicPo.setTags(tags.replace("#font", "").replace("@font", ""));
                 }
-                xinBangGzhDto.setCity(jsonObject.getString("city"));
-                xinBangGzhDto.setImgUrl(jsonObject.getString("indexUrl"));
-                xinBangGzhDto.setCodeImageUrl(jsonObject.getString("codeImageUrl"));
-                xinBangGzhDto.setHotNum(jsonObject.getDouble("weekLog1pmark"));
-                xinBangGzhDto.setAvgReadAll(jsonObject.getDouble("avg_read_all"));
+                wxPublicPo.setCity(jsonObject.getString("city"));
+                wxPublicPo.setImgUrl(jsonObject.getString("indexUrl"));
+                wxPublicPo.setCodeImageUrl(jsonObject.getString("codeImageUrl"));
+                wxPublicPo.setHotNum(jsonObject.getDouble("weekLog1pmark"));
+                wxPublicPo.setAvgReadAll(jsonObject.getDouble("avg_read_all"));
                 String certifiedText = jsonObject.getString("certifiedText");
                 if (StringUtil.isNotEmpty(certifiedText)) {
-                    xinBangGzhDto.setCertifiedCompany(certifiedText.replace("微信认证：", "").trim());
+                    wxPublicPo.setCertifiedCompany(certifiedText.replace("微信认证：", "").trim());
                 }
-                resultList.add(xinBangGzhDto);
+                resultList.add(wxPublicPo);
             }
         }
         return resultList;
     }
 
-    public QiChaChaDto crawlerCompany(String searchCompanyName) {
+    /**
+     * 控制爬企业的速度，企业信息不好爬，容易被封
+     * 
+     * @param searchCompanyName
+     * @return
+     */
+    synchronized public CompanyPo crawlerCompanyInfo(String searchCompanyName) {
         if (StringUtil.isEmpty(searchCompanyName)) {
             return null;
         }
+        CompanyPo dbCompanyPo = companyService.selectByName(searchCompanyName);
+        if (dbCompanyPo != null) {
+            return dbCompanyPo;
+        }
+
+        WxPublicPo wxPublicPo = wxPublicService.selectByCertifiedCompany(searchCompanyName);
+        if (wxPublicPo != null && wxPublicPo.getCompanyId().equals(-1L)) {
+            return null;
+        }
+
         try {
             Connection con = HttpConnection
                 .connect(String.format(QCC_SEARCH_URL, URLEncoder.encode(searchCompanyName, "UTF-8")));
@@ -122,6 +140,7 @@ public class CrawlerXinBangService {
             Document document = con.get();
             Elements companyElem = document.select(".m_srchList tbody tr");
             if (companyElem.isEmpty()) {
+                logger.error("企查查找不到企业信息");
                 return null;
             }
             Elements firstCompany = companyElem.get(0).select("td");
@@ -145,20 +164,33 @@ public class CrawlerXinBangService {
             String phone = split2[0].replace("电话：", "");
             String address = addressInfo.replace("地址：", "");
 
-            QiChaChaDto qiChaChaDto = new QiChaChaDto();
-            qiChaChaDto.setLogoUrl(logoUrl);
-            qiChaChaDto.setCompanyName(companyName);
-            qiChaChaDto.setCreateDay(createDay);
-            qiChaChaDto.setRegisterMoney(registerMoney);
-            qiChaChaDto.setLegalPerson(legalPerson);
-            qiChaChaDto.setEmail(email);
-            qiChaChaDto.setPhone(phone);
-            qiChaChaDto.setAddress(address);
-            companyService.add(qiChaChaDto);
+            CompanyPo companyPo = new CompanyPo();
+            companyPo.setLogoUrl(logoUrl);
+            companyPo.setCompanyName(companyName);
+            companyPo.setCreateDay(createDay);
+            companyPo.setRegisterMoney(registerMoney);
+            companyPo.setLegalPerson(legalPerson);
+            companyPo.setEmail(email);
+            companyPo.setPhone(phone);
+            companyPo.setAddress(address);
+            companyService.add(companyPo);
+            // 关联回公众号
+            List<WxPublicPo> wxPublicPos =
+                    wxPublicService.listByCertifiedCompanys(Lists.newArrayList(searchCompanyName));
             if (!companyName.equals(searchCompanyName)) {
+                for (WxPublicPo publicPo : wxPublicPos) {
+                    publicPo.setCompanyId(-1L);
+                }
+                wxPublicService.updateByIdBatch(wxPublicPos);
                 return null;
             }
-            return qiChaChaDto;
+            else {
+                for (WxPublicPo publicPo : wxPublicPos) {
+                    publicPo.setCompanyId(companyPo.getId());
+                }
+                wxPublicService.updateByIdBatch(wxPublicPos);
+                return companyPo;
+            }
         }
         catch (Exception e) {
             logger.error("爬企业信息出错", e);

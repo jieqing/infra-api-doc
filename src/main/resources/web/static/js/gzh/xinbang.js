@@ -3,7 +3,7 @@ $(function () {
         onClickQuery();
     });
 
-    $('#gzhName').bind('keyup', function (event) {
+    $('#publicName').bind('keyup', function (event) {
         if (event.keyCode == "13") {
             //回车执行查询
             onClickQuery();
@@ -21,14 +21,14 @@ $(function () {
 
 
 function onClickQuery() {
-    var gzhName = $("#gzhName").val();
-    queryList(gzhName);
+    var publicName = $("#publicName").val();
+    queryList(publicName);
 }
 
 
-function queryList(gzhName) {
-    if (gzhName != "" && gzhName != null) {
-        // gzhName = "n:"+gzhName
+function queryList(publicName) {
+    if (publicName != "" && publicName != null) {
+        // publicName = "n:"+publicName
     } else {
         $.templates("#tableEmptyTmp").link("#datatable");
         return;
@@ -37,8 +37,8 @@ function queryList(gzhName) {
     var filter = $("input[name='filter']:checked").val();
     showLoading();
     var nonce = createNonce();
-    var xyz = createXyz("/xdnphb/data/weixinuser/searchWeixinDataByCondition?AppKey=joker&filter=" + filter + "&hasDeal=false&keyName=" + gzhName + "&order=" + order + "&nonce=" + nonce);
-    var url = queryUrl + "?gzhName=" + encodeURI(gzhName) + "&nonce=" + nonce + "&xyz=" + xyz + "&order=" + order + "&filter=" + filter;
+    var xyz = createXyz("/xdnphb/data/weixinuser/searchWeixinDataByCondition?AppKey=joker&filter=" + filter + "&hasDeal=false&keyName=" + publicName + "&order=" + order + "&nonce=" + nonce);
+    var url = queryUrl + "?publicName=" + encodeURI(publicName) + "&nonce=" + nonce + "&xyz=" + xyz + "&order=" + order + "&filter=" + filter;
     $.ajax({
         type: "GET", //提交方式
         contentType: "application/json; charset=utf-8", //内容类型

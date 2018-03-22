@@ -7,14 +7,17 @@ import javax.annotation.Resource;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.jasonq.common.domain.util.BeanCopyUtil;
 import org.jasonq.common.util.collection.CollectionUtil;
 import org.jasonq.common.util.collection.MapUtil;
 import org.jasonq.service.crawler.api.dto.QiChaChaDto;
 import org.jasonq.service.crawler.api.dto.XinBangGzhDto;
 import org.jasonq.service.crawler.api.facade.ICrawlerXinBangFacade;
+import org.jasonq.service.crawler.core.po.CompanyPo;
+import org.jasonq.service.crawler.core.po.WxPublicPo;
 import org.jasonq.service.crawler.core.service.CompanyService;
 import org.jasonq.service.crawler.core.service.CrawlerXinBangService;
-
+import org.jasonq.service.crawler.core.service.WxPublicService;
 import org.jasonq.service.crawler.task.CrawlerCompanyTask;
 import org.springframework.stereotype.Service;
 
@@ -34,7 +37,8 @@ public class CrawlerXinBangFacade implements ICrawlerXinBangFacade {
 
     @Resource
     private CompanyService companyService;
-
+    @Resource
+    private WxPublicService wxPublicService;
     @Resource
     private CrawlerXinBangService crawlerXinBangService;
     @Resource
@@ -44,50 +48,84 @@ public class CrawlerXinBangFacade implements ICrawlerXinBangFacade {
             "https://www.newrank.cn/xdnphb/data/weixinuser/searchWeixinDataByCondition?hasDeal=false&keyName=%s&filter=%s&order=%s"
                     + "&nonce=%s&xyz=%s";
 
+    /**
+     * 根据公众号微信号，企业名称绑定数据库数据
+     */
     @Override
-    synchronized public List<XinBangGzhDto> search(String key, String nonce, String xyz, String order,
-                                                   String filter) throws Exception {
-        List<XinBangGzhDto> xinBangGzhDtos = crawlerXinBangService
+    synchronized public List<XinBangGzhDto> search(String key, String nonce, String xyz, String order, String filter)
+            throws Exception {
+        List<WxPublicPo> wxPublicPos = crawlerXinBangService
             .searchByXinBang(String.format(XB_SEARCH_URL, key, filter, order, nonce, xyz));
-        if (CollectionUtil.isEmpty(xinBangGzhDtos)) {
-            return xinBangGzhDtos;
+        if (CollectionUtil.isEmpty(wxPublicPos)) {
+            return Lists.newArrayList();
         }
-
-        // 数据库中的企业信息数据
-        List<String> certifiedCompanyList =
-                CollectionUtil.getColumnValues(xinBangGzhDtos, "certifiedCompany");
-        List<QiChaChaDto> dbQiChaChaDtos = companyService.listByNames(certifiedCompanyList);
-        Map<String, QiChaChaDto> dbCompanyNameMap = MapUtil.toMap(dbQiChaChaDtos, "companyName");
-        for (XinBangGzhDto xinBangGzhDto : xinBangGzhDtos) {
-            QiChaChaDto qiChaChaDto = dbCompanyNameMap.get(xinBangGzhDto.getCertifiedCompany());
-            if (qiChaChaDto != null) {
-                xinBangGzhDto.setQiChaChaDto(qiChaChaDto);
+        // 绑定数据库记录，绑定了的有id
+        // 有id的，更新热度，阅读量；没id的插数据库
+        List<WxPublicPo> dbWxPublicPos =
+                wxPublicService.listByWxNos(CollectionUtil.getColumnValues(wxPublicPos, "wxNo"));
+        Map<Object, WxPublicPo> wxNoMap = MapUtil.toMap(dbWxPublicPos, "wxNo");
+        List<WxPublicPo> needUpdates = Lists.newArrayList();
+        List<WxPublicPo> needAdds = Lists.newArrayList();
+        for (WxPublicPo wxPublicPo : wxPublicPos) {
+            WxPublicPo dbPublicPo = wxNoMap.get(wxPublicPo.getWxNo());
+            if (dbPublicPo != null) {
+                wxPublicPo.setId(dbPublicPo.getId());
+                wxPublicPo.setIsCall(dbPublicPo.getIsCall());
+                wxPublicPo.setIsCooperate(dbPublicPo.getIsCooperate());
+                wxPublicPo.setCompanyId(dbPublicPo.getCompanyId());
+                needUpdates.add(wxPublicPo);
+            }
+            else {
+                needAdds.add(wxPublicPo);
             }
         }
-        // 每次搜索，只实时爬前10条企业信息
-        for (int i = 0; i < xinBangGzhDtos.size() && i < 10; i++) {
-            XinBangGzhDto xinBangGzhDto = xinBangGzhDtos.get(i);
-            if (xinBangGzhDto.getQiChaChaDto().getId() == null) {
-                QiChaChaDto qiChaChaDto =
-                        crawlerXinBangService.crawlerCompany(xinBangGzhDto.getCertifiedCompany());
-                if (qiChaChaDto != null) {
-                    xinBangGzhDto.setQiChaChaDto(qiChaChaDto);
+        wxPublicService.updateByIdBatch(needUpdates);
+        wxPublicService.addBatch(needAdds);
+
+        // 数据库中的企业信息数据
+        List<String> certifiedCompanyList = CollectionUtil.getColumnValues(wxPublicPos, "certifiedCompany");
+        List<CompanyPo> companyPos = companyService.listByNames(certifiedCompanyList);
+        Map<String, CompanyPo> dbCompanyNameMap = MapUtil.toMap(companyPos, "companyName");
+        for (WxPublicPo wxPublicPo : wxPublicPos) {
+            CompanyPo companyPo = dbCompanyNameMap.get(wxPublicPo.getCertifiedCompany());
+            if (companyPo != null) {
+                wxPublicPo.setCompanyPo(companyPo);
+            }
+        }
+        // 前10条企业信息，如果数据库里没有，就实时爬
+        for (int i = 0; i < wxPublicPos.size() && i < 10; i++) {
+            WxPublicPo wxPublicPo = wxPublicPos.get(i);
+            if (wxPublicPo.getCompanyPo().getId() == null) {
+                CompanyPo companyPo =
+                        crawlerXinBangService.crawlerCompanyInfo(wxPublicPo.getCertifiedCompany());
+                if (companyPo != null) {
+                    wxPublicPo.setCompanyPo(companyPo);
                 }
             }
         }
         // 后面的离线搜
-        for (int i = 10; i < xinBangGzhDtos.size(); i++) {
-            crawlerCompanyTask.offer(xinBangGzhDtos.get(i).getCertifiedCompany());
-        }
+        addAsyncSearchQueue(wxPublicPos);
 
-        // 有些公众号，查过，查不出企业就不查了
+        // 只显示400以上热度的
+        return filterUnHot(wxPublicPos);
+    }
+
+    private List<XinBangGzhDto> filterUnHot(List<WxPublicPo> wxPublicPos) {
         List<XinBangGzhDto> resultList = Lists.newArrayList();
-        for (XinBangGzhDto xinBangGzhDto : xinBangGzhDtos) {
-            if (xinBangGzhDto.getHotNum() != null && xinBangGzhDto.getHotNum() >= 400) {
+        for (WxPublicPo wxPublicPo : wxPublicPos) {
+            if (wxPublicPo.getHotNum() != null && wxPublicPo.getHotNum() >= 400) {
+                XinBangGzhDto xinBangGzhDto = BeanCopyUtil.to(wxPublicPo, XinBangGzhDto.class);
+                xinBangGzhDto.setQiChaChaDto(BeanCopyUtil.to(wxPublicPo.getCompanyPo(), QiChaChaDto.class));
                 resultList.add(xinBangGzhDto);
             }
         }
         return resultList;
+    }
+
+    private void addAsyncSearchQueue(List<WxPublicPo> wxPublicPos) {
+        for (int i = 10; i < wxPublicPos.size(); i++) {
+            crawlerCompanyTask.addAsyncSearchQueue(wxPublicPos.get(i).getCertifiedCompany());
+        }
     }
 
 }

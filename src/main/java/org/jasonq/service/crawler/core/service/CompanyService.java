@@ -11,7 +11,6 @@ import org.jasonq.common.util.collection.CollectionUtil;
 import org.jasonq.service.crawler.api.dto.QiChaChaDto;
 import org.jasonq.service.crawler.core.po.CompanyPo;
 import org.jasonq.service.crawler.core.repository.CompanyRepository;
-import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 
 import com.google.common.collect.Lists;
@@ -31,30 +30,24 @@ public class CompanyService {
     @Resource
     private CompanyRepository companyRepository;
 
-    public QiChaChaDto selectByName(String companyName) {
+    public CompanyPo selectByName(String companyName) {
         List<CompanyPo> companyPoList = companyRepository.listByNames(Lists.newArrayList(companyName));
         if (CollectionUtil.isEmpty(companyPoList)) {
             return null;
         }
-        return BeanCopyUtil.to(companyPoList.get(0), QiChaChaDto.class);
+        return companyPoList.get(0);
     }
 
-    public List<QiChaChaDto> listByNames(List<String> companyNames) {
-        List<CompanyPo> companyPoList = companyRepository.listByNames(companyNames);
-        return BeanCopyUtil.toList(companyPoList, QiChaChaDto.class);
+    public List<CompanyPo> listByNames(List<String> companyNames) {
+        return companyRepository.listByNames(companyNames);
     }
 
     public int updateById(CompanyPo entity) {
         return companyRepository.updateById(entity);
     }
 
-    public int add(QiChaChaDto entity) {
-        try {
-            return companyRepository.insert(BeanCopyUtil.to(entity, CompanyPo.class));
-        }
-        catch (DuplicateKeyException e) {
-            return 1;
-        }
+    public int add(CompanyPo entity) {
+        return companyRepository.insert(entity);
     }
 
     public int deleteById(String id) throws InstantiationException, IllegalAccessException {

@@ -1,6 +1,7 @@
 package org.jasonq.service.crawler.core.po;
 
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.jasonq.common.repository.po.Entity;
 
@@ -9,12 +10,14 @@ import org.jasonq.common.repository.po.Entity;
  * @author jq
  * @date 2018/3/15
  */
-@Table(name = "public_wx")
-public class PublicWxPo extends Entity {
+@Table(name = "wx_public")
+public class WxPublicPo extends Entity {
 
     public enum ColumnName {
         id("id"),
-        gzhName("gzhName"),
+        wxNo("wxNo"),
+        publicName("publicName"),
+        certifiedCompany("certifiedCompany"),
         isDelete("isDelete"),
         others("others"),
         createTime("createTime"),
@@ -36,7 +39,7 @@ public class PublicWxPo extends Entity {
         }
     }
 
-    private String gzhName;
+    private String publicName;
     private String wxNo;
     private String introduce;
     private String type;
@@ -48,6 +51,35 @@ public class PublicWxPo extends Entity {
     private String city;
     private String certifiedCompany;
     private Long companyId;
+    private Byte isCall;
+    private Byte isCooperate;
+
+    @Transient
+    private CompanyPo companyPo;
+
+    public Byte getIsCall() {
+        return isCall;
+    }
+
+    public void setIsCall(Byte isCall) {
+        this.isCall = isCall;
+    }
+
+    public Byte getIsCooperate() {
+        return isCooperate;
+    }
+
+    public void setIsCooperate(Byte isCooperate) {
+        this.isCooperate = isCooperate;
+    }
+
+    public CompanyPo getCompanyPo() {
+        return companyPo;
+    }
+
+    public void setCompanyPo(CompanyPo companyPo) {
+        this.companyPo = companyPo;
+    }
 
     public Long getCompanyId() {
         return companyId;
@@ -97,12 +129,12 @@ public class PublicWxPo extends Entity {
         this.type = type;
     }
 
-    public String getGzhName() {
-        return gzhName;
+    public String getPublicName() {
+        return publicName;
     }
 
-    public void setGzhName(String gzhName) {
-        this.gzhName = gzhName;
+    public void setPublicName(String publicName) {
+        this.publicName = publicName;
     }
 
     public String getWxNo() {

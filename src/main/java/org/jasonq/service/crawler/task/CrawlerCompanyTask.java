@@ -43,23 +43,20 @@ public class CrawlerCompanyTask {
     }
 
     public void searchOne() {
-        String companyName = this.poll();
+        String companyName = concurrentLinkedQueue.poll();
         if (companyService.selectByName(companyName) == null) {
-            crawlerXinBangService.crawlerCompany(companyName);
+            crawlerXinBangService.crawlerCompanyInfo(companyName);
         }
         else {
             searchOne();
         }
     }
 
-    public boolean offer(String companyName) {
+    public boolean addAsyncSearchQueue(String companyName) {
         if (StringUtil.isEmpty(companyName)) {
             return true;
         }
         return concurrentLinkedQueue.offer(companyName);
     }
 
-    public String poll() {
-        return concurrentLinkedQueue.poll();
-    }
 }

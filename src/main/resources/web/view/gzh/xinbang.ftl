@@ -24,7 +24,7 @@
              <td><img style="width: 50px;" src={{:codeImageUrl}} onMouseOut='hoverHiddendiv(this)' onMouseOver='hoverShowDiv(this)'>
              <img style='height:250px; position:absolute; display:none' src={{:codeImageUrl}}>
              </td>
-            <td>{{:gzhName}}</td>
+            <td>{{:publicName}}</td>
             <#--<td>{{:wxNo}}</td>-->
             <#--<td>{{:introduce}}</td>-->
         <#--<td>{{:type}}</td>-->
@@ -63,7 +63,7 @@
 <div style="margin-top: 60px;">
     <div class="nameSearch">
         <div class="input-group">
-            <input id="gzhName" type="text" class="form-control" placeholder="请输入公众号名称">
+            <input id="publicName" type="text" class="form-control" placeholder="请输入公众号名称">
             <span class="input-group-btn">
                 <button id="query" class="btn btn-default" type="button">查找</button>
             </span>
@@ -102,7 +102,7 @@
         <#--<th>类别</th>-->
         <#--<th>标签</th>-->
             <th style="width: 60px;">热度</th>
-            <th style="width: 90px;">平均阅读量</th>
+            <th >所有文章平均阅读量</th>
         <#--<th>城市</th>-->
             <th>微信认证</th>
             <th>公司名称</th>
