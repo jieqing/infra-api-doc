@@ -16,9 +16,16 @@ $(function () {
     $("input[name='orderType']").change(function () {
         onClickQuery();
     });
+
+    $("input[name='isCall']").change(function () {
+        var id = $(this).parent().prevAll("input[name='id']").val();
+        ajaxPost(updateUrl, {id: id, isCall: this.checked ? 2 : 1});
+    });
+    $("input[name='isCooperate']").change(function () {
+        var id = $(this).parent().prevAll("input[name='id']").val();
+        ajaxPost(updateUrl, {id: id, isCooperate: this.checked ? 2 : 1});
+    });
 });
-
-
 
 function onClickQuery() {
     var publicName = $("#publicName").val();
@@ -39,27 +46,8 @@ function queryList(publicName) {
     var nonce = createNonce();
     var xyz = createXyz("/xdnphb/data/weixinuser/searchWeixinDataByCondition?AppKey=joker&filter=" + filter + "&hasDeal=false&keyName=" + publicName + "&order=" + order + "&nonce=" + nonce);
     var url = queryUrl + "?publicName=" + encodeURI(publicName) + "&nonce=" + nonce + "&xyz=" + xyz + "&order=" + order + "&filter=" + filter;
-    $.ajax({
-        type: "GET", //提交方式
-        contentType: "application/json; charset=utf-8", //内容类型
-        dataType: "json", //类型
-        url: url, //提交的页面，方法名
-        success: function (redata) {
-            var tmpl;
-            if (redata == null || redata.length <= 0 || $.isEmptyObject(redata)) {
-                tmpl = $.templates("#tableEmptyTmp");
-            } else {
-                tmpl = $.templates("#tableTmp");
-            }
-            tmpl.link("#datatable", redata);
-            hideLoading();
-        },
-        error: function () {
-            var tmpl = $.templates("#tableEmptyTmp");
-            tmpl.link("#datatable");
-            hideLoading();
-        }
-    });
+
+    ajaxGet(url, defaultSuccessCallBack, defaultErrorCallBack);
 }
 
 function hoverShowDiv(img) {

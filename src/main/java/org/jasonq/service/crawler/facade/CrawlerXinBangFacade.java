@@ -2,6 +2,7 @@ package org.jasonq.service.crawler.facade;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import javax.annotation.Resource;
 
@@ -52,8 +53,8 @@ public class CrawlerXinBangFacade implements ICrawlerXinBangFacade {
      * 根据公众号微信号，企业名称绑定数据库数据
      */
     @Override
-    synchronized public List<XinBangGzhDto> search(String key, String nonce, String xyz, String order, String filter)
-            throws Exception {
+    synchronized public List<XinBangGzhDto> search(String key, String nonce, String xyz, String order,
+            String filter) throws Exception {
         List<WxPublicPo> wxPublicPos = crawlerXinBangService
             .searchByXinBang(String.format(XB_SEARCH_URL, key, filter, order, nonce, xyz));
         if (CollectionUtil.isEmpty(wxPublicPos)) {
@@ -64,7 +65,6 @@ public class CrawlerXinBangFacade implements ICrawlerXinBangFacade {
         List<WxPublicPo> dbWxPublicPos =
                 wxPublicService.listByWxNos(CollectionUtil.getColumnValues(wxPublicPos, "wxNo"));
         Map<Object, WxPublicPo> wxNoMap = MapUtil.toMap(dbWxPublicPos, "wxNo");
-        List<WxPublicPo> needUpdates = Lists.newArrayList();
         List<WxPublicPo> needAdds = Lists.newArrayList();
         for (WxPublicPo wxPublicPo : wxPublicPos) {
             WxPublicPo dbPublicPo = wxNoMap.get(wxPublicPo.getWxNo());
@@ -73,13 +73,18 @@ public class CrawlerXinBangFacade implements ICrawlerXinBangFacade {
                 wxPublicPo.setIsCall(dbPublicPo.getIsCall());
                 wxPublicPo.setIsCooperate(dbPublicPo.getIsCooperate());
                 wxPublicPo.setCompanyId(dbPublicPo.getCompanyId());
-                needUpdates.add(wxPublicPo);
+                if (Objects.equals(wxPublicPo.getHotNum(), dbPublicPo.getHotNum())) {
+                    WxPublicPo needUpdate = new WxPublicPo();
+                    needUpdate.setId(wxPublicPo.getId());
+                    needUpdate.setHotNum(wxPublicPo.getHotNum());
+                    needUpdate.setAvgReadAll(wxPublicPo.getAvgReadAll());
+                    wxPublicService.updateById(needUpdate);
+                }
             }
             else {
                 needAdds.add(wxPublicPo);
             }
         }
-        wxPublicService.updateByIdBatch(needUpdates);
         wxPublicService.addBatch(needAdds);
 
         // 数据库中的企业信息数据
@@ -128,4 +133,8 @@ public class CrawlerXinBangFacade implements ICrawlerXinBangFacade {
         }
     }
 
+    @Override
+    public int updateById(XinBangGzhDto entity) {
+        return wxPublicService.updateById(BeanCopyUtil.to(entity, WxPublicPo.class));
+    }
 }

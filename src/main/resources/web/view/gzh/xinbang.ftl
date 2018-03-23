@@ -16,14 +16,18 @@
     </style>
     <script>
         var queryUrl = "gzh/xb/search";
+        var updateUrl = "gzh/update";
     </script>
     <script id="tableTmp" type="text/x-jsrender">
         <tr>
             <th scope="row">{{:#index+1}}</th>
+            <input name="id" type="hidden" value={{:id}}>
             <td><img style="width: 50px;" src={{:imgUrl}}></td>
              <td><img style="width: 50px;" src={{:codeImageUrl}} onMouseOut='hoverHiddendiv(this)' onMouseOver='hoverShowDiv(this)'>
              <img style='height:250px; position:absolute; display:none' src={{:codeImageUrl}}>
              </td>
+            <td><input type="checkbox" name="isCall" {{if isCall==2}}checked{{/if}}></td>
+            <td><input type="checkbox" name="isCooperate" {{if isCooperate==2}}checked{{/if}}></td>
             <td>{{:publicName}}</td>
             <#--<td>{{:wxNo}}</td>-->
             <#--<td>{{:introduce}}</td>-->
@@ -96,6 +100,8 @@
             <th style="width: 50px;">序号</th>
             <th style="width: 60px;">logo</th>
             <th style="width: 60px;">二维码</th>
+            <th style="width: 70px;">已打电话</th>
+            <th style="width: 50px;">已合作</th>
             <th>公众号名</th>
         <#--<th>公众号</th>-->
         <#--<th>介绍</th>-->

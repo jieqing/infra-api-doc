@@ -6,11 +6,10 @@ import javax.annotation.Resource;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.jasonq.common.domain.util.BeanCopyUtil;
 import org.jasonq.common.util.collection.CollectionUtil;
-import org.jasonq.service.crawler.api.dto.QiChaChaDto;
 import org.jasonq.service.crawler.core.po.CompanyPo;
 import org.jasonq.service.crawler.core.repository.CompanyRepository;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 
 import com.google.common.collect.Lists;
@@ -47,7 +46,12 @@ public class CompanyService {
     }
 
     public int add(CompanyPo entity) {
-        return companyRepository.insert(entity);
+        try {
+            return companyRepository.insert(entity);
+        }
+        catch (DuplicateKeyException e) {
+        }
+        return 0;
     }
 
     public int deleteById(String id) throws InstantiationException, IllegalAccessException {

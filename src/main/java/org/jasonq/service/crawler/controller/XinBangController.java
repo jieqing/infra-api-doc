@@ -7,15 +7,13 @@ import javax.annotation.Resource;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jasonq.service.crawler.api.dto.XinBangGzhDto;
+import org.jasonq.service.crawler.api.facade.ICrawlerXinBangFacade;
+import org.jasonq.service.crawler.api.param.PageParam;
 import org.jasonq.service.crawler.facade.CrawlerXinBangFacade;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 
 /**
- * 小程序案例管理
  * 
  * @author jq
  *
@@ -27,7 +25,7 @@ public class XinBangController {
     private Logger logger = LogManager.getLogger(XinBangController.class);
 
     @Resource
-    private CrawlerXinBangFacade crawlerXinBangFacade;
+    private ICrawlerXinBangFacade crawlerXinBangFacade;
 
     @RequestMapping(value = "/xb/search", method = RequestMethod.GET)
     public List<XinBangGzhDto> listWithChild(@RequestParam String publicName, @RequestParam String nonce,
@@ -36,10 +34,17 @@ public class XinBangController {
         return crawlerXinBangFacade.search(publicName, nonce, xyz, order, filter);
     }
 
-    // @RequestMapping(value = "/update", method = RequestMethod.POST)
-    // public int update(@RequestBody DictionaryPo po) {
-    // return service.updateById(po);
-    // }
+    @RequestMapping(value = "/update", method = RequestMethod.POST)
+    public int update(@RequestBody XinBangGzhDto dto) {
+        return crawlerXinBangFacade.updateById(dto);
+    }
+
+    @RequestMapping(value = "/update1", method = RequestMethod.POST)
+    public int update1(@RequestBody PageParam dto) {
+        return 111;
+    }
+
+
     //
     // @RequestMapping(value = "/add", method = RequestMethod.POST)
     // public int add(@RequestBody DictionaryPo po) {

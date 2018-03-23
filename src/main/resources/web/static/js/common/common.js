@@ -60,14 +60,77 @@ Date.prototype.format = function (fmt) { //author: meizz
 };
 
 function limit(str, limit) {
-    if(str == null){
+    if (str == null) {
         return "";
     }
-    var result ="";
+    var result = "";
     var length = str.length;
     for (var i = limit; i < length; i += limit) {
         result += str.substring(i - limit, i) + "\n";
     }
     result += str.substring(i - limit, length);
     return result;
+}
+
+
+function defaultSuccessCallBack(result) {
+    var tmp;
+    if (isEmpty(result)) {
+        tmp = $.templates("#tableEmptyTmp");
+    } else {
+        tmp = $.templates("#tableTmp");
+    }
+    tmp.link("#datatable", result);
+}
+
+
+function defaultErrorCallBack() {
+    var tmpl = $.templates("#tableEmptyTmp");
+    tmpl.link("#datatable");
+}
+
+function ajaxGet(url, successCallBack, errorCallBack) {
+    showLoading();
+    $.ajax({
+        type: "GET", //提交方式
+        dataType: "json", //类型
+        contentType: "application/json; charset=utf-8", //内容类型
+        url: url, //提交的页面，方法名
+        success: function (redata) {
+            if (successCallBack) {
+                successCallBack(redata);
+            }
+            hideLoading();
+        },
+        error: function () {
+            if (errorCallBack) {
+                errorCallBack();
+            }
+            hideLoading();
+        }
+    });
+}
+
+
+function ajaxPost(url, data, successCallBack, errorCallBack) {
+    showLoading();
+    $.ajax({
+        type: "POST", //提交方式
+        dataType: "json", //类型
+        contentType: "application/json; charset=UTF-8", //内容类型
+        url: url, //提交的页面，方法名
+        date: JSON.stringify(data),
+        success: function (redata) {
+            if (successCallBack) {
+                successCallBack(redata);
+            }
+            hideLoading();
+        },
+        error: function () {
+            if (errorCallBack) {
+                errorCallBack();
+            }
+            hideLoading();
+        }
+    });
 }

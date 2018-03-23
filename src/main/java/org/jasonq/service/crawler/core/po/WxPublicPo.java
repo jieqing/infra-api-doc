@@ -55,7 +55,7 @@ public class WxPublicPo extends Entity {
     private Byte isCooperate;
 
     @Transient
-    private CompanyPo companyPo;
+    private CompanyPo companyPo = new CompanyPo();
 
     public Byte getIsCall() {
         return isCall;

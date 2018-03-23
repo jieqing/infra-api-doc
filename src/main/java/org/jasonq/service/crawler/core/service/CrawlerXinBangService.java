@@ -4,7 +4,10 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
 
 import javax.annotation.Resource;
 
@@ -120,7 +123,7 @@ public class CrawlerXinBangService {
         }
 
         WxPublicPo wxPublicPo = wxPublicService.selectByCertifiedCompany(searchCompanyName);
-        if (wxPublicPo != null && wxPublicPo.getCompanyId().equals(-1L)) {
+        if (wxPublicPo != null && Objects.equals(wxPublicPo.getCompanyId(), -1L)) {
             return null;
         }
 
@@ -143,53 +146,76 @@ public class CrawlerXinBangService {
                 logger.error("企查查找不到企业信息");
                 return null;
             }
-            Elements firstCompany = companyElem.get(0).select("td");
-            // 第一个
-            String logoUrl = firstCompany.get(0).select("img").attr("src");
-            Element baseInfoElem = firstCompany.get(1);
-            String companyName = baseInfoElem.select("a").get(0).text();
-            Elements companyInfo = baseInfoElem.select("p");
-            String userNameInfo = companyInfo.get(0).text();
-            String phoneInfo = companyInfo.get(1).text();
-            String addressInfo = companyInfo.get(2).text();
+            boolean successSearch = false;
+            CompanyPo matchedCompanyPo = null;
+            Iterator<Element> iterator = companyElem.iterator();
+            while (iterator.hasNext()) {
+                Elements companyElems = iterator.next().select("td");
+                // 第一个
+                String logoUrl = companyElems.get(0).select("img").attr("src");
+                Element baseInfoElem = companyElems.get(1);
+                String companyName = baseInfoElem.select("a").get(0).text();
+                Elements companyInfo = baseInfoElem.select("p");
+                String userNameInfo = companyInfo.get(0).text();
+                String phoneInfo = companyInfo.get(1).text();
+                String addressInfo = companyInfo.get(2).text();
 
-            String[] split = userNameInfo.split("成立时间：");
-            String createDay = split[1];
-            String[] split1 = split[0].split("注册资本：");
-            String registerMoney = split1[1];
-            String legalPerson = split1[0].replace("法定代表人：", "");
+                String[] split = userNameInfo.split("成立时间：");
+                String createDay = split[1];
+                String[] split1 = split[0].split("注册资本：");
+                String registerMoney = split1[1];
+                String legalPerson = split1[0].replace("法定代表人：", "");
 
-            String[] split2 = phoneInfo.split("邮箱：");
-            String email = split2[1];
-            String phone = split2[0].replace("电话：", "");
-            String address = addressInfo.replace("地址：", "");
+                String[] split2 = phoneInfo.split("邮箱：");
+                String email = split2[1];
+                String phone = split2[0].replace("电话：", "");
+                String address = addressInfo.replace("地址：", "");
 
-            CompanyPo companyPo = new CompanyPo();
-            companyPo.setLogoUrl(logoUrl);
-            companyPo.setCompanyName(companyName);
-            companyPo.setCreateDay(createDay);
-            companyPo.setRegisterMoney(registerMoney);
-            companyPo.setLegalPerson(legalPerson);
-            companyPo.setEmail(email);
-            companyPo.setPhone(phone);
-            companyPo.setAddress(address);
-            companyService.add(companyPo);
+                CompanyPo companyPo = new CompanyPo();
+                companyPo.setLogoUrl(logoUrl);
+                companyPo.setCompanyName(companyName);
+                companyPo.setCreateDay(createDay);
+                companyPo.setRegisterMoney(registerMoney);
+                companyPo.setLegalPerson(legalPerson);
+                companyPo.setEmail(email);
+                companyPo.setPhone(phone);
+                companyPo.setAddress(address);
+                companyService.add(companyPo);
+
+                if (!successSearch && companyName.equals(searchCompanyName)) {
+                    successSearch = true;
+                    matchedCompanyPo = companyPo;
+                }
+            }
             // 关联回公众号
             List<WxPublicPo> wxPublicPos =
                     wxPublicService.listByCertifiedCompanys(Lists.newArrayList(searchCompanyName));
-            if (!companyName.equals(searchCompanyName)) {
+            if (successSearch) {
                 for (WxPublicPo publicPo : wxPublicPos) {
-                    publicPo.setCompanyId(-1L);
+                    if (publicPo.getCompanyId() == null) {
+                        WxPublicPo needUpdate = new WxPublicPo();
+                        needUpdate.setId(publicPo.getId());
+                        needUpdate.setCompanyId(matchedCompanyPo.getId());
+                        wxPublicService.updateById(needUpdate);
+                    }
                 }
-                wxPublicService.updateByIdBatch(wxPublicPos);
-                return null;
             }
             else {
                 for (WxPublicPo publicPo : wxPublicPos) {
-                    publicPo.setCompanyId(companyPo.getId());
+                    if (publicPo.getCompanyId() == null) {
+                        WxPublicPo needUpdate = new WxPublicPo();
+                        needUpdate.setId(publicPo.getId());
+                        needUpdate.setCompanyId(-1L);
+                        wxPublicService.updateById(needUpdate);
+                    }
                 }
-                wxPublicService.updateByIdBatch(wxPublicPos);
-                return companyPo;
+            }
+
+            if (successSearch) {
+                return matchedCompanyPo;
+            }
+            else {
+                return null;
             }
         }
         catch (Exception e) {

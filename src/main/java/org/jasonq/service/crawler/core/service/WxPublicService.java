@@ -9,6 +9,7 @@ import org.apache.logging.log4j.Logger;
 import org.jasonq.common.util.collection.CollectionUtil;
 import org.jasonq.service.crawler.core.po.WxPublicPo;
 import org.jasonq.service.crawler.core.repository.WxPublicRepository;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 
 import com.google.common.collect.Lists;
@@ -58,7 +59,12 @@ public class WxPublicService {
     }
 
     public int addBatch(List<WxPublicPo> list) {
-        return wxPublicRepository.insertBatch(list);
+        try {
+            return wxPublicRepository.insertBatch(list);
+        }
+        catch (DuplicateKeyException e) {
+        }
+        return 0;
     }
 
     public int deleteById(String id) throws InstantiationException, IllegalAccessException {

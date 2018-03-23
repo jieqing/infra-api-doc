@@ -44,6 +44,9 @@ public class CrawlerCompanyTask {
 
     public void searchOne() {
         String companyName = concurrentLinkedQueue.poll();
+        if (StringUtil.isEmpty(companyName)) {
+            return;
+        }
         if (companyService.selectByName(companyName) == null) {
             crawlerXinBangService.crawlerCompanyInfo(companyName);
         }

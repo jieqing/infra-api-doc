@@ -61,9 +61,9 @@
         </AsyncRoot>
 
         <!--打印sql-->
-        <logger name="org.jasonq.domain.dictionary.repository.sql" level="DEBUG" additivity="false">
-            <appender-ref ref="console"/>
-        </logger>
+        <!--<logger name="org.jasonq.service.crawler.core.repository.sql" level="DEBUG" additivity="false">-->
+            <!--<appender-ref ref="console"/>-->
+        <!--</logger>-->
     </Loggers>
 
 </configuration>
