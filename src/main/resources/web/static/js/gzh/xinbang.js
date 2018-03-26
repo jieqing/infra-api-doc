@@ -17,11 +17,11 @@ $(function () {
         onClickQuery();
     });
 
-    $("input[name='isCall']").change(function () {
+    $("#datatable").on("change", "input[name='isCall']", function () {
         var id = $(this).parent().prevAll("input[name='id']").val();
         ajaxPost(updateUrl, {id: id, isCall: this.checked ? 2 : 1});
     });
-    $("input[name='isCooperate']").change(function () {
+    $("#datatable").on("change", "input[name='isCooperate']", function () {
         var id = $(this).parent().prevAll("input[name='id']").val();
         ajaxPost(updateUrl, {id: id, isCooperate: this.checked ? 2 : 1});
     });
@@ -53,6 +53,7 @@ function queryList(publicName) {
 function hoverShowDiv(img) {
     $(img).next().css({"display": "block"});
 }
+
 function hoverHiddendiv(img) {
     $(img).next().css({"display": "none"});
 }
@@ -68,6 +69,7 @@ function createNonce() {
 }
 
 var p = 0;
+
 function createXyz(a) {
     p = 0;
     return d(c(e(a)))

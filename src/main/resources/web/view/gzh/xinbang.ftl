@@ -128,7 +128,7 @@
 </div>
 
 <#include "../common/footer.ftl">
-<script src="/js/gzh/xinbang.js?v=${VERSION}"></script>
+<script src="/js/gzh/xinbang.js"></script>
 <script>
 
 </script>

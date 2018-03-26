@@ -72,8 +72,8 @@ public class CrawlerXinBangFacade implements ICrawlerXinBangFacade {
                 wxPublicPo.setId(dbPublicPo.getId());
                 wxPublicPo.setIsCall(dbPublicPo.getIsCall());
                 wxPublicPo.setIsCooperate(dbPublicPo.getIsCooperate());
-                wxPublicPo.setCompanyId(dbPublicPo.getCompanyId());
-                if (Objects.equals(wxPublicPo.getHotNum(), dbPublicPo.getHotNum())) {
+                // 如果需要更新
+                if (!Objects.equals(wxPublicPo.getHotNum(), dbPublicPo.getHotNum())) {
                     WxPublicPo needUpdate = new WxPublicPo();
                     needUpdate.setId(wxPublicPo.getId());
                     needUpdate.setHotNum(wxPublicPo.getHotNum());

@@ -1,16 +1,8 @@
 package org.jasonq.service.crawler.core.service;
 
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.net.URLEncoder;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Objects;
-
-import javax.annotation.Resource;
-
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
+import com.google.common.collect.Lists;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jasonq.common.util.StreamUtil;
@@ -24,16 +16,20 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.springframework.stereotype.Service;
 
-import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
-import com.google.common.collect.Lists;
+import javax.annotation.Resource;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLEncoder;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Objects;
 
 
 /**
  * 小程序案例管理
- * 
- * @author jq
  *
+ * @author jq
  */
 @Service
 public class CrawlerXinBangService {
@@ -68,7 +64,8 @@ public class CrawlerXinBangService {
         conn.setRequestMethod("GET");
         conn.setRequestProperty("content-type", "application/json;charset=UTF-8");
         conn.setRequestProperty("Cookie",
-            "ticket=gQFe8DwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAySlVOWDE3a0ljbTMxRm80RTFxMVcAAgRIdqhaAwQQDgAA; openid=oFCwWw8XrpNOWaPYa6cvnV3dnuuo; token=95E757051ADC698A3DFDAA819FFFA184; tt_token=true; UM_distinctid=162220d9a1420-0edcf62d5a101f-5e183017-13c680-162220d9a1555b; __root_domain_v=.newrank.cn; ticket=gQFe8DwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAySlVOWDE3a0ljbTMxRm80RTFxMVcAAgRIdqhaAwQQDgAA; openid=oFCwWw8XrpNOWaPYa6cvnV3dnuuo; token=95E757051ADC698A3DFDAA819FFFA184; tt_token=true; CNZZDATA1253878005=735019981-1520988390-https%253A%252F%252Fwww.baidu.com%252F%7C1520988390; Hm_lvt_a19fd7224d30e3c8a6558dcb38c4beed=1520989745,1520989983,1520993101; Hm_lpvt_a19fd7224d30e3c8a6558dcb38c4beed=1520993101; _qddaz=QD.6c7sqj.66jxvs.jeqe0rr3; _qdda=3-1.1g6dvl; _qddab=3-x0g34a.jeqg0stv");
+//                "ticket=gQFe8DwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAySlVOWDE3a0ljbTMxRm80RTFxMVcAAgRIdqhaAwQQDgAA; openid=oFCwWw8XrpNOWaPYa6cvnV3dnuuo; token=95E757051ADC698A3DFDAA819FFFA184; tt_token=true; UM_distinctid=162220d9a1420-0edcf62d5a101f-5e183017-13c680-162220d9a1555b; __root_domain_v=.newrank.cn; ticket=gQFe8DwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAySlVOWDE3a0ljbTMxRm80RTFxMVcAAgRIdqhaAwQQDgAA; openid=oFCwWw8XrpNOWaPYa6cvnV3dnuuo; token=95E757051ADC698A3DFDAA819FFFA184; tt_token=true; CNZZDATA1253878005=735019981-1520988390-https%253A%252F%252Fwww.baidu.com%252F%7C1520988390; Hm_lvt_a19fd7224d30e3c8a6558dcb38c4beed=1520989745,1520989983,1520993101; Hm_lpvt_a19fd7224d30e3c8a6558dcb38c4beed=1520993101; _qddaz=QD.6c7sqj.66jxvs.jeqe0rr3; _qdda=3-1.1g6dvl; _qddab=3-x0g34a.jeqg0stv");
+                "tt_token=true; ticket=gQHe8DwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyWFNtOTBMa0ljbTMxTGJwVXhxMVMAAgS7y7haAwQQDgAA; token=3A097CBB12C0204E97A3EE0F055E6CE7; Hm_lvt_a19fd7224d30e3c8a6558dcb38c4beed=1522059610; UM_distinctid=16261d286e7440-085e834fea72ee-3f3c5501-13c680-16261d286e8d04; CNZZDATA1253878005=785635930-1522058314-https%253A%252F%252Fwww.baidu.com%252F%7C1522058314; __root_domain_v=.newrank.cn; _qddaz=QD.306gqd.nogskj.jf82zs1n; _qdda=3-1.3qjrnn; _qddab=3-2wh2fn.jf82zs4w; _qddamta_2852150610=3-0; tt_token=true; ticket=gQHe8DwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyWFNtOTBMa0ljbTMxTGJwVXhxMVMAAgS7y7haAwQQDgAA; token=3A097CBB12C0204E97A3EE0F055E6CE7; _qddac=3-1.3qjrnn.2wh2fn.jf82zs4w; Hm_lpvt_a19fd7224d30e3c8a6558dcb38c4beed=1522060339");
         InputStream inStream = conn.getInputStream();
         byte[] bytes = StreamUtil.readInputStream(inStream);
         String result = new String(bytes);
@@ -109,7 +106,7 @@ public class CrawlerXinBangService {
 
     /**
      * 控制爬企业的速度，企业信息不好爬，容易被封
-     * 
+     *
      * @param searchCompanyName
      * @return
      */
@@ -129,12 +126,12 @@ public class CrawlerXinBangService {
 
         try {
             Connection con = HttpConnection
-                .connect(String.format(QCC_SEARCH_URL, URLEncoder.encode(searchCompanyName, "UTF-8")));
+                    .connect(String.format(QCC_SEARCH_URL, URLEncoder.encode(searchCompanyName, "UTF-8")));
             con.header("Accept",
-                " text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8");
+                    " text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8");
             con.header("Accept-Language", " zh-CN,zh;q=0.9,en;q=0.8");
             con.header("User-Agent",
-                "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/62.0.3202.94 Safari/537.36");
+                    "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/62.0.3202.94 Safari/537.36");
             con.header("Accept-Encoding", " gzip, deflate");
             con.header("Connection", "Keep-Alive");
             con.header("Host", "www.qichacha.com");
@@ -143,7 +140,12 @@ public class CrawlerXinBangService {
             Document document = con.get();
             Elements companyElem = document.select(".m_srchList tbody tr");
             if (companyElem.isEmpty()) {
-                logger.error("企查查找不到企业信息");
+                if (!document.select(".noresult").isEmpty()) {
+                    logger.error("企查查找不到企业信息");
+                    updatePublic(searchCompanyName, false, null);
+                } else {
+                    logger.error("企查查被封");
+                }
                 return null;
             }
             boolean successSearch = false;
@@ -188,39 +190,40 @@ public class CrawlerXinBangService {
                 }
             }
             // 关联回公众号
-            List<WxPublicPo> wxPublicPos =
-                    wxPublicService.listByCertifiedCompanys(Lists.newArrayList(searchCompanyName));
-            if (successSearch) {
-                for (WxPublicPo publicPo : wxPublicPos) {
-                    if (publicPo.getCompanyId() == null) {
-                        WxPublicPo needUpdate = new WxPublicPo();
-                        needUpdate.setId(publicPo.getId());
-                        needUpdate.setCompanyId(matchedCompanyPo.getId());
-                        wxPublicService.updateById(needUpdate);
-                    }
-                }
-            }
-            else {
-                for (WxPublicPo publicPo : wxPublicPos) {
-                    if (publicPo.getCompanyId() == null) {
-                        WxPublicPo needUpdate = new WxPublicPo();
-                        needUpdate.setId(publicPo.getId());
-                        needUpdate.setCompanyId(-1L);
-                        wxPublicService.updateById(needUpdate);
-                    }
-                }
-            }
+            updatePublic(searchCompanyName, successSearch, matchedCompanyPo);
 
             if (successSearch) {
                 return matchedCompanyPo;
-            }
-            else {
+            } else {
                 return null;
             }
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             logger.error("爬企业信息出错", e);
         }
         return null;
+    }
+
+    private void updatePublic(String searchCompanyName, boolean successSearch, CompanyPo matchedCompanyPo) {
+        List<WxPublicPo> wxPublicPos =
+                wxPublicService.listByCertifiedCompanys(Lists.newArrayList(searchCompanyName));
+        if (successSearch) {
+            for (WxPublicPo publicPo : wxPublicPos) {
+                if (publicPo.getCompanyId() == null) {
+                    WxPublicPo needUpdate = new WxPublicPo();
+                    needUpdate.setId(publicPo.getId());
+                    needUpdate.setCompanyId(matchedCompanyPo.getId());
+                    wxPublicService.updateById(needUpdate);
+                }
+            }
+        } else {
+            for (WxPublicPo publicPo : wxPublicPos) {
+                if (publicPo.getCompanyId() == null) {
+                    WxPublicPo needUpdate = new WxPublicPo();
+                    needUpdate.setId(publicPo.getId());
+                    needUpdate.setCompanyId(-1L);
+                    wxPublicService.updateById(needUpdate);
+                }
+            }
+        }
     }
 }

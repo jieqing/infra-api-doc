@@ -119,7 +119,7 @@ function ajaxPost(url, data, successCallBack, errorCallBack) {
         dataType: "json", //类型
         contentType: "application/json; charset=UTF-8", //内容类型
         url: url, //提交的页面，方法名
-        date: JSON.stringify(data),
+        data: JSON.stringify(data),
         success: function (redata) {
             if (successCallBack) {
                 successCallBack(redata);
