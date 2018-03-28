@@ -1,9 +1,7 @@
 package org.jasonq.service.crawler.controller;
 
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 
 
 /**
@@ -19,6 +17,12 @@ public class XinBangPageController {
     @RequestMapping(value = "/gzh")
     public String xbIndex() {
         return "gzh/xinbang";
+    }
+
+
+    @RequestMapping(value = "/gzhlixian")
+    public String asyncPublicSearch() {
+        return "gzh/asyncPublicSearch";
     }
 
 }

@@ -1,22 +1,18 @@
 package org.jasonq.service.crawler.controller;
 
-import java.util.List;
-
-import javax.annotation.Resource;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jasonq.service.crawler.api.dto.XinBangGzhDto;
+import org.jasonq.service.crawler.api.facade.IAsyncWxPublicFacade;
 import org.jasonq.service.crawler.api.facade.ICrawlerXinBangFacade;
-import org.jasonq.service.crawler.api.param.PageParam;
-import org.jasonq.service.crawler.facade.CrawlerXinBangFacade;
 import org.springframework.web.bind.annotation.*;
+
+import javax.annotation.Resource;
+import java.util.List;
 
 
 /**
- * 
  * @author jq
- *
  */
 @RestController
 @RequestMapping(value = "/gzh")
@@ -26,10 +22,12 @@ public class XinBangController {
 
     @Resource
     private ICrawlerXinBangFacade crawlerXinBangFacade;
+    @Resource
+    private IAsyncWxPublicFacade asyncWxPublicFacade;
 
     @RequestMapping(value = "/xb/search", method = RequestMethod.GET)
     public List<XinBangGzhDto> listWithChild(@RequestParam String publicName, @RequestParam String nonce,
-            @RequestParam String xyz, @RequestParam String order, @RequestParam String filter)
+                                             @RequestParam String xyz, @RequestParam String order, @RequestParam String filter)
             throws Exception {
         return crawlerXinBangFacade.search(publicName, nonce, xyz, order, filter);
     }
@@ -39,11 +37,11 @@ public class XinBangController {
         return crawlerXinBangFacade.updateById(dto);
     }
 
-    @RequestMapping(value = "/update1", method = RequestMethod.POST)
-    public int update1(@RequestBody PageParam dto) {
-        return 111;
-    }
 
+    @RequestMapping(value = "/saveAsyncNames", method = RequestMethod.POST)
+    public int saveAsyncNames(@RequestBody String names) {
+        return asyncWxPublicFacade.addBatch(names);
+    }
 
     //
     // @RequestMapping(value = "/add", method = RequestMethod.POST)
