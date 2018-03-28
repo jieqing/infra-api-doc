@@ -53,7 +53,7 @@
                 <value>scrm.weixin3rd.dubbo.properties</value>
                 <value>scrm.kf.dubbo.properties</value>
                 <value>scrm.weixinpay.dubbo.properties</value>
-                <value>common.order.dubbo.properties</value>
+                <value>common.orderBy.dubbo.properties</value>
                 <value>common.mkt.dubbo.properties</value>
                 <value>common.mmall.dubbo.properties</value>
                 <value>common.mmis.sys.properties</value>

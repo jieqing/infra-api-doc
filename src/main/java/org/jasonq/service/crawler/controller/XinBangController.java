@@ -2,6 +2,7 @@ package org.jasonq.service.crawler.controller;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.jasonq.service.crawler.api.dto.AsyncWxPublicDto;
 import org.jasonq.service.crawler.api.dto.XinBangGzhDto;
 import org.jasonq.service.crawler.api.facade.IAsyncWxPublicFacade;
 import org.jasonq.service.crawler.api.facade.ICrawlerXinBangFacade;
@@ -39,8 +40,18 @@ public class XinBangController {
 
 
     @RequestMapping(value = "/saveAsyncNames", method = RequestMethod.POST)
-    public int saveAsyncNames(@RequestBody String names) {
-        return asyncWxPublicFacade.addBatch(names);
+    public int saveAsyncNames(@RequestBody List<AsyncWxPublicDto> list) {
+        return asyncWxPublicFacade.addBatch(list);
+    }
+
+    @RequestMapping(value = "/getAsyncAll", method = RequestMethod.GET)
+    public String saveAsyncNames() {
+        List<AsyncWxPublicDto> all = asyncWxPublicFacade.getAll();
+        StringBuilder names = new StringBuilder();
+        for (AsyncWxPublicDto asyncWxPublicDto : all) {
+            names.append(asyncWxPublicDto.getPublicName());
+        }
+        return names.toString();
     }
 
     //

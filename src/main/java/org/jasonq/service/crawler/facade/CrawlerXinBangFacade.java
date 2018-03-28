@@ -1,11 +1,6 @@
 package org.jasonq.service.crawler.facade;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-
-import javax.annotation.Resource;
-
+import com.google.common.collect.Lists;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jasonq.common.domain.util.BeanCopyUtil;
@@ -22,14 +17,16 @@ import org.jasonq.service.crawler.core.service.WxPublicService;
 import org.jasonq.service.crawler.task.CrawlerCompanyTask;
 import org.springframework.stereotype.Service;
 
-import com.google.common.collect.Lists;
+import javax.annotation.Resource;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
 
 /**
  * 组装数据，通过调用多个service，facade来完成一个完整的业务功能 返回DTO
- * 
- * @author jq
  *
+ * @author jq
  */
 @Service
 public class CrawlerXinBangFacade implements ICrawlerXinBangFacade {
@@ -49,14 +46,20 @@ public class CrawlerXinBangFacade implements ICrawlerXinBangFacade {
             "https://www.newrank.cn/xdnphb/data/weixinuser/searchWeixinDataByCondition?hasDeal=false&keyName=%s&filter=%s&order=%s"
                     + "&nonce=%s&xyz=%s";
 
+    @Override
+    public List<XinBangGzhDto> search(String key, String nonce, String xyz, String order,
+                                      String filter) throws Exception {
+        return search(key, nonce, xyz, order, filter, null);
+    }
+
     /**
      * 根据公众号微信号，企业名称绑定数据库数据
      */
     @Override
     synchronized public List<XinBangGzhDto> search(String key, String nonce, String xyz, String order,
-            String filter) throws Exception {
+                                                   String filter, String companyCookie) throws Exception {
         List<WxPublicPo> wxPublicPos = crawlerXinBangService
-            .searchByXinBang(String.format(XB_SEARCH_URL, key, filter, order, nonce, xyz));
+                .searchByXinBang(String.format(XB_SEARCH_URL, key, filter, order, nonce, xyz));
         if (CollectionUtil.isEmpty(wxPublicPos)) {
             return Lists.newArrayList();
         }
@@ -80,8 +83,7 @@ public class CrawlerXinBangFacade implements ICrawlerXinBangFacade {
                     needUpdate.setAvgReadAll(wxPublicPo.getAvgReadAll());
                     wxPublicService.updateById(needUpdate);
                 }
-            }
-            else {
+            } else {
                 needAdds.add(wxPublicPo);
             }
         }
@@ -102,7 +104,7 @@ public class CrawlerXinBangFacade implements ICrawlerXinBangFacade {
             WxPublicPo wxPublicPo = wxPublicPos.get(i);
             if (wxPublicPo.getCompanyPo().getId() == null) {
                 CompanyPo companyPo =
-                        crawlerXinBangService.crawlerCompanyInfo(wxPublicPo.getCertifiedCompany());
+                        crawlerXinBangService.crawlerCompanyInfo(wxPublicPo.getCertifiedCompany(), companyCookie);
                 if (companyPo != null) {
                     wxPublicPo.setCompanyPo(companyPo);
                 }

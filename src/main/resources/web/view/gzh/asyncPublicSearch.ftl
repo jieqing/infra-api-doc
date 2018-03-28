@@ -15,7 +15,7 @@
         }
     </style>
     <script>
-        var saveUrl = "gzh/xb/search";
+        var saveUrl = "gzh/saveAsyncNames";
     </script>
     <#--<script id="tableTmp" type="text/x-jsrender">-->
         <#--<tr>-->
@@ -51,19 +51,20 @@
 
 <body style="margin-top: 60px; margin-left: 60px;">
 <div>
-    <p>请输入需要离线搜索的公众号名关键字，以“,”(英文逗号)分割</p>
+    <p>请输入需要离线搜索的公众号名关键字，以“，”(中文逗号)分割</p>
     <label>
         <textarea id="publicNames" rows="10" cols="200"></textarea>
     </label>
 
 </div>
 <button id="save" class="btn btn-default" type="button">保存</button>
-<p>查找状态</p>
+
 <div id="datatable" style="margin-top: 10px; margin-left: 30%;">
 
 </div>
 
 <#include "../common/footer.ftl">
+<script src="/js/gzh/xinbang.js"></script>
 <script src="/js/gzh/asyncPublicSearch.js"></script>
 <script>
 

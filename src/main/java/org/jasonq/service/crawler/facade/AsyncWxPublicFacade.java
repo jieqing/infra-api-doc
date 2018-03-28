@@ -1,9 +1,9 @@
 package org.jasonq.service.crawler.facade;
 
-import com.google.common.collect.Lists;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.jasonq.common.util.StringUtil;
+import org.jasonq.common.domain.util.BeanCopyUtil;
+import org.jasonq.service.crawler.api.dto.AsyncWxPublicDto;
 import org.jasonq.service.crawler.api.facade.IAsyncWxPublicFacade;
 import org.jasonq.service.crawler.core.po.AsyncWxPublicPo;
 import org.jasonq.service.crawler.core.service.AsyncWxPublicService;
@@ -28,17 +28,12 @@ public class AsyncWxPublicFacade implements IAsyncWxPublicFacade {
 
 
     @Override
-    public int addBatch(String publicNames) {
-        if (StringUtil.isEmpty(publicNames)) {
-            return 0;
-        }
-        String[] split = publicNames.split(",");
-        List<AsyncWxPublicPo> list = Lists.newArrayList();
-        for (String name : split) {
-            AsyncWxPublicPo asyncWxPublicPo = new AsyncWxPublicPo();
-            asyncWxPublicPo.setPublicName(name);
-            list.add(asyncWxPublicPo);
-        }
-        return asyncWxPublicService.addBatch(list);
+    public int addBatch(List<AsyncWxPublicDto> list) {
+        return asyncWxPublicService.addBatch(BeanCopyUtil.toList(list, AsyncWxPublicPo.class));
+    }
+
+    @Override
+    public List<AsyncWxPublicDto> getAll() {
+        return BeanCopyUtil.toList(asyncWxPublicService.getAll(), AsyncWxPublicDto.class);
     }
 }

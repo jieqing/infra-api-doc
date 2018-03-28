@@ -39,6 +39,43 @@ public class AsyncWxPublicPo extends Entity {
 
     private String publicName;
     private Byte isSearch;
+    private String nonce;
+    private String xyz;
+    private String orderBy;
+    private String filter;
+
+
+    public String getNonce() {
+        return nonce;
+    }
+
+    public void setNonce(String nonce) {
+        this.nonce = nonce;
+    }
+
+    public String getXyz() {
+        return xyz;
+    }
+
+    public void setXyz(String xyz) {
+        this.xyz = xyz;
+    }
+
+    public String getOrderBy() {
+        return orderBy;
+    }
+
+    public void setOrderBy(String orderBy) {
+        this.orderBy = orderBy;
+    }
+
+    public String getFilter() {
+        return filter;
+    }
+
+    public void setFilter(String filter) {
+        this.filter = filter;
+    }
 
     public String getPublicName() {
         return publicName;

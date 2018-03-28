@@ -1,9 +1,5 @@
 package org.jasonq.service.crawler.task;
 
-import java.util.concurrent.ConcurrentLinkedQueue;
-
-import javax.annotation.Resource;
-
 import org.apache.commons.lang3.RandomUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -12,6 +8,9 @@ import org.jasonq.service.crawler.core.service.CompanyService;
 import org.jasonq.service.crawler.core.service.CrawlerXinBangService;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+
+import javax.annotation.Resource;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 
 /**
@@ -32,10 +31,10 @@ public class CrawlerCompanyTask {
     @Resource
     private CrawlerXinBangService crawlerXinBangService;
 
-    @Scheduled(fixedDelay = 120 * 1000)
+    @Scheduled(fixedDelay = 20 * 1000)
     public void run() {
         try {
-            Thread.sleep(RandomUtils.nextInt(1, 60000));
+            Thread.sleep(RandomUtils.nextInt(1, 40000));
             searchOne();
         }
         catch (InterruptedException e) {
