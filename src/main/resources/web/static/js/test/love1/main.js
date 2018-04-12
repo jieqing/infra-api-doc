@@ -1,3 +1,5 @@
+var x;
+var ctx;
 (function (window) {
   window.requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame ||
   window.webkitRequestAnimationFrame || window.msRequestAnimationFrame
@@ -5,31 +7,33 @@
   const FRAME_RATE = 60
   const PARTICLE_NUM = 2000
   const RADIUS = Math.PI * 2
-  const CANVASWIDTH = window.width/1.5
-  const CANVASHEIGHT = window.height/4
+  const CANVASWIDTH = window.innerWidth
+  const CANVASHEIGHT = window.innerHeight/4
   const CANVASID = 'canvas'
 
-  let texts = ['送给燕萍   O(∩_∩)O~', '蔚蓝星空下', '男孩独自坐望', '星海闪烁', '仿佛在问', '为什么你一个人', '我在等一个人',
+  let texts = ['送燕萍', '蔚蓝星空下', '男孩独自坐望', '星海闪烁', '仿佛在问', '为什么你一个人', '我在等一个人',
       '一个女孩', '这个女孩', '真没什么好的', '性格很倔强', '脾气又不好', '还很强势', '但男孩觉得',
       '这都是表面', '在他的眼中', '女孩任性起来', '耍起混来的时候', '真的很可爱', '可是', '就是这样的她',
       '也非常的脆弱', '也有', '伤心难过的时候', '而男孩', '看着她', '想要做一千件事', '让她开心起来', '却总是放下',
-     'Always~~~~老婆我爱你']
+     '老婆我爱你'];
 
   let canvas,
-    ctx,
+
     particles = [],
     quiver = true,
     text = texts[0],
     textIndex = 0,
-    textSize = 70
+    textSize = window.innerWidth/18
 
   function draw () {
     ctx.clearRect(0, 0, CANVASWIDTH, CANVASHEIGHT)
     ctx.fillStyle = 'rgb(255, 255, 255)'
     ctx.textBaseline = 'middle'
     ctx.fontWeight = 'bold'
-    ctx.font = textSize + 'px \'SimHei\', \'Avenir\', \'Helvetica Neue\', \'Arial\', \'sans-serif\''
-    ctx.fillText(text, (CANVASWIDTH - ctx.measureText(text).width) * 0.5, CANVASHEIGHT * 0.5)
+    ctx.font = textSize + 'px \'SimHei\', \'Avenir\', \'Helvetica Neue\', \'Arial\', \'sans-serif\'';
+      x = (CANVASWIDTH - ctx.measureText(text).width) * 0.5;
+      let y = CANVASHEIGHT * 0.5;
+      ctx.fillText(text, x, y);
 
     let imgData = ctx.getImageData(0, 0, CANVASWIDTH, CANVASHEIGHT)
 
