@@ -1,9 +1,7 @@
 package org.jasonq.service.crawler;
 
-import java.io.ByteArrayOutputStream;
-import java.io.InputStream;
-import java.net.URLEncoder;
-
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import org.jasonq.common.util.HttpUtil;
 import org.jsoup.Connection;
 import org.jsoup.helper.HttpConnection;
@@ -11,6 +9,13 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.junit.Test;
+import org.springframework.util.CollectionUtils;
+
+import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
+import java.net.URLEncoder;
+import java.util.Collection;
+import java.util.Map;
 
 
 /**
@@ -28,15 +33,33 @@ public class XinBangTest {
             "PHPSESSID=m582r5cnp7jvb1vsn2ntrio4m3; UM_distinctid=1622216eda3322-0706a11c524765-5e183017-13c680-1622216eda43fd; hasShow=1; acw_tc=AQAAAFu/TwFaugwATRxWywNqApe2DgeK; _uab_collina=152099036045208248024076; zg_did=%7B%22did%22%3A%20%221622216ef3e4e9-0d49ebd2cd7264-5e183017-13c680-1622216ef3f5d2%22%7D; zg_de1d1a35bfa24ce29bbf2c7eb17e6c4f=%7B%22sid%22%3A%201520994539306%2C%22updated%22%3A%201520994647844%2C%22info%22%3A%201520990351181%2C%22superProperty%22%3A%20%22%7B%7D%22%2C%22platform%22%3A%20%22%7B%7D%22%2C%22utm%22%3A%20%22%7B%7D%22%2C%22referrerDomain%22%3A%20%22%22%7D; CNZZDATA1254842228=1814222760-1520986400-https%253A%252F%252Fwww.baidu.com%252F%7C1520993404; Hm_lvt_3456bee468c83cc63fb5147f119f1075=1520990352; Hm_lpvt_3456bee468c83cc63fb5147f119f1075=1520994648";
 
     @Test
+    public void test1() {
+        Map<String, Object> params = Maps.newHashMap();
+        params.put("1", Lists.newArrayList(1));
+        params.put("2", null);
+        boolean isParamsEmpty = true;
+        for (Map.Entry<String, Object> entry : params.entrySet()) {
+            Object value = entry.getValue();
+            isParamsEmpty = (value == null) || (value instanceof Collection && CollectionUtils.isEmpty((Collection<?>) value));
+            if (!isParamsEmpty) {
+                break;
+            }
+        }
+        if (isParamsEmpty) {
+            System.out.println("空");
+        }
+        System.out.println(2);
+    }
+
     public void test() throws Exception {
         for (int i = 0; i < 1000; i++) {
             Connection con = HttpConnection
-                .connect(String.format(QCC_SEARCH_URL, URLEncoder.encode("小米通讯技术有限公司长春分公司", "UTF-8")));
+                    .connect(String.format(QCC_SEARCH_URL, URLEncoder.encode("小米通讯技术有限公司长春分公司", "UTF-8")));
             con.header("Accept",
-                " text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8");
+                    " text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8");
             con.header("Accept-Language", " zh-CN,zh;q=0.9,en;q=0.8");
             con.header("User-Agent",
-                "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/62.0.3202.94 Safari/537.36");
+                    "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/62.0.3202.94 Safari/537.36");
             con.header("Accept-Encoding", " gzip, deflate");
             con.header("Connection", "Keep-Alive");
             con.header("Host", "www.qichacha.com");

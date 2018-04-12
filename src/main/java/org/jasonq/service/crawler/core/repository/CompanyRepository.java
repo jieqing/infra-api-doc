@@ -1,12 +1,10 @@
 package org.jasonq.service.crawler.core.repository;
 
-import com.google.common.collect.Lists;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jasonq.common.repository.BaseSqlRepository;
 import org.jasonq.common.repository.query.Query;
 import org.jasonq.common.repository.query.QueryParam;
-import org.jasonq.common.util.collection.CollectionUtil;
 import org.jasonq.service.crawler.core.po.CompanyPo;
 import org.jasonq.service.crawler.core.repository.sql.CompanyMapper;
 import org.springframework.stereotype.Repository;
@@ -27,9 +25,6 @@ public class CompanyRepository extends BaseSqlRepository<CompanyPo, CompanyMappe
     private Logger logger = LogManager.getLogger(CompanyRepository.class);
 
     public List<CompanyPo> listByNames(List<String> companyNames) {
-        if(CollectionUtil.isEmpty(companyNames)){
-            return Lists.newArrayList();
-        }
         QueryParam<Enum> queryParam = QueryParam.create();
         queryParam.addQuery(CompanyPo.ColumnName.companyName, Query.Opt.in, companyNames);
         return super.listByParam(queryParam);

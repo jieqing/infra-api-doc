@@ -3,12 +3,11 @@ package org.jasonq.service.crawler.core.service;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jasonq.common.constant.Constant;
-import org.jasonq.common.repository.query.QueryParam;
+import org.jasonq.common.domain.service.BaseService;
 import org.jasonq.service.crawler.core.po.AsyncWxPublicPo;
 import org.jasonq.service.crawler.core.repository.AsyncWxPublicRepository;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.Resource;
 import java.util.List;
 
 
@@ -19,36 +18,24 @@ import java.util.List;
  * @date 2018/3/6
  */
 @Service
-public class AsyncWxPublicService {
+public class AsyncWxPublicService extends BaseService<AsyncWxPublicPo, AsyncWxPublicRepository> {
 
     private Logger logger = LogManager.getLogger(this.getClass());
 
-    @Resource
-    private AsyncWxPublicRepository asyncWxPublicRepository;
-
     public boolean isSearch(String publicName) {
-        return asyncWxPublicRepository.selectOne(publicName, Constant.YES) == null ? false : true;
+        return repository.selectOne(publicName, Constant.YES) == null ? false : true;
     }
 
-    //
-//    public List<CompanyPo> listByNames(List<String> companyNames) {
-//        return asyncWxPublicRepository.listByNames(companyNames);
-//    }
-
-
     public List<AsyncWxPublicPo> getAll() {
-        return asyncWxPublicRepository.listByParam(QueryParam.create());
+        return repository.getAll();
     }
 
     public AsyncWxPublicPo poll() {
-        return asyncWxPublicRepository.poll();
+        return repository.poll();
     }
 
-    public int updateById(AsyncWxPublicPo entity) {
-        return asyncWxPublicRepository.updateById(entity);
-    }
 
     public int addBatch(List<AsyncWxPublicPo> list) {
-        return asyncWxPublicRepository.insertBatch(list);
+        return repository.insertBatch(list);
     }
 }
