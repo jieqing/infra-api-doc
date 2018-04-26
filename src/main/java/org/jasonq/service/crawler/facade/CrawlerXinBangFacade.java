@@ -6,6 +6,8 @@ import org.apache.logging.log4j.Logger;
 import org.jasonq.common.domain.util.BeanCopyUtil;
 import org.jasonq.common.util.collection.CollectionUtil;
 import org.jasonq.common.util.collection.MapUtil;
+import org.jasonq.domain.crawler.api.dto.WxPublicDto;
+import org.jasonq.domain.crawler.api.facade.ICrawlerFacade;
 import org.jasonq.service.crawler.api.dto.QiChaChaDto;
 import org.jasonq.service.crawler.api.dto.XinBangGzhDto;
 import org.jasonq.service.crawler.api.facade.ICrawlerXinBangFacade;
@@ -41,6 +43,8 @@ public class CrawlerXinBangFacade implements ICrawlerXinBangFacade {
     private CrawlerXinBangService crawlerXinBangService;
     @Resource
     private CrawlerCompanyTask crawlerCompanyTask;
+    @Resource
+    private ICrawlerFacade crawlerFacade;
 
     String XB_SEARCH_URL =
             "https://www.newrank.cn/xdnphb/data/weixinuser/searchWeixinDataByCondition?hasDeal=false&keyName=%s&filter=%s&order=%s"
@@ -58,8 +62,9 @@ public class CrawlerXinBangFacade implements ICrawlerXinBangFacade {
     @Override
     synchronized public List<XinBangGzhDto> search(String key, String nonce, String xyz, String order,
                                                    String filter, String companyCookie) throws Exception {
-        List<WxPublicPo> wxPublicPos = crawlerXinBangService
-                .searchByXinBang(String.format(XB_SEARCH_URL, key, filter, order, nonce, xyz));
+        List<WxPublicDto> wxPublicDtos = crawlerFacade
+                .searchGzhFromXinBang(String.format(XB_SEARCH_URL, key, filter, order, nonce, xyz));
+        List<WxPublicPo> wxPublicPos = BeanCopyUtil.toList(wxPublicDtos, WxPublicPo.class);
         if (CollectionUtil.isEmpty(wxPublicPos)) {
             return Lists.newArrayList();
         }

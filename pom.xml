@@ -15,8 +15,14 @@
         <version>1.0.0-SNAPSHOT</version>
     </parent>
 
-
     <dependencies>
+        <!--接口-->
+        <dependency>
+            <groupId>org.jasonq.domain.crawler</groupId>
+            <artifactId>domain-api-crawler</artifactId>
+            <version>1.0.0-SNAPSHOT</version>
+        </dependency>
+
         <dependency>
             <groupId>org.jasonq.service.crawler</groupId>
             <artifactId>service-api-crawler</artifactId>
@@ -27,6 +33,24 @@
             <groupId>org.jasonq.springboot.common</groupId>
             <artifactId>facade</artifactId>
             <version>1.0.0-SNAPSHOT</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-feign</artifactId>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-aop -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-aop</artifactId>
+            <exclusions>
+                <!--剔除默认日志打印，使用log4j2-->
+                <exclusion>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-starter-logging</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
         <!-- Spring Boot Freemarker 依赖 -->
@@ -47,157 +71,95 @@
             <version>1.8.3</version>
         </dependency>
 
+        <!--pagehelper-->
         <dependency>
-            <groupId>commons-beanutils</groupId>
-            <artifactId>commons-beanutils-core</artifactId>
-            <version>1.8.3</version>
+            <groupId>com.github.pagehelper</groupId>
+            <artifactId>pagehelper-spring-boot-starter</artifactId>
+            <version>1.2.3</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-starter-logging</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
+        <!--MySQL 连接驱动依赖-->
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>5.1.39</version>
+        </dependency>
+
+        <!--tk.mapper-->
+        <dependency>
+            <groupId>tk.mybatis</groupId>
+            <artifactId>mapper-spring-boot-starter</artifactId>
+            <version>1.2.4</version>
+        </dependency>
+
+
+        <!--热部署-->
         <!--<dependency>-->
-            <!--<groupId>org.springframework.boot</groupId>-->
-            <!--<artifactId>spring-boot-devtools</artifactId>-->
-            <!--<optional>true</optional>-->
+        <!--<groupId>org.springframework.boot</groupId>-->
+        <!--<artifactId>spring-boot-devtools</artifactId>-->
+        <!--<optional>true</optional>-->
         <!--</dependency>-->
     </dependencies>
-
-
-    <profiles>
-        <profile>
-            <!-- 开发环境 -->
-            <id>dev</id>
-            <activation>
-                <!-- 默认加载的配置 -->
-                <activeByDefault>true</activeByDefault>
-            </activation>
-            <properties>
-                <!-- Conf server -->
-                <conf.server.host>172.168.30.231:7070</conf.server.host>
-                <conf.server.version>scrm-web-mmis</conf.server.version>
-                <conf.server.app>YM-2017-SCRM-Integrate</conf.server.app>
-                <conf.server.env>dev</conf.server.env>
-            </properties>
-        </profile>
-        <profile>
-            <!-- 生产环境 -->
-            <id>release</id>
-            <properties>
-                <!-- Conf server -->
-                <conf.server.host>10.25.138.35:8080</conf.server.host>
-                <conf.server.version>scrm-mmis-1.0</conf.server.version>
-                <conf.server.app>scrm</conf.server.app>
-                <conf.server.env>online</conf.server.env>
-            </properties>
-        </profile>
-    </profiles>
-
-    <build>
-        <resources>
-            <resource>
-                <directory>src/main/resources</directory>
-                <includes>
-                    <include>**/*.*</include>
-                </includes>
-                <filtering>true</filtering>
-            </resource>
-            <resource>
-                <directory>./</directory>
-                <includes>
-                    <include>*.xml</include>
-                </includes>
-                <filtering>true</filtering>
-            </resource>
-        </resources>
-
-        <plugins>
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-                <!--<configuration>-->
-                    <!--<fork>true</fork>-->
-                <!--</configuration>-->
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>repackage</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-            <!---->
-            <!--<plugin>-->
-                <!--<groupId>org.apache.maven.plugins</groupId>-->
-                <!--<artifactId>maven-deploy-plugin</artifactId>-->
-                <!--<configuration>-->
-                    <!--<skip>true</skip>-->
-                <!--</configuration>-->
-            <!--</plugin>-->
-            <!--<plugin>-->
-                <!--<groupId>org.apache.maven.plugins</groupId>-->
-                <!--<artifactId>maven-war-plugin</artifactId>-->
-                <!--<configuration>-->
-                    <!--<failOnMissingWebXml>false</failOnMissingWebXml>-->
-                <!--</configuration>-->
-            <!--</plugin>-->
-
-
-        </plugins>
-    </build>
-
-
 </project>
 
 
-    <!--&lt;!&ndash; Spring Boot 启动父依赖 &ndash;&gt;-->
-    <!--<parent>-->
+        <!--&lt;!&ndash; Spring Boot 启动父依赖 &ndash;&gt;-->
+        <!--<parent>-->
         <!--<groupId>org.springframework.boot</groupId>-->
         <!--<artifactId>spring-boot-starter-parent</artifactId>-->
         <!--<version>1.5.1.RELEASE</version>-->
-    <!--</parent>-->
+        <!--</parent>-->
 
-    <!--<properties>-->
+        <!--<properties>-->
         <!--<mybatis-spring-boot>1.2.0</mybatis-spring-boot>-->
         <!--<mysql-connector>5.1.39</mysql-connector>-->
-    <!--</properties>-->
+        <!--</properties>-->
 
-    <!--<dependencies>-->
+        <!--<dependencies>-->
         <!--&lt;!&ndash; Spring Boot Freemarker 依赖 &ndash;&gt;-->
         <!--<dependency>-->
-            <!--<groupId>org.springframework.boot</groupId>-->
-            <!--<artifactId>spring-boot-starter-freemarker</artifactId>-->
+        <!--<groupId>org.springframework.boot</groupId>-->
+        <!--<artifactId>spring-boot-starter-freemarker</artifactId>-->
         <!--</dependency>-->
 
         <!--&lt;!&ndash; Spring Boot Web 依赖 &ndash;&gt;-->
         <!--<dependency>-->
-            <!--<groupId>org.springframework.boot</groupId>-->
-            <!--<artifactId>spring-boot-starter-web</artifactId>-->
+        <!--<groupId>org.springframework.boot</groupId>-->
+        <!--<artifactId>spring-boot-starter-web</artifactId>-->
         <!--</dependency>-->
 
         <!--&lt;!&ndash; Spring Boot Test 依赖 &ndash;&gt;-->
         <!--<dependency>-->
-            <!--<groupId>org.springframework.boot</groupId>-->
-            <!--<artifactId>spring-boot-starter-test</artifactId>-->
-            <!--<scope>test</scope>-->
+        <!--<groupId>org.springframework.boot</groupId>-->
+        <!--<artifactId>spring-boot-starter-test</artifactId>-->
+        <!--<scope>test</scope>-->
         <!--</dependency>-->
 
         <!--&lt;!&ndash; Spring Boot Mybatis 依赖 &ndash;&gt;-->
         <!--<dependency>-->
-            <!--<groupId>org.mybatis.spring.boot</groupId>-->
-            <!--<artifactId>mybatis-spring-boot-starter</artifactId>-->
-            <!--<version>${mybatis-spring-boot}</version>-->
+        <!--<groupId>org.mybatis.spring.boot</groupId>-->
+        <!--<artifactId>mybatis-spring-boot-starter</artifactId>-->
+        <!--<version>${mybatis-spring-boot}</version>-->
         <!--</dependency>-->
 
         <!--&lt;!&ndash; MySQL 连接驱动依赖 &ndash;&gt;-->
         <!--<dependency>-->
-            <!--<groupId>mysql</groupId>-->
-            <!--<artifactId>mysql-connector-java</artifactId>-->
-            <!--<version>${mysql-connector}</version>-->
+        <!--<groupId>mysql</groupId>-->
+        <!--<artifactId>mysql-connector-java</artifactId>-->
+        <!--<version>${mysql-connector}</version>-->
         <!--</dependency>-->
 
         <!--&lt;!&ndash; Junit &ndash;&gt;-->
         <!--<dependency>-->
-            <!--<groupId>junit</groupId>-->
-            <!--<artifactId>junit</artifactId>-->
-            <!--<version>4.12</version>-->
+        <!--<groupId>junit</groupId>-->
+        <!--<artifactId>junit</artifactId>-->
+        <!--<version>4.12</version>-->
         <!--</dependency>-->
-    <!--</dependencies>-->
-<!--</project>-->
+        <!--</dependencies>-->
+        <!--</project>-->
