@@ -4,8 +4,11 @@ import com.google.common.collect.Lists;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jasonq.common.domain.util.BeanCopyUtil;
+import org.jasonq.common.domain.vo.Response;
+import org.jasonq.common.util.StringUtil;
 import org.jasonq.common.util.collection.CollectionUtil;
 import org.jasonq.common.util.collection.MapUtil;
+import org.jasonq.domain.crawler.api.dto.CompanyDto;
 import org.jasonq.domain.crawler.api.dto.WxPublicDto;
 import org.jasonq.domain.crawler.api.facade.ICrawlerFacade;
 import org.jasonq.service.crawler.api.dto.QiChaChaDto;
@@ -14,7 +17,6 @@ import org.jasonq.service.crawler.api.facade.ICrawlerXinBangFacade;
 import org.jasonq.service.crawler.core.po.CompanyPo;
 import org.jasonq.service.crawler.core.po.WxPublicPo;
 import org.jasonq.service.crawler.core.service.CompanyService;
-import org.jasonq.service.crawler.core.service.CrawlerXinBangService;
 import org.jasonq.service.crawler.core.service.WxPublicService;
 import org.jasonq.service.crawler.task.CrawlerCompanyTask;
 import org.springframework.stereotype.Service;
@@ -40,8 +42,6 @@ public class CrawlerXinBangFacade implements ICrawlerXinBangFacade {
     @Resource
     private WxPublicService wxPublicService;
     @Resource
-    private CrawlerXinBangService crawlerXinBangService;
-    @Resource
     private CrawlerCompanyTask crawlerCompanyTask;
     @Resource
     private ICrawlerFacade crawlerFacade;
@@ -50,18 +50,12 @@ public class CrawlerXinBangFacade implements ICrawlerXinBangFacade {
             "https://www.newrank.cn/xdnphb/data/weixinuser/searchWeixinDataByCondition?hasDeal=false&keyName=%s&filter=%s&order=%s"
                     + "&nonce=%s&xyz=%s";
 
-    @Override
-    public List<XinBangGzhDto> search(String key, String nonce, String xyz, String order,
-                                      String filter) throws Exception {
-        return search(key, nonce, xyz, order, filter, null);
-    }
-
     /**
      * 根据公众号微信号，企业名称绑定数据库数据
      */
     @Override
     synchronized public List<XinBangGzhDto> search(String key, String nonce, String xyz, String order,
-                                                   String filter, String companyCookie) throws Exception {
+                                                   String filter) throws Exception {
         List<WxPublicDto> wxPublicDtos = crawlerFacade
                 .searchGzhFromXinBang(String.format(XB_SEARCH_URL, key, filter, order, nonce, xyz));
         List<WxPublicPo> wxPublicPos = BeanCopyUtil.toList(wxPublicDtos, WxPublicPo.class);
@@ -109,7 +103,7 @@ public class CrawlerXinBangFacade implements ICrawlerXinBangFacade {
             WxPublicPo wxPublicPo = wxPublicPos.get(i);
             if (wxPublicPo.getCompanyPo().getId() == null) {
                 CompanyPo companyPo =
-                        crawlerXinBangService.crawlerCompanyInfo(wxPublicPo.getCertifiedCompany(), companyCookie);
+                        crawlerCompanyInfo(wxPublicPo.getCertifiedCompany());
                 if (companyPo != null) {
                     wxPublicPo.setCompanyPo(companyPo);
                 }
@@ -120,6 +114,51 @@ public class CrawlerXinBangFacade implements ICrawlerXinBangFacade {
 
         // 只显示400以上热度的
         return filterUnHot(wxPublicPos);
+    }
+
+    public CompanyPo crawlerCompanyInfo(String searchCompanyName) {
+        if (StringUtil.isEmpty(searchCompanyName)) {
+            return null;
+        }
+        CompanyPo dbCompanyPo = companyService.selectByName(searchCompanyName);
+        if (dbCompanyPo != null) {
+            return dbCompanyPo;
+        }
+
+        WxPublicPo wxPublicPo = wxPublicService.selectByCertifiedCompany(searchCompanyName);
+        if (wxPublicPo != null && Objects.equals(wxPublicPo.getCompanyId(), -1L)) {
+            return null;
+        }
+
+        Response<CompanyDto> companyDtoResponse = crawlerFacade.searchCompanyFromQicChaCha(searchCompanyName);
+        CompanyPo companyPo = null;
+
+        if (companyDtoResponse.isSuccess()) {
+            companyPo = BeanCopyUtil.to(companyDtoResponse.getData(), CompanyPo.class);
+            List<WxPublicPo> wxPublicPos =
+                    wxPublicService.listByCertifiedCompanys(Lists.newArrayList(searchCompanyName));
+            if (companyPo != null) {
+                companyService.add(companyPo);
+                for (WxPublicPo publicPo : wxPublicPos) {
+                    if (publicPo.getCompanyId() == null) {
+                        WxPublicPo needUpdate = new WxPublicPo();
+                        needUpdate.setId(publicPo.getId());
+                        needUpdate.setCompanyId(companyPo.getId());
+                        wxPublicService.updateById(needUpdate);
+                    }
+                }
+            } else {
+                for (WxPublicPo publicPo : wxPublicPos) {
+                    if (publicPo.getCompanyId() == null) {
+                        WxPublicPo needUpdate = new WxPublicPo();
+                        needUpdate.setId(publicPo.getId());
+                        needUpdate.setCompanyId(-1L);
+                        wxPublicService.updateById(needUpdate);
+                    }
+                }
+            }
+        }
+        return companyPo;
     }
 
     private List<XinBangGzhDto> filterUnHot(List<WxPublicPo> wxPublicPos) {

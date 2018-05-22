@@ -1,9 +1,9 @@
 package org.jasonq.service.crawler.core.po;
 
+import org.jasonq.common.repository.po.Entity;
+
 import javax.persistence.Table;
 import javax.persistence.Transient;
-
-import org.jasonq.common.repository.po.Entity;
 
 
 /**
@@ -41,6 +41,7 @@ public class WxPublicPo extends Entity {
 
     private String publicName;
     private String wxNo;
+    @Transient
     private String introduce;
     private String type;
     private String tags;

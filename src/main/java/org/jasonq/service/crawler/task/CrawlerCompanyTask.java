@@ -5,7 +5,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jasonq.common.util.StringUtil;
 import org.jasonq.service.crawler.core.service.CompanyService;
-import org.jasonq.service.crawler.core.service.CrawlerXinBangService;
+import org.jasonq.service.crawler.facade.CrawlerXinBangFacade;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
@@ -14,7 +14,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 
 
 /**
- * 组装数据，通过调用多个service，facade来完成一个完整的业务功能 返回DTO
+ * 离线爬公众号
  * 
  * @author jq
  *
@@ -29,7 +29,7 @@ public class CrawlerCompanyTask {
     @Resource
     private CompanyService companyService;
     @Resource
-    private CrawlerXinBangService crawlerXinBangService;
+    private CrawlerXinBangFacade crawlerXinBangFacade;
 
     @Scheduled(fixedDelay = 20 * 1000)
     public void run() {
@@ -47,7 +47,7 @@ public class CrawlerCompanyTask {
             return;
         }
         if (companyService.selectByName(companyName) == null) {
-            crawlerXinBangService.crawlerCompanyInfo(companyName);
+            crawlerXinBangFacade.crawlerCompanyInfo(companyName);
         }
         else {
             searchOne();
