@@ -4,40 +4,40 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>org.jasonq.service.crawler</groupId>
+    <groupId>org.jsonq.service.crawler</groupId>
     <artifactId>service-crawler</artifactId>
     <version>1.0.0-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <parent>
-        <groupId>org.jasonq.springboot.common</groupId>
-        <artifactId>common</artifactId>
+        <groupId>org.jsonq.springboot.common</groupId>
+        <artifactId>pom</artifactId>
         <version>1.0.0-SNAPSHOT</version>
     </parent>
 
     <dependencies>
         <!--接口-->
         <dependency>
-            <groupId>org.jasonq.domain.crawler</groupId>
+            <groupId>org.jsonq.domain.crawler</groupId>
             <artifactId>domain-api-crawler</artifactId>
             <version>1.0.0-SNAPSHOT</version>
         </dependency>
 
         <dependency>
-            <groupId>org.jasonq.service.crawler</groupId>
+            <groupId>org.jsonq.service.crawler</groupId>
             <artifactId>service-api-crawler</artifactId>
             <version>1.0.0-SNAPSHOT</version>
         </dependency>
 
         <!--基础依赖-->
         <dependency>
-            <groupId>org.jasonq.springboot.common</groupId>
+            <groupId>org.jsonq.springboot.common</groupId>
             <artifactId>facade</artifactId>
             <version>1.0.0-SNAPSHOT</version>
         </dependency>
 
         <dependency>
-            <groupId>org.jasonq.springboot.common</groupId>
+            <groupId>org.jsonq.springboot.common</groupId>
             <artifactId>exception</artifactId>
             <version>1.0.0-SNAPSHOT</version>
         </dependency>
@@ -46,44 +46,6 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-freemarker</artifactId>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.springframework.boot</groupId>
-                    <artifactId>spring-boot-starter-logging</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        <dependency>
-            <groupId>org.jsoup</groupId>
-            <artifactId>jsoup</artifactId>
-            <version>1.8.3</version>
-        </dependency>
-
-        <!--pagehelper-->
-        <dependency>
-            <groupId>com.github.pagehelper</groupId>
-            <artifactId>pagehelper-spring-boot-starter</artifactId>
-            <version>1.2.3</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.springframework.boot</groupId>
-                    <artifactId>spring-boot-starter-logging</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-
-        <!--MySQL 连接驱动依赖-->
-        <dependency>
-            <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
-            <version>5.1.39</version>
-        </dependency>
-
-        <!--tk.mapper-->
-        <dependency>
-            <groupId>tk.mybatis</groupId>
-            <artifactId>mapper-spring-boot-starter</artifactId>
-            <version>1.2.4</version>
         </dependency>
 
 
@@ -95,59 +57,3 @@
         <!--</dependency>-->
     </dependencies>
 </project>
-
-
-        <!--&lt;!&ndash; Spring Boot 启动父依赖 &ndash;&gt;-->
-        <!--<parent>-->
-        <!--<groupId>org.springframework.boot</groupId>-->
-        <!--<artifactId>spring-boot-starter-parent</artifactId>-->
-        <!--<version>1.5.1.RELEASE</version>-->
-        <!--</parent>-->
-
-        <!--<properties>-->
-        <!--<mybatis-spring-boot>1.2.0</mybatis-spring-boot>-->
-        <!--<mysql-connector>5.1.39</mysql-connector>-->
-        <!--</properties>-->
-
-        <!--<dependencies>-->
-        <!--&lt;!&ndash; Spring Boot Freemarker 依赖 &ndash;&gt;-->
-        <!--<dependency>-->
-        <!--<groupId>org.springframework.boot</groupId>-->
-        <!--<artifactId>spring-boot-starter-freemarker</artifactId>-->
-        <!--</dependency>-->
-
-        <!--&lt;!&ndash; Spring Boot Web 依赖 &ndash;&gt;-->
-        <!--<dependency>-->
-        <!--<groupId>org.springframework.boot</groupId>-->
-        <!--<artifactId>spring-boot-starter-web</artifactId>-->
-        <!--</dependency>-->
-
-        <!--&lt;!&ndash; Spring Boot Test 依赖 &ndash;&gt;-->
-        <!--<dependency>-->
-        <!--<groupId>org.springframework.boot</groupId>-->
-        <!--<artifactId>spring-boot-starter-test</artifactId>-->
-        <!--<scope>test</scope>-->
-        <!--</dependency>-->
-
-        <!--&lt;!&ndash; Spring Boot Mybatis 依赖 &ndash;&gt;-->
-        <!--<dependency>-->
-        <!--<groupId>org.mybatis.spring.boot</groupId>-->
-        <!--<artifactId>mybatis-spring-boot-starter</artifactId>-->
-        <!--<version>${mybatis-spring-boot}</version>-->
-        <!--</dependency>-->
-
-        <!--&lt;!&ndash; MySQL 连接驱动依赖 &ndash;&gt;-->
-        <!--<dependency>-->
-        <!--<groupId>mysql</groupId>-->
-        <!--<artifactId>mysql-connector-java</artifactId>-->
-        <!--<version>${mysql-connector}</version>-->
-        <!--</dependency>-->
-
-        <!--&lt;!&ndash; Junit &ndash;&gt;-->
-        <!--<dependency>-->
-        <!--<groupId>junit</groupId>-->
-        <!--<artifactId>junit</artifactId>-->
-        <!--<version>4.12</version>-->
-        <!--</dependency>-->
-        <!--</dependencies>-->
-        <!--</project>-->
