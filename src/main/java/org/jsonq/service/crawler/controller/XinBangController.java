@@ -4,8 +4,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jsonq.service.crawler.api.dto.AsyncWxPublicDto;
 import org.jsonq.service.crawler.api.dto.XinBangGzhDto;
-import org.jsonq.service.crawler.api.facade.IAsyncWxPublicFacade;
-import org.jsonq.service.crawler.api.facade.ICrawlerXinBangFacade;
+import org.jsonq.service.crawler.api.ifacade.IAsyncWxPublicFacade;
+import org.jsonq.service.crawler.api.ifacade.ICrawlerXinBangFacade;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;

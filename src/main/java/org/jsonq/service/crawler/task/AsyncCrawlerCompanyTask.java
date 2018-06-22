@@ -4,7 +4,7 @@ import org.apache.commons.lang3.RandomUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jsonq.common.constant.Constant;
-import org.jsonq.service.crawler.api.facade.ICrawlerXinBangFacade;
+import org.jsonq.service.crawler.api.ifacade.ICrawlerXinBangFacade;
 import org.jsonq.service.crawler.core.po.AsyncWxPublicPo;
 import org.jsonq.service.crawler.core.service.AsyncWxPublicService;
 import org.springframework.scheduling.annotation.Scheduled;

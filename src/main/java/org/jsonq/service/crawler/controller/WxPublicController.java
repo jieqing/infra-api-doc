@@ -2,7 +2,7 @@ package org.jsonq.service.crawler.controller;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.jsonq.service.crawler.api.facade.IWxPublicFacade;
+import org.jsonq.service.crawler.api.ifacade.IWxPublicFacade;
 import org.jsonq.service.crawler.api.param.WxPublicPageParam;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

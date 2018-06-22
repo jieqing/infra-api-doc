@@ -10,10 +10,10 @@ import org.jsonq.common.util.collection.CollectionUtil;
 import org.jsonq.common.util.collection.MapUtil;
 import org.jsonq.domain.crawler.api.dto.CompanyDto;
 import org.jsonq.domain.crawler.api.dto.WxPublicDto;
-import org.jsonq.domain.crawler.api.facade.ICrawlerFacade;
+import org.jsonq.domain.crawler.api.ifacade.ICrawlerFacade;
 import org.jsonq.service.crawler.api.dto.QiChaChaDto;
 import org.jsonq.service.crawler.api.dto.XinBangGzhDto;
-import org.jsonq.service.crawler.api.facade.ICrawlerXinBangFacade;
+import org.jsonq.service.crawler.api.ifacade.ICrawlerXinBangFacade;
 import org.jsonq.service.crawler.core.po.CompanyPo;
 import org.jsonq.service.crawler.core.po.WxPublicPo;
 import org.jsonq.service.crawler.core.service.CompanyService;
@@ -117,6 +117,11 @@ public class CrawlerXinBangFacade implements ICrawlerXinBangFacade {
         return filterUnHot(wxPublicPos);
     }
 
+    /**
+     * 爬企业信息
+     * @param searchCompanyName
+     * @return
+     */
     public CompanyPo crawlerCompanyInfo(String searchCompanyName) {
         if (StringUtil.isEmpty(searchCompanyName)) {
             return null;
