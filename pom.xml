@@ -4,16 +4,16 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
+    <parent>
+        <groupId>org.jsonq.springboot.common</groupId>
+        <artifactId>common</artifactId>
+        <version>1.0.0-SNAPSHOT</version>
+    </parent>
+
     <groupId>org.jsonq.service.crawler</groupId>
     <artifactId>service-crawler</artifactId>
     <version>1.0.0-SNAPSHOT</version>
     <packaging>jar</packaging>
-
-    <parent>
-        <groupId>org.jsonq.springboot.common</groupId>
-        <artifactId>pom</artifactId>
-        <version>1.0.0-SNAPSHOT</version>
-    </parent>
 
     <dependencies>
         <!--接口-->
@@ -35,10 +35,9 @@
             <artifactId>facade</artifactId>
             <version>1.0.0-SNAPSHOT</version>
         </dependency>
-
         <dependency>
             <groupId>org.jsonq.springboot.common</groupId>
-            <artifactId>exception</artifactId>
+            <artifactId>constant</artifactId>
             <version>1.0.0-SNAPSHOT</version>
         </dependency>
 
@@ -49,7 +48,7 @@
         </dependency>
 
 
-        <!--热部署-->
+        <!--热部署，有问题-->
         <!--<dependency>-->
         <!--<groupId>org.springframework.boot</groupId>-->
         <!--<artifactId>spring-boot-devtools</artifactId>-->
