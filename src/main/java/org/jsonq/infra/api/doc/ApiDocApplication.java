@@ -1,4 +1,4 @@
-package org.jsonq.service.crawler;
+package org.jsonq.infra.api.doc;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -19,10 +19,10 @@ import tk.mybatis.spring.annotation.MapperScan;
 //不加basePackages扫描不到接口jar中的配置
 @EnableFeignClients(basePackages = "org.jsonq")
 // @ImportResource({"classpath:disconf.xml"})
-public class ServiceCrawlerApplication {
+public class ApiDocApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(ServiceCrawlerApplication.class, args);
+        SpringApplication.run(ApiDocApplication.class, args);
     }
 
 }
