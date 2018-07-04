@@ -1,4 +1,4 @@
-package org.jsonq.infra.api.doc;
+package org.jsonq.service.crawler;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
