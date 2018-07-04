@@ -10,25 +10,13 @@
         <version>1.0.0-SNAPSHOT</version>
     </parent>
 
-    <groupId>org.jsonq.service.crawler</groupId>
-    <artifactId>service-crawler</artifactId>
+    <groupId>org.jsonq.infra.api.doc</groupId>
+    <artifactId>infra-api-doc</artifactId>
     <version>1.0.0-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <dependencies>
-        <!--接口-->
-        <dependency>
-            <groupId>org.jsonq.domain.crawler</groupId>
-            <artifactId>domain-api-crawler</artifactId>
-            <version>1.0.0-SNAPSHOT</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.jsonq.service.crawler</groupId>
-            <artifactId>service-api-crawler</artifactId>
-            <version>1.0.0-SNAPSHOT</version>
-        </dependency>
-
+       
         <!--基础依赖-->
         <dependency>
             <groupId>org.jsonq.springboot.common</groupId>
@@ -46,14 +34,6 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-freemarker</artifactId>
         </dependency>
-
-
-        <!--热部署，有问题-->
-        <!--<dependency>-->
-        <!--<groupId>org.springframework.boot</groupId>-->
-        <!--<artifactId>spring-boot-devtools</artifactId>-->
-        <!--<optional>true</optional>-->
-        <!--</dependency>-->
     </dependencies>
 
     <build>
