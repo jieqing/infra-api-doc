@@ -13,7 +13,7 @@ import tk.mybatis.spring.annotation.MapperScan;
  * @date 2018/3/6
  */
 @SpringBootApplication(scanBasePackages = {"org.jsonq"})
-@MapperScan(basePackages = "org.jsonq.service.crawler.core.repository.sql")
+@MapperScan(basePackages = "org.jsonq.service.crawler.repository.sql")
 @EnableScheduling
 @EnableDiscoveryClient
 //不加basePackages扫描不到接口jar中的配置

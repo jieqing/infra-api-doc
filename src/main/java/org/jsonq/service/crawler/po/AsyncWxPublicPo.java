@@ -1,4 +1,4 @@
-package org.jsonq.service.crawler.core.po;
+package org.jsonq.service.crawler.po;
 
 import org.jsonq.common.repository.po.Entity;
 

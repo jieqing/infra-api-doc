@@ -1,7 +1,7 @@
-package org.jsonq.service.crawler.core.repository.sql;
+package org.jsonq.service.crawler.repository.sql;
 
 import org.jsonq.common.repository.sql.mybatis.mapper.MyBaseMapper;
-import org.jsonq.service.crawler.core.po.GeogVillagePo;
+import org.jsonq.service.crawler.po.GeogVillagePo;
 
 
 /**

@@ -1,4 +1,4 @@
-package org.jsonq.service.crawler.core.repository;
+package org.jsonq.service.crawler.repository;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -7,8 +7,8 @@ import org.jsonq.common.repository.BaseSqlRepository;
 import org.jsonq.common.repository.po.Entity;
 import org.jsonq.common.repository.query.Order;
 import org.jsonq.common.repository.query.QueryParam;
-import org.jsonq.service.crawler.core.po.GeogVillagePo;
-import org.jsonq.service.crawler.core.repository.sql.GeogVillageMapper;
+import org.jsonq.service.crawler.po.GeogVillagePo;
+import org.jsonq.service.crawler.repository.sql.GeogVillageMapper;
 import org.springframework.stereotype.Repository;
 
 

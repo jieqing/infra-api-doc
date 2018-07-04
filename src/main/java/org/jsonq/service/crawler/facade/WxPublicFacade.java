@@ -6,8 +6,8 @@ import org.jsonq.common.domain.util.BeanCopyUtil;
 import org.jsonq.common.repository.po.Page;
 import org.jsonq.service.crawler.api.dto.WxPublicDto;
 import org.jsonq.service.crawler.api.ifacade.IWxPublicFacade;
-import org.jsonq.service.crawler.core.po.WxPublicPo;
-import org.jsonq.service.crawler.core.service.WxPublicService;
+import org.jsonq.service.crawler.po.WxPublicPo;
+import org.jsonq.service.crawler.service.WxPublicService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;

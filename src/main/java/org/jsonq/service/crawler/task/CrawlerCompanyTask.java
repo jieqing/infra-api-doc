@@ -5,7 +5,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jsonq.common.util.StringUtil;
 import org.jsonq.service.crawler.facade.CrawlerXinBangFacade;
-import org.jsonq.service.crawler.core.service.CompanyService;
+import org.jsonq.service.crawler.service.CompanyService;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 

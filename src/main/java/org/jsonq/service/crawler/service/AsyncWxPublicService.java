@@ -1,11 +1,11 @@
-package org.jsonq.service.crawler.core.service;
+package org.jsonq.service.crawler.service;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jsonq.common.constant.Constant;
 import org.jsonq.common.domain.service.BaseService;
-import org.jsonq.service.crawler.core.po.AsyncWxPublicPo;
-import org.jsonq.service.crawler.core.repository.AsyncWxPublicRepository;
+import org.jsonq.service.crawler.po.AsyncWxPublicPo;
+import org.jsonq.service.crawler.repository.AsyncWxPublicRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

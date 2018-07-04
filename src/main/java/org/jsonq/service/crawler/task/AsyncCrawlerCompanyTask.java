@@ -5,8 +5,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jsonq.common.constant.Constant;
 import org.jsonq.service.crawler.api.ifacade.ICrawlerXinBangFacade;
-import org.jsonq.service.crawler.core.po.AsyncWxPublicPo;
-import org.jsonq.service.crawler.core.service.AsyncWxPublicService;
+import org.jsonq.service.crawler.po.AsyncWxPublicPo;
+import org.jsonq.service.crawler.service.AsyncWxPublicService;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 

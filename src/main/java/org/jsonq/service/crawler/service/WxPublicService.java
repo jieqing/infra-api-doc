@@ -1,4 +1,4 @@
-package org.jsonq.service.crawler.core.service;
+package org.jsonq.service.crawler.service;
 
 import com.google.common.collect.Lists;
 import org.apache.logging.log4j.LogManager;
@@ -6,8 +6,8 @@ import org.apache.logging.log4j.Logger;
 import org.jsonq.common.domain.service.BaseService;
 import org.jsonq.common.repository.po.Page;
 import org.jsonq.common.util.collection.CollectionUtil;
-import org.jsonq.service.crawler.core.po.WxPublicPo;
-import org.jsonq.service.crawler.core.repository.WxPublicRepository;
+import org.jsonq.service.crawler.po.WxPublicPo;
+import org.jsonq.service.crawler.repository.WxPublicRepository;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 

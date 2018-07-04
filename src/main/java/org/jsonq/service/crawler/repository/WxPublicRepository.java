@@ -1,4 +1,4 @@
-package org.jsonq.service.crawler.core.repository;
+package org.jsonq.service.crawler.repository;
 
 import com.google.common.collect.Lists;
 import org.apache.logging.log4j.LogManager;
@@ -8,8 +8,8 @@ import org.jsonq.common.repository.po.Page;
 import org.jsonq.common.repository.query.Query;
 import org.jsonq.common.repository.query.QueryParam;
 import org.jsonq.common.util.collection.CollectionUtil;
-import org.jsonq.service.crawler.core.repository.sql.WxPublicMapper;
-import org.jsonq.service.crawler.core.po.WxPublicPo;
+import org.jsonq.service.crawler.repository.sql.WxPublicMapper;
+import org.jsonq.service.crawler.po.WxPublicPo;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;

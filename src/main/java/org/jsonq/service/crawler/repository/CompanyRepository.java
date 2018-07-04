@@ -1,12 +1,12 @@
-package org.jsonq.service.crawler.core.repository;
+package org.jsonq.service.crawler.repository;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jsonq.common.repository.BaseSqlRepository;
 import org.jsonq.common.repository.query.Query;
 import org.jsonq.common.repository.query.QueryParam;
-import org.jsonq.service.crawler.core.po.CompanyPo;
-import org.jsonq.service.crawler.core.repository.sql.CompanyMapper;
+import org.jsonq.service.crawler.po.CompanyPo;
+import org.jsonq.service.crawler.repository.sql.CompanyMapper;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
