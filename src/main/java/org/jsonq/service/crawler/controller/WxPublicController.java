@@ -15,10 +15,10 @@ import javax.annotation.Resource;
 
 
 /**
+ *
  * @author jq
  */
 @RestController
-@RequestMapping(value = "/gzh")
 public class WxPublicController {
 
     private Logger logger = LogManager.getLogger(WxPublicController.class);
@@ -26,7 +26,7 @@ public class WxPublicController {
     @Resource
     private IWxPublicFacade wxPublicFacade;
 
-    @RequestMapping(value = "/page", method = RequestMethod.POST)
+    @RequestMapping(value = "/gzh/page", method = RequestMethod.POST)
     public ResponseEntity listWithChild(@RequestBody WxPublicPageParam pageParam) throws Exception {
         return new ResponseEntity(wxPublicFacade.pageByName(pageParam.getPublicName(), pageParam.getPageIndex(), pageParam.getPageSize()), HttpStatus.OK);
     }
