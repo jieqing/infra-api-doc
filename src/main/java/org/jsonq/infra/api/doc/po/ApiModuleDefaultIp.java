@@ -2,20 +2,23 @@ package org.jsonq.infra.api.doc.po;
 
 import org.jsonq.common.repository.po.Entity;
 
-
-public class ApiClass extends Entity {
+public class ApiModuleDefaultIp extends Entity {
 
     public enum ColumnName {
         /**
          * 数据库字段名枚举
          */
         moduleId("moduleId"),
-        name("name"),
-        description("description");
+        moduleIpId("moduleIpId"),
+        userId("userId");
         private final String value;
 
         ColumnName(String value) {
             this.value = value;
+        }
+
+        public String getValue() {
+            return value;
         }
 
         /**
@@ -27,10 +30,10 @@ public class ApiClass extends Entity {
         }
     }
 
-
     private Long moduleId;
-    private String name;
-    private String description;
+    private Long moduleIpId;
+    private Long userId;
+
 
     public Long getModuleId() {
         return moduleId;
@@ -40,19 +43,20 @@ public class ApiClass extends Entity {
         this.moduleId = moduleId;
     }
 
-    public String getName() {
-        return name;
+    public Long getModuleIpId() {
+        return moduleIpId;
     }
 
-    public void setName(String name) {
-        this.name = name == null ? null : name.trim();
+    public void setModuleIpId(Long moduleIpId) {
+        this.moduleIpId = moduleIpId;
     }
 
-    public String getDescription() {
-        return description;
+    public Long getUserId() {
+        return userId;
     }
 
-    public void setDescription(String description) {
-        this.description = description == null ? null : description.trim();
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
+
 }

@@ -66,5 +66,5 @@ function inputChange() {
 function onSetSelectedValue(value) {
     var input = getTextDes().parent().prev();
     input.children("div").children("#carNo").val(value);
-    onClickQuery();
+    onQueryClick();
 }

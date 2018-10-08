@@ -17,10 +17,6 @@ public class ApiUrl extends Entity {
             this.value = value;
         }
 
-        public String getValue() {
-            return value;
-        }
-
         /**
          * QueryParam转Example用
          */
@@ -31,9 +27,18 @@ public class ApiUrl extends Entity {
     }
 
     private Long classId;
+    private String methodName;
     private String requestUrl;
     private String description;
     private String requestType;
+
+    public String getMethodName() {
+        return methodName;
+    }
+
+    public void setMethodName(String methodName) {
+        this.methodName = methodName;
+    }
 
     public Long getClassId() {
         return classId;

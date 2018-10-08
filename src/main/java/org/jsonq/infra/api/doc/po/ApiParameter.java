@@ -1,8 +1,10 @@
 package org.jsonq.infra.api.doc.po;
 
+import javax.persistence.Transient;
 import org.jsonq.common.repository.po.Entity;
 
 public class ApiParameter extends Entity {
+
     public enum ColumnName {
         /**
          * 数据库字段名枚举
@@ -35,8 +37,9 @@ public class ApiParameter extends Entity {
     private Long parentId;
     private String name;
     private String dataType;
-    private String dateValue;
     private String description;
+    @Transient
+    private String dateValue;
 
     public Long getUrlId() {
         return urlId;

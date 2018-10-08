@@ -1,8 +1,10 @@
 package org.jsonq.infra.api.doc.service;
 
+import java.util.List;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jsonq.common.domain.service.BaseService;
+import org.jsonq.common.repository.query.QueryParam;
 import org.jsonq.infra.api.doc.po.ApiUrl;
 import org.jsonq.infra.api.doc.respository.ApiUrlRepository;
 import org.springframework.stereotype.Service;
@@ -19,13 +21,21 @@ public class ApiUrlService extends BaseService<ApiUrl, ApiUrlRepository> {
 
     private Logger logger = LogManager.getLogger(this.getClass());
 
-    public Long createAndGetId(ApiUrl apiUrl) {
-        ApiUrl dbApiUrl = repository.get(apiUrl.getClassId(), apiUrl.getRequestUrl(), apiUrl.getRequestType());
-        if (dbApiUrl == null) {
-            this.add(apiUrl);
-            return apiUrl.getId();
-        }
-        return dbApiUrl.getId();
+    public List<ApiUrl> listByClassId(Long classId) {
+        return repository.listByClassId(classId);
     }
 
+    public Long createAndGetId(ApiUrl apiUrl) {
+        QueryParam<Enum> checkDbEntityParam = QueryParam.create()
+                .addQuery(ApiUrl.ColumnName.classId, apiUrl.getClassId())
+                .addQuery(ApiUrl.ColumnName.requestUrl, apiUrl.getRequestUrl())
+                .addQuery(ApiUrl.ColumnName.requestType, apiUrl.getRequestType());
+        repository.replace(apiUrl, checkDbEntityParam);
+        return apiUrl.getId();
+    }
+
+    public int deleteByIdBatch(List<Long> ids)
+            throws IllegalAccessException, InstantiationException {
+        return repository.deleteByIdBatch(ids);
+    }
 }
