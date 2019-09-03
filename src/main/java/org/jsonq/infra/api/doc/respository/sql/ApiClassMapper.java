@@ -1,6 +1,7 @@
 package org.jsonq.infra.api.doc.respository.sql;
 
-import org.jsonq.common.repository.sql.mybatis.mapper.MyBaseMapper;
+
+import com.youanmi.commons.base.core.dao.tk.mapper.MyBaseMapper;
 import org.jsonq.infra.api.doc.po.ApiClass;
 
 

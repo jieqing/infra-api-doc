@@ -1,13 +1,9 @@
 package org.jsonq.infra.api.doc.service;
 
 import java.util.List;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.jsonq.common.domain.service.BaseService;
-import org.jsonq.common.repository.query.QueryParam;
+import javax.annotation.Resource;
 import org.jsonq.infra.api.doc.po.ApiParameterValue;
-import org.jsonq.infra.api.doc.po.ApiParameterValue.ColumnName;
-import org.jsonq.infra.api.doc.respository.ApiParameterValueRepository;
+import org.jsonq.infra.api.doc.respository.ApiParameterValueDao;
 import org.springframework.stereotype.Service;
 
 
@@ -18,21 +14,16 @@ import org.springframework.stereotype.Service;
  * @date 2018/3/6
  */
 @Service
-public class ApiParameterValueService extends
-        BaseService<ApiParameterValue, ApiParameterValueRepository> {
+public class ApiParameterValueService  {
 
-    private Logger logger = LogManager.getLogger(this.getClass());
+    @Resource
+    private ApiParameterValueDao apiParameterValueDao;
 
     public List<ApiParameterValue> listByParameterIds(List<Long> parameterIds, Long userId) {
-        return repository.listByParameterIds(parameterIds, userId);
+        return apiParameterValueDao.listByParameterIds(parameterIds, userId);
     }
 
     public void replaceList(List<ApiParameterValue> list, Long userId) {
-        for (ApiParameterValue apiParameterValue : list) {
-            apiParameterValue.setUserId(userId);
-            repository.replace(apiParameterValue,
-                    QueryParam.create().addQuery(ColumnName.userId, apiParameterValue.getUserId())
-                            .addQuery(ColumnName.parameterId, apiParameterValue.getParameterId()));
-        }
+        apiParameterValueDao.replaceList(list, userId);
     }
 }

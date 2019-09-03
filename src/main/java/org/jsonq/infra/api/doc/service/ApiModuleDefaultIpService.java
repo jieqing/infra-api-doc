@@ -1,10 +1,8 @@
 package org.jsonq.infra.api.doc.service;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.jsonq.common.domain.service.BaseService;
 import org.jsonq.infra.api.doc.po.ApiModuleDefaultIp;
-import org.jsonq.infra.api.doc.respository.ApiModuleDefaultIpRepository;
+import org.jsonq.infra.api.doc.respository.ApiModuleDefaultIpDao;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 
@@ -15,12 +13,12 @@ import org.springframework.stereotype.Service;
  * @date 2018/3/6
  */
 @Service
-public class ApiModuleDefaultIpService extends
-        BaseService<ApiModuleDefaultIp, ApiModuleDefaultIpRepository> {
+public class ApiModuleDefaultIpService {
 
-    private Logger logger = LogManager.getLogger(this.getClass());
+    @Autowired
+    private ApiModuleDefaultIpDao apiModuleDefaultIpDao;
 
     public ApiModuleDefaultIp getByModuleId(Long moduleId, Long userId) {
-        return repository.getByModuleId(moduleId, userId);
+        return apiModuleDefaultIpDao.getByModuleId(moduleId, userId);
     }
 }

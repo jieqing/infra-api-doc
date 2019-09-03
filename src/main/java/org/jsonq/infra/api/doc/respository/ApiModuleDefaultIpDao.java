@@ -1,9 +1,8 @@
 package org.jsonq.infra.api.doc.respository;
 
-import org.jsonq.common.repository.BaseSqlRepository;
-import org.jsonq.common.repository.query.QueryParam;
+import com.youanmi.commons.base.core.dao.BaseDao;
+import com.youanmi.commons.base.core.dao.query.QueryParam;
 import org.jsonq.infra.api.doc.po.ApiModuleDefaultIp;
-import org.jsonq.infra.api.doc.po.ApiModuleDefaultIp.ColumnName;
 import org.jsonq.infra.api.doc.respository.sql.ApiModuleDefaultIpMapper;
 import org.springframework.stereotype.Repository;
 
@@ -15,12 +14,11 @@ import org.springframework.stereotype.Repository;
  * @date 2018/3/6
  */
 @Repository
-public class ApiModuleDefaultIpRepository extends
-        BaseSqlRepository<ApiModuleDefaultIp, ApiModuleDefaultIpMapper> {
+public class ApiModuleDefaultIpDao extends BaseDao<ApiModuleDefaultIp, ApiModuleDefaultIpMapper> {
 
     public ApiModuleDefaultIp getByModuleId(Long moduleId, Long userId) {
-        return this.selectOneByParam(QueryParam.create().addQuery(ColumnName.moduleId, moduleId)
-                .addQuery(ColumnName.userId, userId));
+        return this.selectOneByParam(QueryParam.create().addQuery("moduleId", moduleId)
+                .addQuery("userId", userId));
     }
 
 }

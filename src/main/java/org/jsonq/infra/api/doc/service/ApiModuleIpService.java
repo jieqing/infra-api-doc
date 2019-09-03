@@ -3,12 +3,9 @@ package org.jsonq.infra.api.doc.service;
 import java.util.List;
 import java.util.Objects;
 import javax.annotation.Resource;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.jsonq.common.domain.service.BaseService;
 import org.jsonq.infra.api.doc.po.ApiModuleDefaultIp;
 import org.jsonq.infra.api.doc.po.ApiModuleIp;
-import org.jsonq.infra.api.doc.respository.ApiModuleIpRepository;
+import org.jsonq.infra.api.doc.respository.ApiModuleIpDao;
 import org.springframework.stereotype.Service;
 
 
@@ -19,15 +16,15 @@ import org.springframework.stereotype.Service;
  * @date 2018/3/6
  */
 @Service
-public class ApiModuleIpService extends BaseService<ApiModuleIp, ApiModuleIpRepository> {
+public class ApiModuleIpService {
 
-    private Logger logger = LogManager.getLogger(this.getClass());
-
+    @Resource
+    private ApiModuleIpDao apiModuleIpDao;
     @Resource
     private ApiModuleDefaultIpService defaultIpService;
 
     public List<ApiModuleIp> listByModuleId(Long moduleId, Long userId) {
-        List<ApiModuleIp> apiModuleIps = repository.listByModuleId(moduleId);
+        List<ApiModuleIp> apiModuleIps = apiModuleIpDao.listByModuleId(moduleId);
         // 默认Ip
         ApiModuleDefaultIp defaultIp = defaultIpService.getByModuleId(moduleId, userId);
         for (ApiModuleIp apiModuleIp : apiModuleIps) {

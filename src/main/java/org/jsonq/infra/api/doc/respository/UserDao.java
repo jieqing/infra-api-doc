@@ -1,6 +1,6 @@
 package org.jsonq.infra.api.doc.respository;
 
-import org.jsonq.common.repository.BaseSqlRepository;
+import com.youanmi.commons.base.core.dao.BaseDao;
 import org.jsonq.infra.api.doc.po.User;
 import org.jsonq.infra.api.doc.respository.sql.UserMapper;
 import org.springframework.stereotype.Repository;
@@ -13,6 +13,6 @@ import org.springframework.stereotype.Repository;
  * @date 2018/3/6
  */
 @Repository
-public class UserRepository extends BaseSqlRepository<User, UserMapper> {
+public class UserDao extends BaseDao<User, UserMapper> {
 
 }

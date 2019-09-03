@@ -2,6 +2,9 @@ package org.jsonq.infra.api.doc.task;
 
 import com.google.common.collect.Lists;
 import com.youanmi.commons.base.annotation.ApiDoc;
+import com.youanmi.scrm.commons.constants.StringConstants;
+import com.youanmi.scrm.commons.util.collection.CollectionUtil;
+import com.youanmi.scrm.commons.util.collection.MapUtil;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
@@ -15,10 +18,6 @@ import javax.annotation.Resource;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.jsonq.common.constant.string.ConstAction;
-import org.jsonq.common.constant.string.ConstJavaDataType;
-import org.jsonq.common.util.collection.CollectionUtil;
-import org.jsonq.common.util.collection.MapUtil;
 import org.jsonq.infra.api.doc.constants.ApiConstants;
 import org.jsonq.infra.api.doc.po.ApiClass;
 import org.jsonq.infra.api.doc.po.ApiParameter;
@@ -120,7 +119,7 @@ public class ScanApiJarTask {
                 apiUrl.setDescription(methodApiDoc.desc());
             }
             String methodUrl = "";
-            String requestType = ConstAction.HTTP_POST;
+            String requestType = StringConstants.HTTP_POST;
             if (null != requestMapping) {
                 RequestMethod[] methods = requestMapping.method();
                 if (methods.length > 0) {
@@ -192,7 +191,7 @@ public class ScanApiJarTask {
             Long parameterId = apiParameterService.replaceAndGetId(apiParameter);
 
             // 复杂对象，继续解析成员变量
-            if (Objects.equals(dataType, ConstJavaDataType.JAVA_UTIL_LIST)) {
+            if (Objects.equals(dataType, "java.util.List")) {
                 // 关键的地方，如果是List类型，得到其Generic的类型
                 Type fc = field.getGenericType();
                 // 如果是泛型参数的类型
@@ -205,7 +204,7 @@ public class ScanApiJarTask {
                                 Lists.newArrayList(genericClazz.getDeclaredFields()));
                     }
                 }
-            } else if (Objects.equals(dataType, ConstJavaDataType.JAVA_LANG_OBJECT)) {
+            } else if (Objects.equals(dataType, "java.lang.Object")) {
 
             } else if (!dataType.startsWith("java")) {
                 Class<?> aClass = Class.forName(dataType);

@@ -1,9 +1,8 @@
 package org.jsonq.infra.api.doc.controller;
 
+import com.youanmi.scrm.commons.util.collection.CollectionUtil;
 import java.util.List;
 import javax.annotation.Resource;
-import org.jsonq.common.repository.po.Entity;
-import org.jsonq.common.util.collection.CollectionUtil;
 import org.jsonq.infra.api.doc.controller.param.SendApiParam;
 import org.jsonq.infra.api.doc.po.ApiClass;
 import org.jsonq.infra.api.doc.po.ApiModule;
@@ -59,7 +58,7 @@ public class ApiQueryController {
             @RequestParam(required = false) Long moduleId,
             @RequestParam String className) {
         List<ApiModule> apiModules = apiModuleService.listByUserId(userId);
-        List<Long> moduleIds = CollectionUtil.getColumnValues(apiModules, Entity.ColumnName.id);
+        List<Long> moduleIds = CollectionUtil.getColumnValues(apiModules, "id");
         if (moduleId != null) {
             moduleIds.add(moduleId);
         }

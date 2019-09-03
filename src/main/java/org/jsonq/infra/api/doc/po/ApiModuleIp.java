@@ -1,7 +1,7 @@
 package org.jsonq.infra.api.doc.po;
 
 import javax.persistence.Transient;
-import org.jsonq.common.repository.po.Entity;
+import com.youanmi.commons.base.core.entity.Entity;
 
 public class ApiModuleIp extends Entity {
 

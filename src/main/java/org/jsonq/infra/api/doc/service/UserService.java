@@ -1,10 +1,10 @@
 package org.jsonq.infra.api.doc.service;
 
+import javax.annotation.Resource;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.jsonq.common.domain.service.BaseService;
 import org.jsonq.infra.api.doc.po.User;
-import org.jsonq.infra.api.doc.respository.UserRepository;
+import org.jsonq.infra.api.doc.respository.UserDao;
 import org.springframework.stereotype.Service;
 
 
@@ -15,8 +15,14 @@ import org.springframework.stereotype.Service;
  * @date 2018/3/6
  */
 @Service
-public class UserService extends BaseService<User, UserRepository> {
+public class UserService  {
+
+    @Resource
+    private UserDao userDao;
 
     private Logger logger = LogManager.getLogger(this.getClass());
 
+    public User selectById(Long id) {
+        return userDao.selectById(id);
+    }
 }

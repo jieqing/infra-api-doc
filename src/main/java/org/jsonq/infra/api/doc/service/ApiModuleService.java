@@ -2,13 +2,9 @@ package org.jsonq.infra.api.doc.service;
 
 import java.util.List;
 import javax.annotation.Resource;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.jsonq.common.domain.service.BaseService;
-import org.jsonq.common.repository.query.QueryParam;
 import org.jsonq.infra.api.doc.po.ApiModule;
 import org.jsonq.infra.api.doc.po.User;
-import org.jsonq.infra.api.doc.respository.ApiModuleRepository;
+import org.jsonq.infra.api.doc.respository.ApiModuleDao;
 import org.springframework.stereotype.Service;
 
 
@@ -19,26 +15,20 @@ import org.springframework.stereotype.Service;
  * @date 2018/3/6
  */
 @Service
-public class ApiModuleService extends BaseService<ApiModule, ApiModuleRepository> {
+public class ApiModuleService {
 
-    private Logger logger = LogManager.getLogger(this.getClass());
-
+    @Resource
+    private ApiModuleDao apiModuleDao;
     @Resource
     private UserService userService;
 
     public List<ApiModule> listByUserId(Long userId) {
         User user = userService.selectById(userId);
-        return repository.listByRoleId(user.getRoleId());
+        return apiModuleDao.listByRoleId(user.getRoleId());
     }
 
     public Long replaceAndGetId(String moduleName) {
-        ApiModule apiModule = new ApiModule();
-        apiModule.setName(moduleName);
-
-        QueryParam<Enum> checkDbEntityParam = QueryParam.create()
-                .addQuery(ApiModule.ColumnName.name, apiModule.getName());
-        repository.replace(apiModule, checkDbEntityParam);
-        return apiModule.getId();
+        return apiModuleDao.replaceAndGetId(moduleName);
     }
 
 
