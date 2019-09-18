@@ -1,7 +1,7 @@
 package org.jsonq.infra.api.doc.service;
 
 import org.jsonq.infra.api.doc.po.ApiModuleDefaultIp;
-import org.jsonq.infra.api.doc.respository.ApiModuleDefaultIpDao;
+import org.jsonq.infra.api.doc.dao.ApiModuleDefaultIpDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

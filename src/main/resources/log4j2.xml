@@ -61,9 +61,9 @@
         </AsyncRoot>
 
         <!--打印sql-->
-        <!--<logger name="org.jsonq.service.crawler.core.repository.sql" level="DEBUG" additivity="false">-->
-            <!--<appender-ref ref="console"/>-->
-        <!--</logger>-->
+        <logger name="org.jsonq.infra.api.doc.dao.sql" level="DEBUG" additivity="false">
+            <appender-ref ref="console"/>
+        </logger>
     </Loggers>
 
 </configuration>

@@ -19,19 +19,21 @@
 
 <link href="/css/common/loading.css?v=${VERSION}" type="text/css" rel="stylesheet">
 <#--<link href="/css/LCalendar.css?v=${VERSION}" type="text/css" rel="stylesheet">-->
-<#--<link href="/js/jBox/Source/jBox.css?v=${VERSION}" type="text/css" rel="stylesheet">-->
+<link href="/js/plugins/jBox/Source/jBox.css?v=${VERSION}" type="text/css" rel="stylesheet">
 
 <#--<script src="/js/LCalendar.js?v=${VERSION}"></script>-->
 <script src="/js/plugins/jquery/jquery-3.3.1.min.js?v=${VERSION}"></script>
 <#--<script src="/js/datePick.js?v=${VERSION}"></script>-->
-<script src="/js/swallow.js?v=${VERSION}"></script>
+<#--<script src="/js/swallow.js?v=${VERSION}"></script>-->
 <script src="/js/common/common.js?v=${VERSION}"></script>
 <script src="/js/plugins/jsviews.min.js?v=${VERSION}"></script>
-<#--<script src="/js/jBox/Source/jBox.min.js?v=${VERSION}"></script>-->
-<link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-<script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
-<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet" />
+<script src="/js/plugins/jBox/Source/jBox.min.js?v=${VERSION}"></script>
+
+<link href="/js/plugins/bootstrap-3.3.7/css/bootstrap.min.css" type="text/css" rel="stylesheet">
+<script src="/js/plugins/bootstrap-3.3.7/js/bootstrap.min.js"></script>
+
 <#--<link href="/css/select2/select2-bootstrap.min.css" rel="stylesheet" />-->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet"/>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
 
 <script type="text/javascript">

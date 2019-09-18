@@ -4,6 +4,12 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>2.0.4.RELEASE</version>
+    </parent>
+
     <groupId>org.jsonq.infra.api.doc</groupId>
     <artifactId>infra-api-doc</artifactId>
     <version>1.0.0-SNAPSHOT</version>
@@ -26,46 +32,29 @@
     <dependencies>
         <dependency>
             <groupId>com.youanmi.scrm</groupId>
-            <artifactId>scrm-web-pcis</artifactId>
-            <version>1.0.22-SNAPSHOT</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>*</groupId>
-                    <artifactId>*</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        <dependency>
-            <groupId>com.youanmi.scrm</groupId>
-            <artifactId>scrm-api-mmall</artifactId>
-            <version>1.4.2-SNAPSHOT</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>*</groupId>
-                    <artifactId>*</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-
-        <dependency>
-            <groupId>com.youanmi.scrm</groupId>
             <artifactId>commons-pom-cloud</artifactId>
-            <version>2.0.4-SNAPSHOT</version>
+            <version>${commons-version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.springframework.cloud</groupId>
+                    <artifactId>spring-cloud-starter-consul-all</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>com.youanmi.scrm</groupId>
             <artifactId>commons-constants</artifactId>
-            <version>2.0.4-SNAPSHOT</version>
+            <version>${commons-version}</version>
         </dependency>
         <dependency>
             <groupId>com.youanmi.scrm</groupId>
             <artifactId>commons-base</artifactId>
-            <version>2.0.4-SNAPSHOT</version>
+            <version>${commons-version}</version>
         </dependency>
         <dependency>
             <groupId>com.youanmi.scrm</groupId>
             <artifactId>commons-redis</artifactId>
-            <version>2.0.4-SNAPSHOT</version>
+            <version>${commons-version}</version>
             <exclusions>
                 <exclusion>
                     <groupId>org.springframework.data</groupId>
@@ -74,13 +63,6 @@
             </exclusions>
         </dependency>
 
-
-        <!-- 反射 -->
-        <dependency>
-            <groupId>org.reflections</groupId>
-            <artifactId>reflections</artifactId>
-            <version>0.9.9-RC2</version>
-        </dependency>
         <!-- Spring Boot Freemarker 依赖 -->
         <dependency>
             <groupId>org.springframework.boot</groupId>

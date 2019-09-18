@@ -1,31 +1,19 @@
 package org.jsonq.infra.api.doc.controller.param;
 
-import java.util.List;
+import lombok.Data;
 import org.jsonq.infra.api.doc.po.ApiParameterValue;
+
+import java.util.List;
 
 /**
  * @author jq
  * @date 2018/08/06
  */
+@Data
 public class ParameterValueAddParam {
 
     private List<ApiParameterValue> apiParameterValueList;
+    private String headers;
     private Long userId;
 
-    public List<ApiParameterValue> getApiParameterValueList() {
-        return apiParameterValueList;
-    }
-
-    public void setApiParameterValueList(
-            List<ApiParameterValue> apiParameterValueList) {
-        this.apiParameterValueList = apiParameterValueList;
-    }
-
-    public Long getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Long userId) {
-        this.userId = userId;
-    }
 }

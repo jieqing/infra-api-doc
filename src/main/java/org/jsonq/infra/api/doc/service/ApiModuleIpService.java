@@ -1,12 +1,11 @@
 package org.jsonq.infra.api.doc.service;
 
-import java.util.List;
-import java.util.Objects;
-import javax.annotation.Resource;
-import org.jsonq.infra.api.doc.po.ApiModuleDefaultIp;
+import org.jsonq.infra.api.doc.dao.ApiModuleIpDao;
 import org.jsonq.infra.api.doc.po.ApiModuleIp;
-import org.jsonq.infra.api.doc.respository.ApiModuleIpDao;
 import org.springframework.stereotype.Service;
+
+import javax.annotation.Resource;
+import java.util.List;
 
 
 /**
@@ -20,20 +19,8 @@ public class ApiModuleIpService {
 
     @Resource
     private ApiModuleIpDao apiModuleIpDao;
-    @Resource
-    private ApiModuleDefaultIpService defaultIpService;
 
-    public List<ApiModuleIp> listByModuleId(Long moduleId, Long userId) {
-        List<ApiModuleIp> apiModuleIps = apiModuleIpDao.listByModuleId(moduleId);
-        // 默认Ip
-        ApiModuleDefaultIp defaultIp = defaultIpService.getByModuleId(moduleId, userId);
-        for (ApiModuleIp apiModuleIp : apiModuleIps) {
-            if (Objects.equals(apiModuleIp.getId(), defaultIp.getModuleIpId())) {
-                apiModuleIp.setDefaultIp(true);
-            } else {
-                apiModuleIp.setDefaultIp(false);
-            }
-        }
-        return apiModuleIps;
+    public List<ApiModuleIp> listByModuleId(Long moduleId) {
+        return apiModuleIpDao.listByModuleId(moduleId);
     }
 }

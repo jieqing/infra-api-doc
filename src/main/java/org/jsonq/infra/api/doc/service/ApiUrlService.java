@@ -3,7 +3,7 @@ package org.jsonq.infra.api.doc.service;
 import java.util.List;
 import javax.annotation.Resource;
 import org.jsonq.infra.api.doc.po.ApiUrl;
-import org.jsonq.infra.api.doc.respository.ApiUrlDao;
+import org.jsonq.infra.api.doc.dao.ApiUrlDao;
 import org.springframework.stereotype.Service;
 
 
@@ -23,11 +23,11 @@ public class ApiUrlService {
         return apiUrlDao.listByClassId(classId);
     }
 
-    public Long createAndGetId(ApiUrl apiUrl) {
-        return apiUrlDao.createAndGetId(apiUrl);
+    public Long replace(ApiUrl apiUrl) {
+        return apiUrlDao.replace(apiUrl);
     }
 
-    public int deleteByIdBatch(List<Long> ids) {
-        return apiUrlDao.deleteByIdBatch(ids);
+    public int deleteByIds(List<Long> ids) {
+        return apiUrlDao.deleteByIds(ids);
     }
 }

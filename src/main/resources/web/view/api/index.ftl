@@ -29,26 +29,68 @@
         .key {
             color: red;
         }
+
+        .table > tbody > tr > td, .table > tbody > tr > th, .table > tfoot > tr > td, .table > tfoot > tr > th, .table > thead > tr > td, .table > thead > tr > th {
+            padding: 3px;
+        }
+
+        .nav-pills > li.active > a, .nav-pills > li.active > a:focus, .nav-pills > li.active > a:hover {
+            background-color: #09bb07;
+        }
+
+        .item {
+            margin: 4px 0;
+        }
     </style>
-    <script>
-        var userId = 1;
+    <script src="/js/api/index.js"></script>
+    <script id="moduleListTmp" type="text/x-jsrender">
+        <li role="presentation" {{if #index==0}}class="active"{{/if}} id={{:id}}><a href="#">{{:name}}</a></li>
     </script>
-    <#include "indexRd.ftl">
+    <script id="moduleIpListTmp" type="text/x-jsrender">
+        <option {{if defaultIp==true}}selected="selected"{{/if}} value={{:requestIp}}>{{:requestIp}}</option>
+    </script>
+    <script id="classListTmp" type="text/x-jsrender">
+        <li role="presentation" {{if #index==0}}class="active"{{/if}} id={{:id}} name="{{:name}}"><a href="#">{{:description}}</a></li>
+    </script>
+    <script id="urlListTmp" type="text/x-jsrender">
+        <li role="presentation" {{if #index==0}}class="active"{{/if}} id={{:id}} data-class-id={{:classId}}><a href="#">{{:description}}</a></li>
+    </script>
+    <script id="urlOneTmp" type="text/x-jsrender">
+        <div class="item"><b>请求Url</b>&nbsp&nbsp&nbsp&nbsp<span id="requestUrl" style="color: rgb(0, 0, 255)">{{:requestUrl}}</span></div>
+        <div class="item"><b>请求类型</b>&nbsp&nbsp<span style="color: #09bb07">{{:requestType}}</span></div>
+        <div class="item"><b>后台方法</b>&nbsp&nbsp{{:className}}.{{:methodName}}</div>
+    </script>
+    <script id="parameter1TableTmp" type="text/x-jsrender">
+        <tr>
+            <input name="id" type="hidden" value={{:id}}>
+            <td name="paramName">{{if parentId!=0}}--{{/if}}{{:name}}</td>
+            <td>{{:dataType}}</td>
+            <td>{{:description}}</td>
+            <td><input type="text" name="dateValue" class="form-control" value={{:dateValue}}></td>
+        </tr>
+    </script>
+    <script id="parameter2TableTmp" type="text/x-jsrender">
+        <tr>
+            <td>{{if parentId!=0}}--{{/if}}{{:name}}</td>
+            <td>{{:dataType}}</td>
+            <td>{{:description}}</td>
+        </tr>
+    </script>
 </head>
 
 <body>
 <div class="container-fluid" style="margin: 0.5% 2%;;">
     <div class="row">
         <form class="form-inline col-md-6 ">
-                <div class="input-group col-md-3">
-                    <select id="className" class="form-control select2-allow-clear">
-                    </select>
-                    <span class="input-group-btn">
+            <div class="input-group col-md-3">
+                <select id="className" class="form-control select2-allow-clear">
+                </select>
+                <span class="input-group-btn">
                         <button class="btn btn-default" type="button" data-select2-open="className">
                           <span class="glyphicon glyphicon-search"></span>
                         </button>
                       </span>
-                </div>
+            </div>
             <div class="input-group">
                 <input id="urlName" type="search" class="form-control" placeholder="请输入接口名或接口url">
                 <div class="input-group-addon glyphicon glyphicon-search" style="top: 0"></div>
@@ -93,10 +135,10 @@
             <table class="table table-hover" style="table-layout:fixed">
                 <thead>
                 <tr>
-                    <th style="width: 100px">变量名</th>
-                    <th style="width: 50px">类型</th>
-                    <th style="width: 150px">含义</th>
-                    <th>值</th>
+                    <th style="width: 30%">变量名</th>
+                    <th style="width: 10%">类型</th>
+                    <th style="width: 35%">含义</th>
+                    <th STYLE="width: 25%">值</th>
                 </tr>
                 </thead>
                 <tbody id="parameter1Table">
@@ -107,9 +149,9 @@
             <table class="table table-hover" style="table-layout:fixed">
                 <thead>
                 <tr>
-                    <th>变量名</th>
-                    <th>类型</th>
-                    <th>含义</th>
+                    <th style="width: 30%">变量名</th>
+                    <th style="width: 10%">类型</th>
+                    <th style="width: 60%">含义</th>
                 </tr>
                 </thead>
                 <tbody id="parameter2Table">
@@ -117,15 +159,15 @@
             </table>
         </div>
         <div class="col-md-4">
+            Headers
+            <textarea id="headers" rows="2" class="form-control" placeholder="Authorization:E6s5MB0722JYDQ9QSG
+sn:FPAL11931011532TYA12606"></textarea>
             <pre id="sendApiParam"></pre>
             <pre id="sendApiResult"></pre>
         </div>
     </div>
 </div>
 <#include "../common/footer.ftl">
-<script src="/js/api/class.js"></script>
-<script>
 
-</script>
 </body>
 </html>

@@ -1,10 +1,11 @@
 package org.jsonq.infra.api.doc.service;
 
-import java.util.List;
+import org.jsonq.infra.api.doc.dao.ApiClassDao;
 import org.jsonq.infra.api.doc.po.ApiClass;
-import org.jsonq.infra.api.doc.respository.ApiClassDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 
 /**
@@ -19,19 +20,19 @@ public class ApiClassService {
     @Autowired
     private ApiClassDao apiClassDao;
 
-    public List<ApiClass> listByName(String name, List<Long> moduleIds) {
-        return apiClassDao.listByName(name, moduleIds);
+    public List<ApiClass> listByName(String name, Long moduleId) {
+        return apiClassDao.listByName(name, moduleId);
     }
 
-    public Long replaceAndGetId(ApiClass apiClass) {
-        return apiClassDao.replaceAndGetId(apiClass);
+    public Long replaceByName(ApiClass apiClass) {
+        return apiClassDao.replaceByName(apiClass);
     }
 
     public List<ApiClass> listByModuleId(Long moduleId) {
         return apiClassDao.listByModuleId(moduleId);
     }
 
-    public int deleteByIdBatch(List<Long> ids) {
-        return apiClassDao.deleteByIdBatch(ids);
+    public int deleteByIds(List<Long> ids) {
+        return apiClassDao.deleteByIds(ids);
     }
 }

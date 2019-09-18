@@ -4,7 +4,7 @@ import javax.annotation.Resource;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jsonq.infra.api.doc.po.User;
-import org.jsonq.infra.api.doc.respository.UserDao;
+import org.jsonq.infra.api.doc.dao.UserDao;
 import org.springframework.stereotype.Service;
 
 

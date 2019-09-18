@@ -2,17 +2,18 @@ package org.jsonq.infra.api.doc.service;
 
 import com.google.common.collect.Lists;
 import com.youanmi.scrm.commons.util.collection.MapUtil;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import javax.annotation.Resource;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jsonq.infra.api.doc.constants.ApiConstants.ApiParameterType;
+import org.jsonq.infra.api.doc.dao.ApiParameterDao;
 import org.jsonq.infra.api.doc.po.ApiParameter;
 import org.jsonq.infra.api.doc.po.ApiParameterValue;
-import org.jsonq.infra.api.doc.respository.ApiParameterDao;
 import org.springframework.stereotype.Service;
+
+import javax.annotation.Resource;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
 
 /**
@@ -31,13 +32,12 @@ public class ApiParameterService {
     @Resource
     private ApiParameterDao apiParameterDao;
 
-    public List<ApiParameter> listByUrlId(Long urlId, Byte type, Long userId) {
+    public List<ApiParameter> listByUrlId(Long urlId, Byte type) {
         List<ApiParameter> apiParameters = apiParameterDao.listByUrlId(urlId, type);
         // 组装参数值
         Map<Long, ApiParameter> idMap = MapUtil.toMap(apiParameters, "id");
         if (Objects.equals(type, ApiParameterType.PARAM_TYPE)) {
-            List<ApiParameterValue> valueList = apiParameterValueService.listByParameterIds(
-                    Lists.newArrayList(idMap.keySet()), userId);
+            List<ApiParameterValue> valueList = apiParameterValueService.listByParameterIds(Lists.newArrayList(idMap.keySet()));
             for (ApiParameterValue value : valueList) {
                 ApiParameter apiParameter = idMap.get(value.getParameterId());
                 if (apiParameter != null) {
@@ -48,8 +48,8 @@ public class ApiParameterService {
         return apiParameters;
     }
 
-    public Long replaceAndGetId(ApiParameter apiParameter) {
-        return apiParameterDao.replaceAndGetId(apiParameter);
+    public Long replace(ApiParameter apiParameter) {
+        return apiParameterDao.replace(apiParameter);
     }
 
 

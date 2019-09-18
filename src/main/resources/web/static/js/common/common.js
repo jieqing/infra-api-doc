@@ -1,23 +1,33 @@
-$("a[name='loading']").click(function () {
-    showLoading();
-});
-
-$("button[name='loading']").click(function () {
-    showLoading();
-});
-
 function showLoading() {
     $('#loading').show();
 }
+
 function hideLoading() {
     $('#loading').hide();
 }
+
 //js获取url 参数
-function GetQueryString(name) {
+function getQueryString(name) {
     var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
     var r = window.location.search.substr(1).match(reg);
-    if (r != null)return unescape(r[2]);
+    if (r != null) {
+        return unescape(r[2]);
+    }
     return null;
+}
+
+/**
+ * 取得表单数据并生成Object对象
+ * @param form
+ * @returns form中所有带有data-json='true'的input对象的值组成的对象
+ */
+function getFormJson(form) {
+    var inputs = $(form).find("[data-json='true']").filter("[name]");
+    var re = {};
+    inputs.each(function() {
+        re[$(this).attr("name")] = $(this).val();
+    });
+    return re;
 }
 
 /**
@@ -53,9 +63,17 @@ Date.prototype.format = function (fmt) { //author: meizz
         "q+": Math.floor((this.getMonth() + 3) / 3), //季度
         "S": this.getMilliseconds() //毫秒
     };
-    if (/(y+)/.test(fmt)) fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
-    for (var k in o)
-        if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
+    if (/(y+)/.test(fmt)) {
+        fmt = fmt.replace(RegExp.$1,
+            (this.getFullYear() + "").substr(4 - RegExp.$1.length));
+    }
+    for (var k in o) {
+        if (new RegExp("(" + k + ")").test(fmt)) {
+            fmt = fmt.replace(RegExp.$1,
+                (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(
+                    ("" + o[k]).length)));
+        }
+    }
     return fmt;
 };
 
@@ -72,7 +90,6 @@ function limit(str, limit) {
     return result;
 }
 
-
 function defaultSuccessCallBack(result) {
     var tmp;
     if (isEmpty(result)) {
@@ -82,7 +99,6 @@ function defaultSuccessCallBack(result) {
     }
     tmp.link("#datatable", result);
 }
-
 
 function defaultErrorCallBack() {
     var tmpl = $.templates("#tableEmptyTmp");
@@ -111,7 +127,6 @@ function ajaxGet(url, successCallBack, errorCallBack) {
     });
 }
 
-
 function ajaxPost(url, data, successCallBack, errorCallBack) {
     showLoading();
     $.ajax({
@@ -121,8 +136,12 @@ function ajaxPost(url, data, successCallBack, errorCallBack) {
         url: url, //提交的页面，方法名
         data: JSON.stringify(data),
         success: function (redata) {
-            if (successCallBack) {
-                successCallBack(redata);
+            if (redata.success) {
+                if (successCallBack) {
+                    successCallBack(redata);
+                }
+            }else {
+                notice(redata.msg);
             }
             hideLoading();
         },
@@ -136,25 +155,25 @@ function ajaxPost(url, data, successCallBack, errorCallBack) {
 }
 
 function syntaxHighlight(json) {
-  if (typeof json != 'string') {
-    json = JSON.stringify(json, undefined, 2);
-  }
-  json = json.replace(/&/g, '&').replace(/</g, '<').replace(/>/g, '>');
-  return json.replace(
-      /("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g,
-      function (match) {
-        var cls = 'number';
-        if (/^"/.test(match)) {
-          if (/:$/.test(match)) {
-            cls = 'key';
-          } else {
-            cls = 'string';
-          }
-        } else if (/true|false/.test(match)) {
-          cls = 'boolean';
-        } else if (/null/.test(match)) {
-          cls = 'null';
-        }
-        return '<span class="' + cls + '">' + match + '</span>';
-      });
+    if (typeof json != 'string') {
+        json = JSON.stringify(json, undefined, 2);
+    }
+    json = json.replace(/&/g, '&').replace(/</g, '<').replace(/>/g, '>');
+    return json.replace(
+        /("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g,
+        function (match) {
+            var cls = 'number';
+            if (/^"/.test(match)) {
+                if (/:$/.test(match)) {
+                    cls = 'key';
+                } else {
+                    cls = 'string';
+                }
+            } else if (/true|false/.test(match)) {
+                cls = 'boolean';
+            } else if (/null/.test(match)) {
+                cls = 'null';
+            }
+            return '<span class="' + cls + '">' + match + '</span>';
+        });
 }
