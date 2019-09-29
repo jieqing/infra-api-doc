@@ -1,6 +1,7 @@
 package org.jsonq.infra.api.doc.dao;
 
 import com.youanmi.commons.base.core.dao.BaseDao;
+import com.youanmi.commons.base.core.dao.query.Order;
 import com.youanmi.commons.base.core.dao.query.QueryParam;
 import com.youanmi.scrm.commons.constants.Constants;
 import org.jsonq.infra.api.doc.dao.sql.ApiModuleMapper;
@@ -20,7 +21,7 @@ import java.util.List;
 public class ApiModuleDao extends BaseDao<ApiModule, ApiModuleMapper> {
 
     public List<ApiModule> listAll() {
-        return super.listByParam(QueryParam.create().addQuery("isDelete", Constants.NO));
+        return super.listByParam(QueryParam.create().addQuery("isDelete", Constants.NO).addOrder("name", Order.OrderType.asc));
     }
 
     public List<ApiModule> listByRoleId(Long roleId) {

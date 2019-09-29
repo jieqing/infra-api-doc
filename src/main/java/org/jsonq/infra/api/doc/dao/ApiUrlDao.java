@@ -1,10 +1,14 @@
 package org.jsonq.infra.api.doc.dao;
 
+import com.google.common.collect.Lists;
 import com.youanmi.commons.base.core.dao.BaseDao;
+import com.youanmi.commons.base.core.dao.query.Order;
 import com.youanmi.commons.base.core.dao.query.QueryParam;
-import org.jsonq.infra.api.doc.po.ApiUrl;
+import org.apache.commons.lang.StringUtils;
 import org.jsonq.infra.api.doc.dao.sql.ApiUrlMapper;
+import org.jsonq.infra.api.doc.po.ApiUrl;
 import org.springframework.stereotype.Repository;
+import tk.mybatis.mapper.entity.Example;
 
 import java.util.List;
 
@@ -18,8 +22,21 @@ import java.util.List;
 @Repository
 public class ApiUrlDao extends BaseDao<ApiUrl, ApiUrlMapper> {
 
-    public List<ApiUrl> listByClassId(Long classId) {
-        return listByParam(QueryParam.create().addQuery("classId", classId));
+    public List<ApiUrl> listByClassId(Long classId, String urlName) {
+        QueryParam param = QueryParam.create()
+                .addQuery("classId", classId)
+                .addOrder("description", Order.OrderType.asc);
+        super.addDefaultParam(param);
+        Example example = param.toExample(ApiUrl.class);
+        if (StringUtils.isNotEmpty(urlName)) {
+            example.and().orLike("description", "%" + urlName + "%")
+                    .orLike("requestUrl", "%" + urlName + "%");
+        }else {
+            if (param.isQueryEmpty()) {
+                return Lists.newArrayList();
+            }
+        }
+        return mapper.selectByExample(example);
     }
 
     public Long replace(ApiUrl apiUrl) {

@@ -52,5 +52,7 @@ public class ApiParameterService {
         return apiParameterDao.replace(apiParameter);
     }
 
-
+    public int deleteByIds(List<Long> ids) {
+        return apiParameterDao.deleteByIds(ids);
+    }
 }

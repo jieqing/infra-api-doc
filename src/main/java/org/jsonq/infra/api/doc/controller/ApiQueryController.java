@@ -1,15 +1,23 @@
 package org.jsonq.infra.api.doc.controller;
 
+import com.google.common.collect.Maps;
 import com.youanmi.commons.base.annotation.ApiDoc;
 import com.youanmi.commons.base.vo.ResultDto;
+import com.youanmi.scrm.commons.util.collection.MapUtil;
+import org.apache.commons.lang.StringUtils;
 import org.jsonq.infra.api.doc.controller.param.SendApiParam;
 import org.jsonq.infra.api.doc.po.*;
 import org.jsonq.infra.api.doc.service.*;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -51,20 +59,39 @@ public class ApiQueryController {
     }
 
     @RequestMapping(value = "/api/url/list", method = RequestMethod.GET)
-    public ResultDto listUrl(@RequestParam Long classId) {
-        List<ApiUrl> apiUrls = apiUrlService.listByClassId(classId);
+    public ResultDto listUrl(@RequestParam(required = false) Long classId, @RequestParam(required = false) String urlName) {
+        List<ApiUrl> apiUrls = apiUrlService.listByClassId(classId, urlName);
         return ResultDto.success(apiUrls);
     }
 
     @RequestMapping(value = "/api/parameter/list", method = RequestMethod.GET)
-    public ResultDto listParameter(@RequestParam Long urlId, @RequestParam Byte type) {
+    public ResultDto listParameter(@RequestParam Long urlId, @RequestParam(required = false) Byte type) {
+        Map<String, Object> result = Maps.newHashMap();
         List<ApiParameter> apiParameters = apiParameterService.listByUrlId(urlId, type);
-        return ResultDto.success(apiParameters);
+        Map<String, ApiParameter> nameMap = MapUtil.toMap(apiParameters, "name");
+        ApiParameter headers = nameMap.get("headers");
+        if (headers != null) {
+            result.put("headers", headers);
+            apiParameters.remove(headers);
+        }
+        result.put("list", apiParameters);
+        return ResultDto.success(result);
     }
 
     @RequestMapping(value = "/api/sendApi", method = RequestMethod.POST)
     public ResultDto listParameter(@RequestBody SendApiParam param) {
-
-        return ResultDto.success(new RestTemplate().postForObject(param.getUrl(), param.getParam(), Object.class));
+        String headers = param.getHeaders();
+        HttpHeaders requestHeaders = new HttpHeaders();
+        if (StringUtils.isNotEmpty(headers)) {
+            String[] split = headers.split("\n");
+            for (String a : split) {
+                String[] b = a.split(":");
+                requestHeaders.add(b[0].trim(), b[1].trim());
+            }
+        }
+        RestTemplate template = new RestTemplate();
+        HttpEntity<Object> requestEntity = new HttpEntity<>(param.getParam(), requestHeaders);
+        ResponseEntity<Object> responseEntity = template.exchange(param.getUrl(), HttpMethod.POST, requestEntity, Object.class);
+        return ResultDto.success(responseEntity.getBody());
     }
 }

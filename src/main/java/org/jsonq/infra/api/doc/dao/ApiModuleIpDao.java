@@ -1,11 +1,13 @@
 package org.jsonq.infra.api.doc.dao;
 
 import com.youanmi.commons.base.core.dao.BaseDao;
+import com.youanmi.commons.base.core.dao.query.Order;
 import com.youanmi.commons.base.core.dao.query.QueryParam;
-import java.util.List;
-import org.jsonq.infra.api.doc.po.ApiModuleIp;
 import org.jsonq.infra.api.doc.dao.sql.ApiModuleIpMapper;
+import org.jsonq.infra.api.doc.po.ApiModuleIp;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 
 /**
@@ -18,7 +20,7 @@ import org.springframework.stereotype.Repository;
 public class ApiModuleIpDao extends BaseDao<ApiModuleIp, ApiModuleIpMapper> {
 
     public List<ApiModuleIp> listByModuleId(Long moduleId) {
-        return this.listByParam(QueryParam.create().addQuery("moduleId", moduleId));
+        return this.listByParam(QueryParam.create().addQuery("moduleId", moduleId).addOrder("id", Order.OrderType.asc));
     }
 
 }

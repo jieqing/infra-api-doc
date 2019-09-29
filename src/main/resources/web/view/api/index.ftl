@@ -83,18 +83,8 @@
     <div class="row">
         <form class="form-inline col-md-6 ">
             <div class="input-group col-md-3">
-                <select id="className" class="form-control select2-allow-clear">
+                <select id="urlId" class="form-control select2-allow-clear">
                 </select>
-                <span class="input-group-btn">
-                        <button class="btn btn-default" type="button" data-select2-open="className">
-                          <span class="glyphicon glyphicon-search"></span>
-                        </button>
-                      </span>
-            </div>
-            <div class="input-group">
-                <input id="urlName" type="search" class="form-control" placeholder="请输入接口名或接口url">
-                <div class="input-group-addon glyphicon glyphicon-search" style="top: 0"></div>
-                </span>
             </div>
         </form>
         <div class="col-md-2">
@@ -123,14 +113,12 @@
         <div class="col-md-4" style="padding-left: 0">
             <div id="urlOne">
             </div>
-            <button id="sendApi" class="btn btn-info" type="button"
-                    style="position: absolute;margin-left: 86%;margin-top: -13%;">发送
+            <button id="saveParameterValue" class="btn btn-success" type="button"
+                    style="position: absolute;margin-left: 86%;margin-top: -13%;">保存
             </button>
             <div class="row" style="margin-top: 30px">
                 <h4 class="col-md-11">请求参数列表</h4>
-                <button id="saveParameterValue" class="btn btn-success" type="button"
-                        style="position: absolute;margin-left: -5%;">保存
-                </button>
+
             </div>
             <table class="table table-hover" style="table-layout:fixed">
                 <thead>
@@ -159,7 +147,11 @@
             </table>
         </div>
         <div class="col-md-4">
+            <button id="sendApi" class="btn btn-info" type="button"
+                    style="margin-left: 90%;">发送
+            </button>
             Headers
+            <input id="headersId" type="hidden">
             <textarea id="headers" rows="2" class="form-control" placeholder="Authorization:E6s5MB0722JYDQ9QSG
 sn:FPAL11931011532TYA12606"></textarea>
             <pre id="sendApiParam"></pre>

@@ -13,7 +13,8 @@ import java.util.List;
 public class ParameterValueAddParam {
 
     private List<ApiParameterValue> apiParameterValueList;
-    private String headers;
+    private ApiParameterValue headers;
     private Long userId;
+    private Long urlId;
 
 }

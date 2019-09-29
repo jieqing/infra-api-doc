@@ -1,12 +1,10 @@
 package org.jsonq.infra.api.doc.controller;
 
 import com.youanmi.commons.base.vo.ResultDto;
+import org.apache.commons.lang.StringUtils;
 import org.jsonq.infra.api.doc.controller.param.IdsParam;
 import org.jsonq.infra.api.doc.controller.param.ParameterValueAddParam;
-import org.jsonq.infra.api.doc.po.ApiClass;
-import org.jsonq.infra.api.doc.po.ApiModule;
-import org.jsonq.infra.api.doc.po.ApiParameter;
-import org.jsonq.infra.api.doc.po.ApiUrl;
+import org.jsonq.infra.api.doc.po.*;
 import org.jsonq.infra.api.doc.service.*;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -39,6 +37,17 @@ public class ApiCommandController {
 
     @RequestMapping(value = "/api/parameterValue/replace", method = RequestMethod.POST)
     public ResultDto<Void> replaceParameterValue(@RequestBody ParameterValueAddParam param) {
+        ApiParameterValue headers = param.getHeaders();
+        if (headers != null && StringUtils.isNotEmpty(headers.getValue())) {
+            if (headers.getParameterId() == null) {
+                ApiParameter apiParameter = new ApiParameter();
+                apiParameter.setUrlId(param.getUrlId());
+                apiParameter.setName("headers");
+                Long parameterId = apiParameterService.replace(apiParameter);
+                headers.setParameterId(parameterId);
+            }
+            param.getApiParameterValueList().add(headers);
+        }
         apiParameterValueService.replaceList(param.getApiParameterValueList());
         return ResultDto.success();
     }
@@ -76,4 +85,12 @@ public class ApiCommandController {
     public ResultDto<Long> replace(@RequestBody ApiParameter param) {
         return ResultDto.success(apiParameterService.replace(param));
     }
+
+    @RequestMapping(value = "/api/parameter/deleteByIds", method = RequestMethod.POST)
+    public ResultDto<Long> replace(@RequestBody IdsParam param) {
+        apiParameterService.deleteByIds(param.getIds());
+        return ResultDto.success();
+    }
+
+
 }

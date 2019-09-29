@@ -2,37 +2,31 @@ var urlList;
 $(function () {
     queryModuleList();
 
-    // 查询按钮
-    // $('#className').bind('keyup', function (event) {
-    //   if (event.keyCode == "13") {
-    //     //回车执行查询
-    //     queryClassList($("#className").val(), $("#moduleList .active").attr("id"));
-    //   }
-    // });
-
-    $('#className').select2({
+    $('#urlId').select2({
         ajax: {
-            url: "/api/class/list",
+            url: "/api/url/list",
             data: function (params) {
                 return {
-                    className: params.term // search term 请求参数
+                    urlName: params.term // search term 请求参数
                 };
             },
             processResults: function (data) {
                 data = data.data;
                 let itemList = [];
                 for (let item in data) {
-                    itemList.push({id: data[item].id, text: data[item].name})
+                    itemList.push({id: data[item].id, text: data[item].description + " "+data[item].requestUrl})
                 }
-                return {
-                    results: itemList
-                };
+                return {results: itemList};
             },
             cache: true,
         },
-        placeholder: '请选择',//默认文字提示
+        placeholder: '请输入接口描述或接口url',//默认文字提示
         language: "zh-CN",
         minimumInputLength: 1,//最少输入多少个字符后开始查询
+    });
+
+    $('#urlId').on('change', function () {
+        queryParameterList($(this).val());
     });
 
     // 点击类列表
@@ -61,7 +55,12 @@ $(function () {
                 value: $(this).find("input[name='dateValue']").val()
             });
         });
-        ajaxPost("/api/parameterValue/replace", {apiParameterValueList: list, headers:$("#headers").val()});
+
+        ajaxPost("/api/parameterValue/replace", {
+            apiParameterValueList: list,
+            headers: {parameterId: $("#headersId").val(), value: $("#headers").val()},
+            urlId: $('#urlList .active').attr("id")
+        });
     });
     // 参数值改变事件
     $('#parameter1Table').on('input propertychange', 'input', function () {
@@ -72,10 +71,14 @@ $(function () {
         ajaxPost("/api/sendApi",
             {
                 url: $("#moduleIpList").val() + $("#requestUrl").html(),
+                headers: $("#headers").val(),
                 param: getSendApiParam()
             },
             function successCallBack(result) {
-                $('#sendApiResult').html(syntaxHighlight(result));
+                $('#sendApiResult').html(syntaxHighlight(result.data));
+            },
+            function errorCallBack() {
+                $('#sendApiResult').html(syntaxHighlight(null));
             });
     });
 });
@@ -133,14 +136,20 @@ function queryUrlList(classId) {
 function queryParameterList(urlId) {
     ajaxGet("/api/parameter/list?urlId=" + urlId + "&type=1",
         function successCallBack(result) {
-            $.templates("#parameter1TableTmp").link("#parameter1Table", result.data);
+            $.templates("#parameter1TableTmp").link("#parameter1Table", result.data.list);
             $('#sendApiParam').html(syntaxHighlight(getSendApiParam()));
             $('#sendApiResult').html("");
-            $("#headers").val(result.data.headers);
+            if (!isEmpty(result.data.headers)) {
+                $("#headersId").val(result.data.headers.id);
+                $("#headers").val(result.data.headers.dateValue);
+            }else {
+                $("#headersId").val("");
+                $("#headers").val("");
+            }
         });
     ajaxGet("/api/parameter/list?urlId=" + urlId + "&type=2",
         function successCallBack(result) {
-            $.templates("#parameter2TableTmp").link("#parameter2Table", result.data);
+            $.templates("#parameter2TableTmp").link("#parameter2Table", result.data.list);
         });
 
 }

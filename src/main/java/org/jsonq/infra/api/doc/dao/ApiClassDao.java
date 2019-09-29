@@ -1,6 +1,7 @@
 package org.jsonq.infra.api.doc.dao;
 
 import com.youanmi.commons.base.core.dao.BaseDao;
+import com.youanmi.commons.base.core.dao.query.Order;
 import com.youanmi.commons.base.core.dao.query.Query.Opt;
 import com.youanmi.commons.base.core.dao.query.QueryParam;
 import org.jsonq.infra.api.doc.dao.sql.ApiClassMapper;
@@ -20,12 +21,12 @@ import java.util.List;
 public class ApiClassDao extends BaseDao<ApiClass, ApiClassMapper> {
 
     public List<ApiClass> listByName(String name, Long moduleId) {
-        return listByParam(QueryParam.create().addQuery("name", Opt.like, name)
-                .addQuery("moduleId", moduleId));
+        return listByParam(QueryParam.create().addQuery("name", Opt.like, name).addQuery("moduleId", moduleId)
+                .addOrder("description", Order.OrderType.asc));
     }
 
     public List<ApiClass> listByModuleId(Long moduleId) {
-        return listByParam(QueryParam.create().addQuery("moduleId", moduleId));
+        return listByParam(QueryParam.create().addQuery("moduleId", moduleId).addOrder("description", Order.OrderType.asc));
     }
 
     public Long replaceByName(ApiClass apiClass) {

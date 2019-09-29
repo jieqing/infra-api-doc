@@ -1,11 +1,13 @@
 package org.jsonq.infra.api.doc.dao;
 
 import com.youanmi.commons.base.core.dao.BaseDao;
+import com.youanmi.commons.base.core.dao.query.Order;
 import com.youanmi.commons.base.core.dao.query.QueryParam;
-import java.util.List;
-import org.jsonq.infra.api.doc.po.ApiParameter;
 import org.jsonq.infra.api.doc.dao.sql.ApiParameterMapper;
+import org.jsonq.infra.api.doc.po.ApiParameter;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 
 /**
@@ -18,7 +20,7 @@ import org.springframework.stereotype.Repository;
 public class ApiParameterDao extends BaseDao<ApiParameter, ApiParameterMapper> {
 
     public List<ApiParameter> listByUrlId(Long urlId, Byte type) {
-        return listByParam(QueryParam.create().addQuery("urlId", urlId).addQuery("type", type));
+        return listByParam(QueryParam.create().addQuery("urlId", urlId).addQuery("type", type).addOrder("id", Order.OrderType.asc));
     }
 
     public Long replace(ApiParameter apiParameter) {
@@ -29,5 +31,9 @@ public class ApiParameterDao extends BaseDao<ApiParameter, ApiParameterMapper> {
                 .addQuery("name", apiParameter.getName());
         super.replace(apiParameter, checkDbEntityParam);
         return apiParameter.getId();
+    }
+
+    public int deleteByIds(List<Long> ids) {
+        return super.deleteByIdBatch(ids);
     }
 }

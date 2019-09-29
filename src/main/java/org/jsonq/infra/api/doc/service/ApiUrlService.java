@@ -1,10 +1,11 @@
 package org.jsonq.infra.api.doc.service;
 
-import java.util.List;
-import javax.annotation.Resource;
-import org.jsonq.infra.api.doc.po.ApiUrl;
 import org.jsonq.infra.api.doc.dao.ApiUrlDao;
+import org.jsonq.infra.api.doc.po.ApiUrl;
 import org.springframework.stereotype.Service;
+
+import javax.annotation.Resource;
+import java.util.List;
 
 
 /**
@@ -19,8 +20,8 @@ public class ApiUrlService {
     @Resource
     private ApiUrlDao apiUrlDao;
 
-    public List<ApiUrl> listByClassId(Long classId) {
-        return apiUrlDao.listByClassId(classId);
+    public List<ApiUrl> listByClassId(Long classId, String urlName) {
+        return apiUrlDao.listByClassId(classId, urlName);
     }
 
     public Long replace(ApiUrl apiUrl) {

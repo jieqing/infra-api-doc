@@ -1,27 +1,15 @@
 package org.jsonq.infra.api.doc.controller.param;
 
+import lombok.Data;
+
 /**
  * @author jq
  * @date 2018/08/06
  */
+@Data
 public class SendApiParam {
 
     private String url;
+    private String headers;
     private Object param;
-
-    public String getUrl() {
-        return url;
-    }
-
-    public void setUrl(String url) {
-        this.url = url;
-    }
-
-    public Object getParam() {
-        return param;
-    }
-
-    public void setParam(Object param) {
-        this.param = param;
-    }
 }
