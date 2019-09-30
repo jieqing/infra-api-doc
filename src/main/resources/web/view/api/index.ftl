@@ -45,19 +45,15 @@
     <script src="/js/api/index.js"></script>
     <script id="moduleListTmp" type="text/x-jsrender">
         <li role="presentation" {{if #index==0}}class="active"{{/if}} id={{:id}}><a href="#">{{:name}}</a></li>
-
     </script>
     <script id="moduleIpListTmp" type="text/x-jsrender">
         <option {{if defaultIp==true}}selected="selected"{{/if}} value={{:requestIp}}>{{:requestIp}}</option>
-
     </script>
     <script id="classListTmp" type="text/x-jsrender">
         <li role="presentation" {{if #index==0}}class="active"{{/if}} id={{:id}} name="{{:name}}"><a href="#">{{:description}}</a></li>
-
     </script>
     <script id="urlListTmp" type="text/x-jsrender">
         <li role="presentation" {{if #index==0}}class="active"{{/if}} id={{:id}} data-class-id={{:classId}}><a href="#">{{:description}}</a></li>
-
     </script>
     <script id="urlOneTmp" type="text/x-jsrender">
         <div class="item"><h4>{{:description}}</h4></div>
@@ -73,7 +69,6 @@
             <td>{{:description}}</td>
             <td><input type="text" name="dateValue" class="form-control" value={{:dateValue}}></td>
         </tr>
-
     </script>
     <script id="parameter2TableTmp" type="text/x-jsrender">
         <tr>
@@ -81,7 +76,6 @@
             <td>{{:dataType}}</td>
             <td>{{:description}}</td>
         </tr>
-
     </script>
 </head>
 
