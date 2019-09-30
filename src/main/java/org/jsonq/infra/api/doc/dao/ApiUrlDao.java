@@ -22,15 +22,15 @@ import java.util.List;
 @Repository
 public class ApiUrlDao extends BaseDao<ApiUrl, ApiUrlMapper> {
 
-    public List<ApiUrl> listByClassId(Long classId, String urlName) {
+    public List<ApiUrl> listByClassId(Long classId, String des) {
         QueryParam param = QueryParam.create()
                 .addQuery("classId", classId)
                 .addOrder("description", Order.OrderType.asc);
         super.addDefaultParam(param);
         Example example = param.toExample(ApiUrl.class);
-        if (StringUtils.isNotEmpty(urlName)) {
-            example.and().orLike("description", "%" + urlName + "%")
-                    .orLike("requestUrl", "%" + urlName + "%");
+        if (StringUtils.isNotEmpty(des)) {
+            example.and().orLike("description", "%" + des + "%")
+                    .orLike("requestUrl", "%" + des + "%");
         }else {
             if (param.isQueryEmpty()) {
                 return Lists.newArrayList();

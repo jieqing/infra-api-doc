@@ -20,8 +20,12 @@ public class ApiUrlService {
     @Resource
     private ApiUrlDao apiUrlDao;
 
-    public List<ApiUrl> listByClassId(Long classId, String urlName) {
-        return apiUrlDao.listByClassId(classId, urlName);
+    public ApiUrl getById(Long id) {
+        return apiUrlDao.selectById(id);
+    }
+
+    public List<ApiUrl> listByClassId(Long classId, String des) {
+        return apiUrlDao.listByClassId(classId, des);
     }
 
     public Long replace(ApiUrl apiUrl) {

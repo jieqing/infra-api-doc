@@ -24,6 +24,10 @@ public class ApiModuleService {
     @Resource
     private UserService userService;
 
+    public ApiModule getById(Long id) {
+        return apiModuleDao.selectById(id);
+    }
+
     public List<ApiModule> listAll() {
         return apiModuleDao.listAll();
     }

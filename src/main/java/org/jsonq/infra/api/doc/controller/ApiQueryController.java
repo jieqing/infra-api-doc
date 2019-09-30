@@ -59,9 +59,18 @@ public class ApiQueryController {
     }
 
     @RequestMapping(value = "/api/url/list", method = RequestMethod.GET)
-    public ResultDto listUrl(@RequestParam(required = false) Long classId, @RequestParam(required = false) String urlName) {
-        List<ApiUrl> apiUrls = apiUrlService.listByClassId(classId, urlName);
+    public ResultDto listUrl(@RequestParam(required = false) Long classId, @RequestParam(required = false) String des) {
+        List<ApiUrl> apiUrls = apiUrlService.listByClassId(classId, des);
         return ResultDto.success(apiUrls);
+    }
+
+    @RequestMapping(value = "/api/url/getDetail", method = RequestMethod.GET)
+    public ResultDto getUrlDetail(@RequestParam Long urlId) {
+        ApiUrl apiUrl = apiUrlService.getById(urlId);
+        ApiClass apiClass = apiClassService.getById(apiUrl.getClassId());
+        ApiModule apiModule = apiModuleService.getById(apiClass.getModuleId());
+        apiUrl.setModuleId(apiModule.getId());
+        return ResultDto.success(apiUrl);
     }
 
     @RequestMapping(value = "/api/parameter/list", method = RequestMethod.GET)

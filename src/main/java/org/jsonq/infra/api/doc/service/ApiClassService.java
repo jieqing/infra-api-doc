@@ -20,6 +20,10 @@ public class ApiClassService {
     @Autowired
     private ApiClassDao apiClassDao;
 
+    public ApiClass getById(Long id) {
+        return apiClassDao.selectById(id);
+    }
+
     public List<ApiClass> listByName(String name, Long moduleId) {
         return apiClassDao.listByName(name, moduleId);
     }

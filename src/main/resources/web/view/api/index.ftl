@@ -45,17 +45,22 @@
     <script src="/js/api/index.js"></script>
     <script id="moduleListTmp" type="text/x-jsrender">
         <li role="presentation" {{if #index==0}}class="active"{{/if}} id={{:id}}><a href="#">{{:name}}</a></li>
+
     </script>
     <script id="moduleIpListTmp" type="text/x-jsrender">
         <option {{if defaultIp==true}}selected="selected"{{/if}} value={{:requestIp}}>{{:requestIp}}</option>
+
     </script>
     <script id="classListTmp" type="text/x-jsrender">
         <li role="presentation" {{if #index==0}}class="active"{{/if}} id={{:id}} name="{{:name}}"><a href="#">{{:description}}</a></li>
+
     </script>
     <script id="urlListTmp" type="text/x-jsrender">
         <li role="presentation" {{if #index==0}}class="active"{{/if}} id={{:id}} data-class-id={{:classId}}><a href="#">{{:description}}</a></li>
+
     </script>
     <script id="urlOneTmp" type="text/x-jsrender">
+        <div class="item"><h4>{{:description}}</h4></div>
         <div class="item"><b>请求Url</b>&nbsp&nbsp&nbsp&nbsp<span id="requestUrl" style="color: rgb(0, 0, 255)">{{:requestUrl}}</span></div>
         <div class="item"><b>请求类型</b>&nbsp&nbsp<span style="color: #09bb07">{{:requestType}}</span></div>
         <div class="item"><b>后台方法</b>&nbsp&nbsp{{:className}}.{{:methodName}}</div>
@@ -68,6 +73,7 @@
             <td>{{:description}}</td>
             <td><input type="text" name="dateValue" class="form-control" value={{:dateValue}}></td>
         </tr>
+
     </script>
     <script id="parameter2TableTmp" type="text/x-jsrender">
         <tr>
@@ -75,20 +81,16 @@
             <td>{{:dataType}}</td>
             <td>{{:description}}</td>
         </tr>
+
     </script>
 </head>
 
 <body>
 <div class="container-fluid" style="margin: 0.5% 2%;;">
-    <div class="row">
-        <form class="form-inline col-md-6 ">
-            <div class="input-group col-md-3">
-                <select id="urlId" class="form-control select2-allow-clear">
-                </select>
-            </div>
-        </form>
-        <div class="col-md-2">
-
+    <div class="row" style="margin-left: 60%;">
+        <div class="col-md-12">
+            <select id="urlId" class="form-control select2-allow-clear">
+            </select>
         </div>
     </div>
     <div class="row" style="padding: 0.5% 0">

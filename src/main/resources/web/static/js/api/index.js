@@ -1,4 +1,9 @@
 var urlList;
+var apiUrl;
+// 按url查接口时，前端顺序渲染回调
+var queryModuleCallBack;
+var queryClassCallBack;
+var queryUrlCallBack;
 $(function () {
     queryModuleList();
 
@@ -7,14 +12,14 @@ $(function () {
             url: "/api/url/list",
             data: function (params) {
                 return {
-                    urlName: params.term // search term 请求参数
+                    des: params.term // search term 请求参数
                 };
             },
             processResults: function (data) {
                 data = data.data;
                 let itemList = [];
                 for (let item in data) {
-                    itemList.push({id: data[item].id, text: data[item].description + " "+data[item].requestUrl})
+                    itemList.push({id: data[item].id, text: data[item].description + " " + data[item].requestUrl})
                 }
                 return {results: itemList};
             },
@@ -26,9 +31,31 @@ $(function () {
     });
 
     $('#urlId').on('change', function () {
-        queryParameterList($(this).val());
+        ajaxGet("/api/url/getDetail?urlId=" + $(this).val(), function successCallBack(result) {
+            apiUrl = result.data;
+            // 查询module
+            queryModuleCallBack = function () {
+                // 点击module，自动查询 class
+                $('#moduleList #' + apiUrl.moduleId).click();
+            };
+            queryClassCallBack = function () {
+                // 点击class，自动查询 url
+                $('#classList #' + apiUrl.classId).click();
+            };
+            queryUrlCallBack = function () {
+                // 点击某个url，自动查询 param
+                $('#urlList #' + apiUrl.id).click();
+            };
+            queryModuleList();
+        });
     });
 
+    // 点击module列表
+    $('#moduleList').on('click', 'li', function () {
+        $(this).siblings().removeClass("active");
+        $(this).addClass("active");
+        queryClassList($(this).attr("id"));
+    });
     // 点击类列表
     $('#classList').on('click', 'li', function () {
         $(this).siblings().removeClass("active");
@@ -46,7 +73,7 @@ $(function () {
 
         queryParameterList($(this).attr("id"));
     });
-    // 保存参数值
+    // 点击保存，参数值
     $("#saveParameterValue").click(function () {
         var list = [];
         $("#parameter1Table tr").each(function () {
@@ -66,7 +93,7 @@ $(function () {
     $('#parameter1Table').on('input propertychange', 'input', function () {
         $('#sendApiParam').html(syntaxHighlight(getSendApiParam()));
     });
-    // 发送api
+    // 点击发送，发送api
     $("#sendApi").click(function () {
         ajaxPost("/api/sendApi",
             {
@@ -98,8 +125,13 @@ function queryModuleList() {
         function successCallBack(result) {
             $.templates("#moduleListTmp").link("#moduleList", result.data);
             let moduleId = $("#moduleList .active").attr("id");
-            queryClassList("", moduleId);
             queryModuleIpList(moduleId);
+            if (queryModuleCallBack) {
+                queryModuleCallBack();
+                queryModuleCallBack = null;
+            } else {
+                queryClassList(moduleId);
+            }
         });
 }
 
@@ -112,11 +144,16 @@ function queryModuleIpList(moduleId) {
 }
 
 // 查询类列表
-function queryClassList(className, moduleId) {
-    ajaxGet("/api/class/list?className=" + className + "&moduleId=" + moduleId,
+function queryClassList(moduleId) {
+    ajaxGet("/api/class/list?moduleId=" + moduleId,
         function successCallBack(result) {
             $.templates("#classListTmp").link("#classList", result.data);
-            queryUrlList($("#classList .active").attr("id"));
+            if (queryClassCallBack) {
+                queryClassCallBack();
+                queryClassCallBack = null;
+            } else {
+                queryUrlList($("#classList .active").attr("id"));
+            }
         });
 }
 
@@ -126,9 +163,14 @@ function queryUrlList(classId) {
         function urlSuccessCallBack(result) {
             urlList = result.data;
             $.templates("#urlListTmp").link("#urlList", result.data);
-            result.data[0].className = $('#classList .active').attr("name");
-            $.templates("#urlOneTmp").link("#urlOne", result.data[0]);
-            queryParameterList($("#urlList .active").attr("id"));
+            if (queryUrlCallBack) {
+                queryUrlCallBack();
+                queryUrlCallBack = null;
+            } else {
+                result.data[0].className = $('#classList .active').attr("name");
+                $.templates("#urlOneTmp").link("#urlOne", result.data[0]);
+                queryParameterList($("#urlList .active").attr("id"));
+            }
         });
 }
 
@@ -142,7 +184,7 @@ function queryParameterList(urlId) {
             if (!isEmpty(result.data.headers)) {
                 $("#headersId").val(result.data.headers.id);
                 $("#headers").val(result.data.headers.dateValue);
-            }else {
+            } else {
                 $("#headersId").val("");
                 $("#headers").val("");
             }
